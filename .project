@@ -14,4 +14,16 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>nsdlib-main-java</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/libraries/nsdlib/src/main/java</locationURI>
+		</link>
+		<link>
+			<name>scratchlib-main-java</name>
+			<type>2</type>
+			<locationURI>PROJECT_LOC/libraries/scratchlib/src/main/java</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
