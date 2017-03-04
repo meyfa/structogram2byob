@@ -105,26 +105,56 @@ public class BlockDescription
      */
     public boolean isAssignableFrom(BlockDescription o)
     {
-        if (o.countParts() != countParts()) {
-            return false;
-        }
+        int i, j;
 
-        for (int i = 0; i < countParts(); ++i) {
-            // check both either label or param
-            if (isParameter(i) != o.isParameter(i)) {
+        for (i = 0, j = i; i < countParts(); ++i, ++j) {
+
+            if (j >= o.countParts()) {
                 return false;
             }
+
+            // check both either label or param
+            if (isParameter(i) != o.isParameter(j)) {
+                return false;
+            }
+
             if (isParameter(i)) {
+
+                if (isList(i)) {
+                    ScratchType listType = getType(i);
+                    // list might be empty
+                    if (!listType.isAssignableFrom(o.getType(j))) {
+                        j--;
+                        continue;
+                    }
+                    // list not empty, so consume all params that match
+                    // (+1 because j is incremented naturally in the for loop)
+                    while (j + 1 < o.countParts() && o.isParameter(j + 1)) {
+                        if (listType.isAssignableFrom(o.getType(j + 1))) {
+                            j++;
+                        }
+                    }
+                    continue;
+                }
+
                 // check param types compatible
-                if (!getType(i).isAssignableFrom(o.getType(i))) {
+                if (!getType(i).isAssignableFrom(o.getType(j))) {
                     return false;
                 }
+
                 continue;
             }
+
             // check labels equal
-            if (!getLabel(i).equals(o.getLabel(i))) {
+            if (!getLabel(i).equals(o.getLabel(j))) {
                 return false;
             }
+
+        }
+
+        // verify that both descriptions were iterated over completely
+        if (i + 1 < countParts() || j + 1 < o.countParts()) {
+            return false;
         }
 
         return true;
