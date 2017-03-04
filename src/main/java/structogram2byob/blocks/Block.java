@@ -6,12 +6,14 @@ import java.util.Map;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
 import structogram2byob.VariableContext;
+import structogram2byob.blocks.structures.IfElseBlock;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 
 
 /**
- * Base class for all blocks.
+ * Base class for all blocks, be it standard {@link FunctionBlock}s or more
+ * complex ones, such as {@link IfElseBlock}.
  */
 public abstract class Block
 {
