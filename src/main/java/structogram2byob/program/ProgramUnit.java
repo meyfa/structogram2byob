@@ -9,9 +9,14 @@ import java.util.Map;
 
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
+import scratchlib.objects.fixed.data.ScratchObjectString;
+import scratchlib.objects.fixed.data.ScratchObjectSymbol;
+import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import scratchlib.objects.user.ScratchObjectVariableFrame;
+import structogram2byob.ScratchType;
 import structogram2byob.VariableContext;
 import structogram2byob.VariableContext.UnitSpecific;
+import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.special.ScriptVariablesBlock;
@@ -28,6 +33,7 @@ public class ProgramUnit
     private final UnitType type;
     private final BlockDescription description;
     private final List<BlockExpression> blocks;
+    private final Block unitBlock;
 
     /**
      * Constructs a new unit from the given header description and the given
@@ -43,6 +49,8 @@ public class ProgramUnit
         this.type = type;
         this.description = description;
         this.blocks = Collections.unmodifiableList(new ArrayList<>(blocks));
+
+        this.unitBlock = new UnitBlock(description, ScratchType.ANY);
     }
 
     /**
@@ -59,6 +67,14 @@ public class ProgramUnit
     public String getUserSpec()
     {
         return description.toUserSpec();
+    }
+
+    /**
+     * @return A {@link Block} instance for invoking this as a custom block.
+     */
+    public Block getInvocationBlock()
+    {
+        return unitBlock;
     }
 
     /**
@@ -113,5 +129,35 @@ public class ProgramUnit
         }
 
         return a;
+    }
+
+    /**
+     * Specifies a unit invocation block.
+     */
+    private static class UnitBlock extends Block
+    {
+        public UnitBlock(BlockDescription desc, ScratchType returnValue)
+        {
+            super(desc, returnValue);
+        }
+
+        @Override
+        public ScratchObjectArray toScratch(List<Expression> params,
+                Map<String, VariableContext> vars, BlockRegistry blocks)
+        {
+            ScratchObjectArray a = new ScratchObjectArray();
+
+            a.add(new ScratchObjectSymbol("byob"));
+            a.add(new ScratchObjectString(""));
+            a.add(new ScratchObjectSymbol("doCustomBlock"));
+
+            a.add(new ScratchObjectUtf8(getDescription().toUserSpec()));
+
+            for (Expression param : params) {
+                a.add(param.toScratch(vars, blocks));
+            }
+
+            return a;
+        }
     }
 }

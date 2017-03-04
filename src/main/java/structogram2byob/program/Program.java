@@ -87,11 +87,18 @@ public class Program
         Map<String, VariableContext> vars = new HashMap<>();
         vars = Collections.unmodifiableMap(vars);
 
+        // extend the block registry by all available custom blocks
+        BlockRegistry blocksExtended = new BlockRegistry(blocks);
+        for (ProgramUnit u : units) {
+            blocksExtended.register(u.getInvocationBlock());
+        }
+
+        // write the units
         for (ProgramUnit u : units) {
             if (u.getType() == UnitType.SCRIPT) {
-                scripts.add(serializeUnitAsScript(u, vars, blocks));
+                scripts.add(serializeUnitAsScript(u, vars, blocksExtended));
             } else {
-                cBlocks.add(serializeUnitAsBlock(u, vars, blocks));
+                cBlocks.add(serializeUnitAsBlock(u, vars, blocksExtended));
             }
         }
     }
