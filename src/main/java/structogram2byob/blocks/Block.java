@@ -1,9 +1,11 @@
 package structogram2byob.blocks;
 
 import java.util.List;
+import java.util.Map;
 
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
+import structogram2byob.VariableContext;
 import structogram2byob.program.expressions.Expression;
 
 
@@ -48,9 +50,10 @@ public abstract class Block
      * specification.
      * 
      * @param params The parameters to substitute into this block.
+     * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
      * @return An array containing the serialized block data.
      */
     public abstract ScratchObjectArray toScratch(List<Expression> params,
-            BlockRegistry blocks);
+            Map<String, VariableContext> vars, BlockRegistry blocks);
 }

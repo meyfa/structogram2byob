@@ -1,7 +1,10 @@
 package structogram2byob.program.expressions;
 
+import java.util.Map;
+
 import scratchlib.objects.ScratchObject;
 import structogram2byob.ScratchType;
+import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
 
 
@@ -17,12 +20,15 @@ public abstract class Expression
     public abstract ScratchType getType();
 
     /**
-     * Converts this instance into a proper Scratch object.
+     * Converts this instance into a proper Scratch object, given a map of
+     * variables and a block registry to distinguish ambiguous parts.
      * 
+     * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
      * @return A {@link ScratchObject}.
      */
-    public abstract ScratchObject toScratch(BlockRegistry blocks);
+    public abstract ScratchObject toScratch(Map<String, VariableContext> vars,
+            BlockRegistry blocks);
 
     @Override
     public abstract String toString();

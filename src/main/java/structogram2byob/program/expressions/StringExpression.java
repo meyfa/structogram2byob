@@ -1,8 +1,11 @@
 package structogram2byob.program.expressions;
 
+import java.util.Map;
+
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
+import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
 
 
@@ -38,7 +41,8 @@ public class StringExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(BlockRegistry blocks)
+    public ScratchObject toScratch(Map<String, VariableContext> vars,
+            BlockRegistry blocks)
     {
         return new ScratchObjectUtf8(value);
     }

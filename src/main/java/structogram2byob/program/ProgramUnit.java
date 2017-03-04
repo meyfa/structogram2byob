@@ -3,10 +3,14 @@ package structogram2byob.program;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
+import structogram2byob.VariableContext;
+import structogram2byob.VariableContext.UnitSpecific;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.expressions.BlockExpression;
@@ -18,6 +22,7 @@ import structogram2byob.program.expressions.BlockExpression;
  */
 public class ProgramUnit
 {
+    private final UnitType type;
     private final BlockDescription description;
     private final List<BlockExpression> blocks;
 
@@ -25,14 +30,24 @@ public class ProgramUnit
      * Constructs a new unit from the given header description and the given
      * blocks.
      * 
+     * @param type The type of this unit.
      * @param description The unit description.
      * @param blocks The blocks that form the unit body.
      */
-    public ProgramUnit(BlockDescription description,
+    public ProgramUnit(UnitType type, BlockDescription description,
             Collection<? extends BlockExpression> blocks)
     {
+        this.type = type;
         this.description = description;
         this.blocks = Collections.unmodifiableList(new ArrayList<>(blocks));
+    }
+
+    /**
+     * @return Whether this unit is a script, command, reporter or predicate.
+     */
+    public UnitType getType()
+    {
+        return type;
     }
 
     /**
@@ -47,16 +62,27 @@ public class ProgramUnit
      * Converts this unit into an array of its blocks, given a map of variables
      * and a block registry to distinguish ambiguous parts.
      * 
+     * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
      * @return A {@link ScratchObject}.
      */
-    public ScratchObject toScratch(BlockRegistry blocks)
+    public ScratchObject toScratch(Map<String, VariableContext> vars,
+            BlockRegistry blocks)
     {
         ScratchObjectArray a = new ScratchObjectArray();
 
+        UnitSpecific thisContext = new UnitSpecific(this);
+        Map<String, VariableContext> newVars = new HashMap<>(vars);
+        for (int i = 0, n = description.countParts(); i < n; ++i) {
+            if (description.isParameter(i)) {
+                newVars.put(description.getLabel(i), thisContext);
+            }
+        }
+        newVars = Collections.unmodifiableMap(newVars);
+
         for (BlockExpression block : this.blocks) {
 
-            ScratchObject obj = block.toScratch(blocks);
+            ScratchObject obj = block.toScratch(newVars, blocks);
             a.add(obj);
 
         }

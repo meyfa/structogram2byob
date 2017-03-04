@@ -4,16 +4,24 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import scratchlib.objects.ScratchObject;
+import scratchlib.objects.fixed.collections.ScratchObjectArray;
+import scratchlib.objects.fixed.data.ScratchObjectString;
+import scratchlib.objects.fixed.data.ScratchObjectSymbol;
+import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
+import structogram2byob.VariableContext;
+import structogram2byob.VariableContext.UnitSpecific;
 import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.ProgramUnit;
 
 
 /**
- * Expression type for block invocations.
+ * Expression type for block invocations, including calls to variables.
  */
 public class BlockExpression extends Expression
 {
@@ -57,14 +65,54 @@ public class BlockExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(BlockRegistry blocks)
+    public ScratchObject toScratch(Map<String, VariableContext> vars,
+            BlockRegistry blocks)
     {
+        // check if this is a variable
+        if (description.countParts() == 1 && !description.isParameter(0)) {
+            String varName = description.getLabel(0);
+            VariableContext var = vars.get(varName);
+            if (var != null) {
+                // this is a variable
+                return serializeAsVariable(var);
+            }
+        }
+
+        // serialize as block
         Block b = blocks.lookup(description);
         if (b == null) {
             throw new IllegalArgumentException("unknown block: " + description);
         }
 
-        return b.toScratch(parameters, blocks);
+        return b.toScratch(parameters, vars, blocks);
+    }
+
+    private ScratchObject serializeAsVariable(VariableContext ctx)
+    {
+        String name = description.getLabel(0);
+
+        ScratchObjectArray a = new ScratchObjectArray();
+
+        if (ctx == VariableContext.GLOBAL) {
+
+            a.add(new ScratchObjectSymbol("readVariable"));
+            a.add(new ScratchObjectUtf8(name));
+
+        } else if (ctx instanceof VariableContext.UnitSpecific) {
+
+            ProgramUnit unit = ((UnitSpecific) ctx).getUnit();
+
+            a.add(new ScratchObjectSymbol("byob"));
+            a.add(new ScratchObjectString(""));
+            a.add(new ScratchObjectSymbol("readBlockVariable"));
+
+            a.add(new ScratchObjectUtf8(name));
+
+            a.add(new ScratchObjectUtf8(unit.getUserSpec()));
+
+        }
+
+        return a;
     }
 
     @Override
