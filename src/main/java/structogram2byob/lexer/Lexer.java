@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class Lexer
 {
     private static final Pattern PATTERN_NUMBER = Pattern
-            .compile("^\\d+(?:\\.\\d+)?$");
+            .compile("^[+-]?\\d+(?:\\.\\d+)?$");
 
     private String input;
     private int index = 0;
@@ -81,22 +81,26 @@ public class Lexer
 
             return new Token(TokenType.STRING, input.substring(index, end + 1));
 
-        } else if ('0' <= c && '9' >= c) {
+        } else if (('0' <= c && '9' >= c) || c == '-' || c == '+') {
 
             // collect all characters potentially part of the number
             StringBuilder sb = new StringBuilder();
             for (int i = index; i < input.length(); ++i) {
                 c = input.charAt(i);
-                if ((c < '0' || '9' < c) && c != '.') {
+                if (i != index && (c < '0' || '9' < c) && c != '.') {
                     break;
                 }
                 sb.append(c);
             }
 
-            // validate string to be numeric
             String s = sb.toString();
+            // sign only is a label
+            if (s.length() == 1 && (s.charAt(0) == '-' || s.charAt(0) == '+')) {
+                return new Token(TokenType.LABEL, s);
+            }
+            // validate string to be numeric
             if (!PATTERN_NUMBER.matcher(s).matches()) {
-                throw new LexerException("illegal number format");
+                throw new LexerException("illegal number format for " + s);
             }
 
             return new Token(TokenType.NUMBER, s);
