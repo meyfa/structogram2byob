@@ -6,6 +6,7 @@ import java.util.Map;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
 import structogram2byob.VariableContext;
+import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 
 
@@ -56,4 +57,30 @@ public abstract class Block
      */
     public abstract ScratchObjectArray toScratch(List<Expression> params,
             Map<String, VariableContext> vars, BlockRegistry blocks);
+
+    /**
+     * Utility function for converting an expression to a variable name.
+     * 
+     * @param exp The expression to convert to a variable name.
+     * @return The variable name.
+     * 
+     * @throws IllegalArgumentException If the given expression is not a
+     *             {@link BlockDescription}, or doesn't have exactly one label
+     *             part and no other parts.
+     */
+    protected static String asVariableName(Expression exp)
+    {
+        if (!(exp instanceof BlockExpression)) {
+            throw new IllegalArgumentException("parameter not a variable name");
+        }
+
+        BlockExpression be = (BlockExpression) exp;
+        BlockDescription desc = be.getDescription();
+
+        if (desc.countParts() != 1 || desc.isParameter(0)) {
+            throw new IllegalArgumentException("malformed variable name");
+        }
+
+        return desc.getLabel(0);
+    }
 }

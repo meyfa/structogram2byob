@@ -14,7 +14,6 @@ import structogram2byob.VariableContext;
 import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 
 
@@ -49,18 +48,7 @@ public class ScriptVariablesBlock extends Block
 
         for (Expression param : params) {
 
-            if (!(param instanceof BlockExpression)) {
-                throw new IllegalArgumentException("param not a variable name");
-            }
-
-            BlockExpression be = (BlockExpression) param;
-            BlockDescription desc = be.getDescription();
-
-            if (desc.countParts() != 1 || desc.isParameter(0)) {
-                throw new IllegalArgumentException("malformed variable name");
-            }
-
-            String name = desc.getLabel(0);
+            String name = asVariableName(param);
 
             ScratchObjectArray pa = new ScratchObjectArray();
 
