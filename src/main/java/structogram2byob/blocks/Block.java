@@ -48,7 +48,9 @@ public abstract class Block
      * specification.
      * 
      * @param params The parameters to substitute into this block.
+     * @param blocks The available blocks, including all custom blocks.
      * @return An array containing the serialized block data.
      */
-    public abstract ScratchObjectArray toScratch(List<Expression> params);
+    public abstract ScratchObjectArray toScratch(List<Expression> params,
+            BlockRegistry blocks);
 }

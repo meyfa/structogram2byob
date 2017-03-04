@@ -36,14 +36,15 @@ public class FunctionBlock extends Block
     }
 
     @Override
-    public ScratchObjectArray toScratch(List<Expression> params)
+    public ScratchObjectArray toScratch(List<Expression> params,
+            BlockRegistry blocks)
     {
         ScratchObjectArray a = new ScratchObjectArray();
 
         a.add(new ScratchObjectSymbol(method));
 
         for (Expression e : params) {
-            a.add(e.toScratch());
+            a.add(e.toScratch(blocks));
         }
 
         return a;

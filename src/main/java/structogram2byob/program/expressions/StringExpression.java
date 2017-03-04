@@ -3,6 +3,7 @@ package structogram2byob.program.expressions;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
+import structogram2byob.blocks.BlockRegistry;
 
 
 /**
@@ -37,7 +38,7 @@ public class StringExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch()
+    public ScratchObject toScratch(BlockRegistry blocks)
     {
         return new ScratchObjectUtf8(value);
     }

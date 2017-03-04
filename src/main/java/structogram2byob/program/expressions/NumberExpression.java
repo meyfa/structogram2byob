@@ -4,6 +4,7 @@ import scratchlib.objects.ScratchObject;
 import scratchlib.objects.inline.ScratchObjectFloat;
 import scratchlib.objects.inline.ScratchObjectSmallInteger;
 import structogram2byob.ScratchType;
+import structogram2byob.blocks.BlockRegistry;
 
 
 /**
@@ -38,7 +39,7 @@ public class NumberExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch()
+    public ScratchObject toScratch(BlockRegistry blocks)
     {
         if (value == Math.rint(value)) {
             return new ScratchObjectSmallInteger((int) Math.rint(value));
