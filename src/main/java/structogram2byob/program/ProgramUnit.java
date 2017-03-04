@@ -9,11 +9,14 @@ import java.util.Map;
 
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
+import scratchlib.objects.user.ScratchObjectVariableFrame;
 import structogram2byob.VariableContext;
 import structogram2byob.VariableContext.UnitSpecific;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.blocks.special.ScriptVariablesBlock;
 import structogram2byob.program.expressions.BlockExpression;
+import structogram2byob.program.expressions.Expression;
 
 
 /**
@@ -84,6 +87,28 @@ public class ProgramUnit
 
             ScratchObject obj = block.toScratch(newVars, blocks);
             a.add(obj);
+
+            // check whether the block is a "script variables" block
+            if (ScriptVariablesBlock.instance.getDescription()
+                    .isAssignableFrom(block.getDescription())) {
+
+                Map<String, ScratchObjectVariableFrame> frames = ScriptVariablesBlock
+                        .retrieveFrames((ScratchObjectArray) obj);
+
+                // extend set of available variables
+                newVars = new HashMap<>(newVars);
+                for (Expression param : block.getParameters()) {
+
+                    BlockExpression pblock = (BlockExpression) param;
+                    String varName = pblock.getDescription().getLabel(0);
+
+                    ScratchObjectVariableFrame f = frames.get(varName);
+                    newVars.put(varName, new VariableContext.ScriptSpecific(f));
+
+                }
+                newVars = Collections.unmodifiableMap(newVars);
+
+            }
 
         }
 

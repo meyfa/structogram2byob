@@ -13,6 +13,7 @@ import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
 import structogram2byob.VariableContext;
+import structogram2byob.VariableContext.ScriptSpecific;
 import structogram2byob.VariableContext.UnitSpecific;
 import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
@@ -97,6 +98,16 @@ public class BlockExpression extends Expression
 
             a.add(new ScratchObjectSymbol("readVariable"));
             a.add(new ScratchObjectUtf8(name));
+
+        } else if (ctx instanceof VariableContext.ScriptSpecific) {
+
+            a.add(new ScratchObjectSymbol("byob"));
+            a.add(new ScratchObjectString(""));
+            a.add(new ScratchObjectSymbol("readBlockVariable"));
+
+            a.add(new ScratchObjectUtf8(name));
+
+            a.add(((ScriptSpecific) ctx).getFrame());
 
         } else if (ctx instanceof VariableContext.UnitSpecific) {
 
