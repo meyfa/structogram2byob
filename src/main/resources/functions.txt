@@ -1,0 +1,549 @@
+# Lines starting with # are ignored
+#
+# This file specifies the basic blocks BYOB has to offer, excluding "special"
+# blocks like if, repeat, or the script variables block.
+#
+# BLOCK FORMAT:
+#
+# block description
+# return type
+# Scratch method
+#
+
+# ----------------------------------------------------------------------------
+# MOTION
+
+move (number) steps
+none
+forward:
+
+turn right (number) degrees
+none
+turnRight:
+
+turn left (number) degrees
+none
+turnLeft:
+
+point in direction (number)
+none
+heading:
+
+point towards (object)
+none
+pointTowards:
+
+go to x: (number) y: (number)
+none
+gotoX:y:
+
+go to (object)
+none
+gotoSpriteOrMouse:
+
+glide (number) secs to x: (number) y: (number)
+none
+glideSecs:toX:y:elapsed:from:
+
+change x by (number)
+none
+changeXposBy:
+
+set x to (number)
+none
+xpos:
+
+change y by (number)
+none
+changeYposBy:
+
+set y to (number)
+none
+ypos:
+
+if on edge, bounce
+none
+bounceOffEdge
+
+x position
+number
+xpos
+
+y position
+number
+ypos
+
+direction
+number
+heading
+
+
+
+# ----------------------------------------------------------------------------
+# LOOKS
+
+switch to costume (text)
+none
+lookLike:
+
+next costume
+none
+nextCostume
+
+costume #
+number
+costumeIndex
+
+say (any) for (number) secs
+none
+say:duration:elapsed:from:
+
+say (any)
+none
+say:
+
+think (any) for (number) secs
+none
+think:duration:elapsed:from:
+
+think (any)
+none
+think:
+
+change (text) effect by (number)
+none
+changeGraphicEffect:by:
+
+set (text) effect to (number)
+none
+setGraphicEffect:to:
+
+clear graphic effects
+none
+filterReset
+
+change size by (number)
+none
+changeSizeBy:
+
+set size to (number) %
+none
+setSizeTo:
+
+size
+number
+scale
+
+show
+none
+show
+
+hide
+none
+hide
+
+go to front
+none
+comeToFront
+
+go back (number) layers
+none
+goBackByLayers:
+
+
+
+# ----------------------------------------------------------------------------
+# SOUND
+
+play sound (text)
+none
+playSound:
+
+play sound (text) until done
+none
+doPlaySoundAndWait
+
+stop all sounds
+none
+stopAllSounds
+
+play drum (number) for (number) beats
+none
+drum:duration:elapsed:from:
+
+rest for (number) beats
+none
+rest:elapsed:from:
+
+play note (number) for (number) beats
+none
+noteOn:duration:elapsed:from:
+
+set instrument to (number)
+none
+midiInstrument:
+
+change volume by (number)
+none
+changeVolumeBy:
+
+set volume to (number) %
+none
+setVolumeTo:
+
+volume
+number
+volume
+
+change tempo by (number)
+none
+changeTempoBy:
+
+set tempo to (number) bpm
+none
+setTempoTo:
+
+tempo
+number
+tempo
+
+
+
+# ----------------------------------------------------------------------------
+# PEN
+
+clear
+none
+clearPenTrails
+
+pen down
+none
+putPenDown
+
+pen up
+none
+putPenUp
+
+set pen color to (color)
+none
+penColor:
+
+change pen color by (number)
+none
+changePenHueBy:
+
+set pen color to (number)
+none
+setPenHueTo:
+
+change pen shade by (number)
+none
+changePenShadeBy:
+
+set pen shade to (number)
+none
+setPenShadeTo:
+
+change pen size by (number)
+none
+changePenSizeBy:
+
+set pen size to (number)
+none
+penSize:
+
+stamp
+none
+stampCostume
+
+
+
+# ----------------------------------------------------------------------------
+# CONTROL
+
+wait (number) secs
+none
+wait:elapsed:from:
+
+broadcast (text)
+none
+broadcast:
+
+broadcast (text) and wait
+none
+doBroadcastAndWait
+
+wait until (boolean)
+none
+doWaitUntil
+
+stop script
+none
+doReturn
+
+stop all
+none
+stopAll
+
+# TODO run (command)
+
+# TODO launch (command)
+
+# TODO call (reporter)
+
+report (any)
+none
+doAnswer
+
+stop block
+none
+doStopBlock
+
+debug
+none
+doPauseThread
+
+debug (any)
+any
+doPauseThreadReporter
+
+
+
+# ----------------------------------------------------------------------------
+# SENSING
+
+touching (object) ?
+boolean
+touching:
+
+touching (color) ?
+boolean
+touchingColor:
+
+color (color) is touching (color) ?
+boolean
+color:sees:
+
+ask (any) and wait
+none
+doAsk
+
+answer
+text
+answer
+
+mouse x
+number
+mouseX
+
+mouse y
+number
+mouseY
+
+mouse down?
+boolean
+mousePressed
+
+key (text) pressed?
+boolean
+keyPressed:
+
+distance to (object)
+boolean
+distanceTo:
+
+reset timer
+none
+timerReset
+
+timer
+number
+timer
+
+(text) of (object)
+any
+getAttribute:of:
+
+loudness
+number
+soundLevel
+
+loud?
+boolean
+isLoud
+
+(text) sensor value
+any
+sensor:
+
+sensor (text) ?
+boolean
+sensorPressed:
+
+object (text)
+object
+getObject:
+
+attribute (text)
+any
+get:
+
+
+
+# ----------------------------------------------------------------------------
+# OPERATORS
+
+(number) + (number)
+number
++
+
+(number) - (number)
+number
+-
+
+(number) * (number)
+number
+*
+
+(number) / (number)
+number
+/
+
+pick random (number) to (number)
+number
+randomFrom:to:
+
+(any) < (any)
+boolean
+<
+
+(any) = (any)
+boolean
+=
+
+(any) > (any)
+boolean
+>
+
+(boolean) and (boolean)
+boolean
+&
+
+(boolean) or (boolean)
+boolean
+|
+
+not (boolean)
+boolean
+not
+
+true
+boolean
+getTrue
+
+false
+boolean
+getFalse
+
+join (any) (any)
+text
+concatenate:with:
+
+letter (number) of (text)
+text
+letter:of:
+
+length of (text)
+number
+stringLength:
+
+ascii code of (text)
+number
+asciiCodeOf:
+
+ascii (number) as letter
+text
+asciiLetter:
+
+(number) mod (number)
+number
+\\
+
+round (number)
+number
+rounded
+
+(text) of (number)
+number
+computeFunction:of:
+
+is (any) a (text)
+boolean
+isObject:type:
+
+# TODO the script
+
+# TODO the (reporter) block
+
+clone
+object
+spawn
+
+
+
+# ----------------------------------------------------------------------------
+# VARIABLES
+
+# set is special
+# change is special
+
+show variable (text)
+none
+showVariable:
+
+hide variable (text)
+none
+hideVariable:
+
+# TODO delete (?)
+
+# script variables is special
+
+
+
+# ----------------------------------------------------------------------------
+# LISTS
+
+# list is special
+
+add (any) to (list)
+none
+append:toList:
+
+delete (any) of (list)
+none
+deleteLine:ofList:
+
+insert (any) at (any) of (list)
+none
+insert:at:ofList:
+
+replace item (any) of (list) with (any)
+none
+setLine:ofList:to:
+
+item (any) of (list)
+any
+getLine:ofList:
+
+length of (list)
+number
+lineCountOfList:
+
+(list) contains (any)
+boolean
+list:contains:
+
+# TODO (list) as text
+
+# TODO copy of (list)

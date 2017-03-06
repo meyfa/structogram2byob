@@ -63,7 +63,12 @@ public enum ScratchType
     /**
      * An unevaluated boolean value.
      */
-    UNEVALUATED_BOOLEAN;
+    UNEVALUATED_BOOLEAN,
+
+    /**
+     * A literal color value only obtainable through the color picker.
+     */
+    COLOR;
 
     /**
      * Checks whether a value of the given type would be supported for a
