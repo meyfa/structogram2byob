@@ -43,7 +43,7 @@ public class ScriptVariablesBlock extends Block
         ScratchObjectArray a = new ScratchObjectArray();
 
         a.add(new ScratchObjectSymbol("byob"));
-        a.add(new ScratchObjectString("Sprite1"));
+        a.add(new ScratchObjectString(""));
         a.add(new ScratchObjectSymbol("doDeclareVariables"));
 
         for (Expression param : params) {
