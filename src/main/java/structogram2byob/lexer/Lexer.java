@@ -9,11 +9,12 @@ import java.util.regex.Pattern;
  */
 public class Lexer
 {
+    private static final Pattern NEWLINE = Pattern.compile("\r\n|\r|\n");
     private static final Pattern PATTERN_NUMBER = Pattern
             .compile("^[+-]?\\d+(?:\\.\\d+)?$");
 
     private String input;
-    private int index = 0;
+    private int index = 0, pastLines = 0, lineStart = 0;
 
     /**
      * Constructs a new Lexer from the given input.
@@ -22,7 +23,22 @@ public class Lexer
      */
     public Lexer(String input)
     {
-        this.input = input;
+        this(input, 0, 0);
+    }
+
+    /**
+     * Constructs a new Lexer from the given input.
+     * 
+     * @param input The input string.
+     * @param pastLines The number of lines to offset tokens by.
+     * @param lineStart The number of characters to offset tokens by.
+     */
+    public Lexer(String input, int pastLines, int lineStart)
+    {
+        this.input = NEWLINE.matcher(input).replaceAll("\n");
+
+        this.pastLines = pastLines;
+        this.lineStart = lineStart;
     }
 
     /**
@@ -68,9 +84,11 @@ public class Lexer
         char c = input.charAt(index);
 
         if (c == '(') {
-            return new Token(TokenType.PAREN_OPEN, Character.toString(c));
+            return new Token(TokenType.PAREN_OPEN, Character.toString(c),
+                    pastLines, index - lineStart);
         } else if (c == ')') {
-            return new Token(TokenType.PAREN_CLOSE, Character.toString(c));
+            return new Token(TokenType.PAREN_CLOSE, Character.toString(c),
+                    pastLines, index - lineStart);
         } else if (c == '"') {
 
             // find string end index
@@ -79,7 +97,8 @@ public class Lexer
                 throw new LexerException("string is unending");
             }
 
-            return new Token(TokenType.STRING, input.substring(index, end + 1));
+            return new Token(TokenType.STRING, input.substring(index, end + 1),
+                    pastLines, index - lineStart);
 
         } else if (('0' <= c && '9' >= c) || c == '-' || c == '+') {
 
@@ -96,14 +115,15 @@ public class Lexer
             String s = sb.toString();
             // sign only is a label
             if (s.length() == 1 && (s.charAt(0) == '-' || s.charAt(0) == '+')) {
-                return new Token(TokenType.LABEL, s);
+                return new Token(TokenType.LABEL, s, pastLines,
+                        index - lineStart);
             }
             // validate string to be numeric
             if (!PATTERN_NUMBER.matcher(s).matches()) {
                 throw new LexerException("illegal number format for " + s);
             }
 
-            return new Token(TokenType.NUMBER, s);
+            return new Token(TokenType.NUMBER, s, pastLines, index - lineStart);
 
         }
 
@@ -119,7 +139,8 @@ public class Lexer
             sb.append(c);
         }
 
-        return new Token(TokenType.LABEL, sb.toString());
+        return new Token(TokenType.LABEL, sb.toString(), pastLines,
+                index - lineStart);
     }
 
     /**
@@ -132,7 +153,12 @@ public class Lexer
             return;
         }
 
-        while (Character.isWhitespace(input.charAt(index))) {
+        char c;
+        while (Character.isWhitespace(c = input.charAt(index))) {
+            if (c == '\n') {
+                pastLines++;
+                lineStart = index + 1;
+            }
             index++;
             if (index >= input.length()) {
                 return;

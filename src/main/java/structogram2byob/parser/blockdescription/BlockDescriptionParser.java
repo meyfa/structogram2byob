@@ -33,6 +33,23 @@ public class BlockDescriptionParser
     }
 
     /**
+     * Constructs a new block description parser from the given input,
+     * optionally treating parts in parens as parameter labels as opposed to
+     * parameter types.
+     * 
+     * @param s The input string.
+     * @param withLabels Whether to treat parts in parens as param labels.
+     * @param pastLines The number of lines that came before this description.
+     * @param lineStart The number of chars that came before this description.
+     */
+    public BlockDescriptionParser(String s, boolean withLabels, int pastLines,
+            int lineStart)
+    {
+        this.lexer = new Lexer(s, pastLines, lineStart);
+        this.withLabels = withLabels;
+    }
+
+    /**
      * Parses the input as a {@link BlockDescription}.
      * 
      * @return The block description that was parsed.
@@ -62,7 +79,11 @@ public class BlockDescriptionParser
 
                 Token valToken = lexer.next();
                 if (valToken.getType() != TokenType.LABEL) {
-                    throw new BlockDescriptionParserException("expected label");
+                    throw new BlockDescriptionParserException(
+                            "expected label but got "
+                                    + valToken.getType().name().toLowerCase()
+                                    + " at " + valToken.getLine() + ":"
+                                    + valToken.getColumn());
                 }
 
                 Token endParenToken = lexer.next();

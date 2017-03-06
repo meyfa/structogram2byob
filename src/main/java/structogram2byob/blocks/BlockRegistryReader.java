@@ -63,17 +63,21 @@ public class BlockRegistryReader implements Closeable
     {
         BlockRegistry reg = new BlockRegistry();
 
+        int i = 0;
         while (scanner.hasNextLine()) {
 
             String descLine = scanner.nextLine().trim();
             if (descLine.isEmpty() || descLine.charAt(0) == '#') {
+                i++;
                 continue;
             }
 
             String returnLine = scanner.nextLine();
             String methodLine = scanner.nextLine();
 
-            reg.register(parseFunction(descLine, returnLine, methodLine));
+            reg.register(parseFunction(descLine, returnLine, methodLine, i));
+
+            i += 3;
 
         }
 
@@ -86,6 +90,7 @@ public class BlockRegistryReader implements Closeable
      * @param d The block description string (first line).
      * @param ret The block's return type (second line).
      * @param met The block's Scratch method (third line).
+     * @param l The line index the description is on.
      * @return The constructed block.
      * 
      * @throws BlockDescriptionParserException If a malformed block description
@@ -93,10 +98,11 @@ public class BlockRegistryReader implements Closeable
      * @throws IllegalArgumentException If an unknown return type is
      *             encountered.
      */
-    private FunctionBlock parseFunction(String d, String ret, String met)
+    private FunctionBlock parseFunction(String d, String ret, String met, int l)
             throws BlockDescriptionParserException
     {
-        BlockDescription desc = new BlockDescriptionParser(d, false).parse();
+        BlockDescription desc = new BlockDescriptionParser(d, false, l, 0)
+                .parse();
 
         ScratchType retType = ret.equalsIgnoreCase("none") ? null
                 : ScratchType.valueOf(ret.toUpperCase());
