@@ -11,11 +11,11 @@ import nsdlib.elements.NSDRoot;
 import nsdlib.elements.alternatives.NSDDecision;
 import nsdlib.elements.loops.NSDForever;
 import nsdlib.elements.loops.NSDTestFirstLoop;
+import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.structures.ForeverBlock;
 import structogram2byob.blocks.structures.IfBlock;
 import structogram2byob.blocks.structures.IfElseBlock;
-import structogram2byob.blocks.structures.RepeatBlock;
 import structogram2byob.parser.blockdescription.BlockDescriptionParser;
 import structogram2byob.parser.blockdescription.BlockDescriptionParserException;
 import structogram2byob.parser.expression.ExpressionParser;
@@ -220,21 +220,19 @@ public class NSDParser
     private BlockExpression parseTestFirstLoop(NSDTestFirstLoop e)
             throws NSDParserException
     {
-        ScriptExpression content = parseScript(e);
+        // parse as normal block
+        String label = e.getLabel();
+        BlockExpression exp = (BlockExpression) parseExpression(e, label);
 
-        String label = e.getLabel(), lcLabel = label.toLowerCase();
+        // extend description: add loop parameter
+        BlockDescription.Builder descBuilder = exp.getDescription().toBuilder();
+        descBuilder.param(ScratchType.LOOP);
 
-        if (lcLabel.startsWith("repeat")) {
+        // extend params: add loop parameter
+        List<Expression> params = new ArrayList<>(exp.getParameters());
+        params.add(parseScript(e));
 
-            String countLabel = label.substring("repeat".length()).trim();
-            Expression count = parseExpression(e, countLabel);
-
-            return new BlockExpression(RepeatBlock.instance.getDescription(),
-                    Arrays.asList(count, content));
-
-        }
-
-        throw new NSDParserException(e, "unknown loop type");
+        return new BlockExpression(descBuilder.build(), params);
     }
 
     /**

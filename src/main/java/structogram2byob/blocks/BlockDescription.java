@@ -176,6 +176,20 @@ public class BlockDescription
         }).collect(Collectors.joining(" "));
     }
 
+    /**
+     * Converts this description back to a builder for further editing. Changes
+     * to the builder do not write back to this instance.
+     * 
+     * @return An editable builder containing all parts of this description.
+     */
+    public Builder toBuilder()
+    {
+        Builder b = new Builder();
+        b.parts.addAll(parts);
+
+        return b;
+    }
+
     @Override
     public int hashCode()
     {
