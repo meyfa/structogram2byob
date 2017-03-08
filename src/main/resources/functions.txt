@@ -453,7 +453,8 @@ letter (number) of (text)
 text
 letter:of:
 
-length of (text)
+# NOTE: The following is a workaround to disambiguate both "length of" blocks
+length of text (text)
 number
 stringLength:
 
