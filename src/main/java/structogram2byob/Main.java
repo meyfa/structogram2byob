@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.BlockRegistryReader;
+import structogram2byob.blocks.hats.StartClickedHatBlock;
 import structogram2byob.blocks.special.ChangeVariableBlock;
 import structogram2byob.blocks.special.ListBlock;
 import structogram2byob.blocks.special.ScriptVariablesBlock;
@@ -47,6 +48,8 @@ public class Main
                 Main.class.getResourceAsStream("/functions.txt"))) {
 
             BlockRegistry reg = r.read();
+
+            reg.register(StartClickedHatBlock.instance);
 
             reg.register(ScriptVariablesBlock.instance);
             reg.register(SetVariableBlock.instance);

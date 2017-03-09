@@ -99,6 +99,11 @@ public class ProgramUnit
         }
         newVars = Collections.unmodifiableMap(newVars);
 
+        if (type == UnitType.SCRIPT) {
+            Block hat = blocks.lookup(description);
+            a.add(hat.toScratch(Arrays.asList(), newVars, blocks));
+        }
+
         for (BlockExpression block : this.blocks) {
 
             ScratchObject obj = block.toScratch(newVars, blocks);
