@@ -90,7 +90,9 @@ public class Program
         // extend the block registry by all available custom blocks
         BlockRegistry blocksExtended = new BlockRegistry(blocks);
         for (ProgramUnit u : units) {
-            blocksExtended.register(u.getInvocationBlock());
+            if (u.getType() != UnitType.SCRIPT) {
+                blocksExtended.register(u.getInvocationBlock());
+            }
         }
 
         // write the units
