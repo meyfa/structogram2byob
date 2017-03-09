@@ -20,6 +20,9 @@ import scratchlib.project.ScratchVersion;
 import structogram2byob.ScratchType;
 import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.expressions.BlockExpression;
+import structogram2byob.program.expressions.Expression;
+import structogram2byob.program.expressions.ScriptExpression;
 
 
 /**
@@ -96,13 +99,30 @@ public class Program
         }
 
         // write the units
+        int y = 20;
         for (ProgramUnit u : units) {
             if (u.getType() == UnitType.SCRIPT) {
-                scripts.add(serializeUnitAsScript(u, vars, blocksExtended));
+                scripts.add(serializeUnitAsScript(u, vars, blocksExtended, y));
+                y += 50 + u.getBlocks().stream().mapToInt(this::estimateHeight)
+                        .sum();
             } else {
                 cBlocks.add(serializeUnitAsBlock(u, vars, blocksExtended));
             }
         }
+    }
+
+    private int estimateHeight(BlockExpression exp)
+    {
+        int height = 28;
+
+        for (Expression param : exp.getParameters()) {
+            if (param instanceof ScriptExpression) {
+                height += ((ScriptExpression) param).getBlocks().stream()
+                        .mapToInt(this::estimateHeight).sum();
+            }
+        }
+
+        return height;
     }
 
     /**
@@ -112,14 +132,15 @@ public class Program
      * @param u The unit to serialize.
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks.
+     * @param y The y coordinate for script placement.
      * @return A Scratch object describing a script.
      */
     private ScratchObjectArray serializeUnitAsScript(ProgramUnit u,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
+            Map<String, VariableContext> vars, BlockRegistry blocks, int y)
     {
         ScratchObjectArray script = new ScratchObjectArray();
 
-        script.add(new ScratchObjectPoint((short) 20, (short) 20));
+        script.add(new ScratchObjectPoint((short) 20, (short) y));
         script.add(u.toScratch(vars, blocks));
 
         return script;

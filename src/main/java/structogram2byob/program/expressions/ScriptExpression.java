@@ -39,6 +39,14 @@ public class ScriptExpression extends Expression
         return blocks.size();
     }
 
+    /**
+     * @return The blocks contained in this script.
+     */
+    public List<BlockExpression> getBlocks()
+    {
+        return blocks;
+    }
+
     @Override
     public ScratchType getType()
     {

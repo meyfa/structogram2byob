@@ -1,6 +1,7 @@
 package structogram2byob.program;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -59,6 +60,14 @@ public class ProgramUnit
     public UnitType getType()
     {
         return type;
+    }
+
+    /**
+     * @return The blocks that form the unit body.
+     */
+    public List<BlockExpression> getBlocks()
+    {
+        return blocks;
     }
 
     /**
