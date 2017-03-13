@@ -1,5 +1,6 @@
 package structogram2byob;
 
+import java.awt.EventQueue;
 import java.io.IOException;
 
 import structogram2byob.blocks.BlockRegistry;
@@ -13,6 +14,7 @@ import structogram2byob.blocks.structures.ForeverBlock;
 import structogram2byob.blocks.structures.IfBlock;
 import structogram2byob.blocks.structures.IfElseBlock;
 import structogram2byob.blocks.structures.RepeatBlock;
+import structogram2byob.gui.GuiController;
 import structogram2byob.parser.blockdescription.BlockDescriptionParserException;
 
 
@@ -28,7 +30,23 @@ public class Main
      */
     public static void main(String[] args)
     {
+        try {
+            BlockRegistry reg = createRegistry();
+            createUI(reg);
+        } catch (IOException | BlockDescriptionParserException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private static void createUI(BlockRegistry blocks)
+    {
+        if (!EventQueue.isDispatchThread()) {
+            EventQueue.invokeLater(() -> createUI(blocks));
+            return;
+        }
+
+        GuiController gui = new GuiController(blocks);
+        gui.show();
     }
 
     /**
