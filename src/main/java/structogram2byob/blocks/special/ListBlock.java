@@ -46,8 +46,7 @@ public class ListBlock extends Block
 
         ScratchObjectListMorph list = new ScratchObjectListMorph();
         list.setField(ScratchObjectListMorph.FIELD_BOUNDS,
-                new ScratchObjectRectangle((short) 0, (short) 0, (short) 95,
-                        (short) 115));
+                new ScratchObjectRectangle(0, 0, 95, 115));
 
         ScratchObjectArray cellMorphs = new ScratchObjectArray();
         list.setField(ScratchObjectListMorph.FIELD_CELL_MORPHS, cellMorphs);

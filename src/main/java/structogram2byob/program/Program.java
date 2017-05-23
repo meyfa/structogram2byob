@@ -6,11 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import scratchlib.objects.fixed.collections.ScratchObjectAbstractCollection;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.collections.ScratchObjectOrderedCollection;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
-import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import scratchlib.objects.fixed.dimensions.ScratchObjectPoint;
 import scratchlib.objects.user.ScratchObjectCustomBlockDefinition;
 import scratchlib.objects.user.morphs.ScratchObjectSpriteMorph;
@@ -54,15 +52,10 @@ public class Program
     {
         ScratchProject project = new ScratchProject(ScratchVersion.BYOB311);
 
-        ScratchObjectStageMorph stage = (ScratchObjectStageMorph) (project
-                .getStageSection().get());
+        ScratchObjectStageMorph stage = project.getStage();
 
         ScratchObjectSpriteMorph sprite = new ScratchObjectSpriteMorph();
-        ((ScratchObjectAbstractCollection) stage
-                .getField(ScratchObjectStageMorph.FIELD_SPRITES)).add(sprite);
-        ((ScratchObjectAbstractCollection) stage
-                .getField(ScratchObjectStageMorph.FIELD_SUBMORPHS)).add(sprite);
-        sprite.setField(ScratchObjectSpriteMorph.FIELD_OWNER, stage);
+        stage.addSprite(sprite);
 
         ScratchObjectOrderedCollection cBlocks = new ScratchObjectOrderedCollection();
         stage.setField(ScratchObjectStageMorph.FIELD_CUSTOM_BLOCKS, cBlocks);
@@ -140,7 +133,7 @@ public class Program
     {
         ScratchObjectArray script = new ScratchObjectArray();
 
-        script.add(new ScratchObjectPoint((short) 20, (short) y));
+        script.add(new ScratchObjectPoint(20, y));
         script.add(u.toScratch(vars, blocks));
 
         return script;
@@ -160,10 +153,8 @@ public class Program
     {
         ScratchObjectCustomBlockDefinition cbd = new ScratchObjectCustomBlockDefinition();
 
-        cbd.setField(ScratchObjectCustomBlockDefinition.FIELD_USER_SPEC,
-                new ScratchObjectUtf8(u.getUserSpec()));
-        cbd.setField(ScratchObjectCustomBlockDefinition.FIELD_BODY,
-                u.toScratch(vars, blocks));
+        cbd.setUserSpec(u.getUserSpec());
+        cbd.setBody(u.toScratch(vars, blocks));
 
         ScratchType type = u.getType().getReturnType();
         String typeName = type == null ? "none" : type.name().toLowerCase();

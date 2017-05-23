@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import scratchlib.objects.ScratchObject;
+import scratchlib.objects.fixed.collections.ScratchObjectAbstractCollection;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
@@ -94,8 +95,8 @@ public class ProgramUnit
      * @param blocks The available blocks, including all custom blocks.
      * @return A {@link ScratchObject}.
      */
-    public ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks)
+    public ScratchObjectAbstractCollection toScratch(
+            Map<String, VariableContext> vars, BlockRegistry blocks)
     {
         ScratchObjectArray a = new ScratchObjectArray();
 
