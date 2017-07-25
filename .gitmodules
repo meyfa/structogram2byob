@@ -1,6 +1,6 @@
 [submodule "libraries/nsdlib"]
 	path = libraries/nsdlib
-	url = https://github.com/JangoBrick/nsdlib.git
+	url = https://github.com/meyfa/nsdlib.git
 [submodule "libraries/scratchlib"]
 	path = libraries/scratchlib
-	url = https://github.com/JangoBrick/scratchlib.git
+	url = https://github.com/meyfa/scratchlib.git
