@@ -13,6 +13,8 @@ public class ScratchTypeTest
     {
         assertFalse(ScratchType.BOOLEAN.isAssignableFrom(ScratchType.NUMBER));
 
+        assertTrue(ScratchType.NUMBER.isAssignableFrom(ScratchType.NUMBER));
+
         assertTrue(ScratchType.ANY.isAssignableFrom(ScratchType.NUMBER));
         assertTrue(ScratchType.NUMBER.isAssignableFrom(ScratchType.ANY));
     }
