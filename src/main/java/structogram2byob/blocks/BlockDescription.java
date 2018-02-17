@@ -114,7 +114,8 @@ public class BlockDescription
             }
 
             // check both either label or param
-            if (isParameter(i) != o.isParameter(j)) {
+            if (isParameter(i) != o.isParameter(j)
+                    && (!isParameter(i) || !isList(i))) {
                 return false;
             }
 
@@ -123,16 +124,16 @@ public class BlockDescription
                 if (isList(i)) {
                     ScratchType listType = getType(i);
                     // list might be empty
-                    if (!listType.isAssignableFrom(o.getType(j))) {
+                    if (!o.isParameter(j)
+                            || !listType.isAssignableFrom(o.getType(j))) {
                         j--;
                         continue;
                     }
                     // list not empty, so consume all params that match
                     // (+1 because j is incremented naturally in the for loop)
-                    while (j + 1 < o.countParts() && o.isParameter(j + 1)) {
-                        if (listType.isAssignableFrom(o.getType(j + 1))) {
-                            j++;
-                        }
+                    while (j + 1 < o.countParts() && o.isParameter(j + 1)
+                            && listType.isAssignableFrom(o.getType(j + 1))) {
+                        j++;
                     }
                     continue;
                 }
@@ -153,7 +154,7 @@ public class BlockDescription
         }
 
         // verify that both descriptions were iterated over completely
-        if (i + 1 < countParts() || j + 1 < o.countParts()) {
+        if (i < countParts() || j < o.countParts()) {
             return false;
         }
 
