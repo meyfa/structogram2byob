@@ -13,7 +13,7 @@ import structogram2byob.program.expressions.Expression;
 /**
  * A function block is the standard extension of the block class, used for
  * everything except structural or highly specific blocks.
- * 
+ *
  * <p>
  * Blocks constructed this way have the usual description and return value, and
  * otherwise only consist of a method they call with some number of parameters.
@@ -25,7 +25,7 @@ public class FunctionBlock extends Block
     /**
      * Constructs a new function block with the given description, return type,
      * and Scratch method.
-     * 
+     *
      * @param desc The block description.
      * @param returnType The type of value the block returns. May be null.
      * @param method The Scratch method this block calls.

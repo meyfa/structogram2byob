@@ -31,7 +31,7 @@ public class UnitsPanel extends JPanel
 
     /**
      * Adds a unit panel for the given diagram to this container.
-     * 
+     *
      * @param nsd The diagram to add a panel for.
      */
     public void doAdd(NSDRoot nsd)
@@ -61,7 +61,7 @@ public class UnitsPanel extends JPanel
 
     /**
      * Removes the unit panel at the given index from this container.
-     * 
+     *
      * @param index The index of the panel to remove.
      */
     public void doRemove(int index)
@@ -85,7 +85,7 @@ public class UnitsPanel extends JPanel
 
     /**
      * Marks an error on the diagram with the given index for the given element.
-     * 
+     *
      * @param diagram The diagram/unit index.
      * @param element The element to mark on that diagram.
      */

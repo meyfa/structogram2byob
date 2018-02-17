@@ -25,7 +25,7 @@ public class Main
 {
     /**
      * Application entry point.
-     * 
+     *
      * @param args The command-line arguments.
      */
     public static void main(String[] args)
@@ -52,9 +52,9 @@ public class Main
     /**
      * Loads the block registry from the packaged resources, adds the special
      * and structural blocks, and then returns that registry.
-     * 
+     *
      * @return The registry containing all blocks.
-     * 
+     *
      * @throws IOException If an I/O error occurs.
      * @throws BlockDescriptionParserException If the resource file contains
      *             malformed block descriptions.

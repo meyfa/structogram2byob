@@ -86,7 +86,7 @@ public class GuiController
 
     /**
      * Shows a confirm dialog with the given message and returns the result.
-     * 
+     *
      * @param msg The message to show.
      * @return Whether the dialog was confirmed by the user.
      */
@@ -128,7 +128,7 @@ public class GuiController
 
     /**
      * Adds the given diagram to the GUI.
-     * 
+     *
      * @param nsd The diagram to add.
      */
     public void add(NSDRoot nsd)
@@ -142,7 +142,7 @@ public class GuiController
     /**
      * Shows a confirm dialog to the user, asking whether to remove the given
      * diagram. If the action is confirmed, the diagram is removed.
-     * 
+     *
      * @param nsd The diagram to remove.
      */
     public void remove(NSDRoot nsd)
@@ -223,7 +223,7 @@ public class GuiController
 
     /**
      * Shows an image save dialog to the user for saving the given image.
-     * 
+     *
      * @param img The image to save.
      */
     public void openImageSaveDialog(BufferedImage img)

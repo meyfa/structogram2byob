@@ -37,7 +37,7 @@ public class NSDParser
 
     /**
      * Constructs a new parser from the given root element.
-     * 
+     *
      * @param nsd The element.
      */
     public NSDParser(NSDRoot nsd)
@@ -47,9 +47,9 @@ public class NSDParser
 
     /**
      * Parses the input NSD as a unit and returns it.
-     * 
+     *
      * @return The unit that was parsed.
-     * 
+     *
      * @throws NSDParserException
      */
     public ProgramUnit parse() throws NSDParserException
@@ -75,7 +75,7 @@ public class NSDParser
      * Given a unit label, returns the appropriate unit type, defaulting to
      * {@code SCRIPT}. This is determined by the label's prefix (e.g.
      * {@code "REPORTER fact (n)"} would result in {@code REPORTER}).
-     * 
+     *
      * @param label The label to find the type for.
      * @return The appropriate unit type.
      */
@@ -97,10 +97,10 @@ public class NSDParser
 
     /**
      * Parses the given label as a block description.
-     * 
+     *
      * @param label The label to parse.
      * @return The block description.
-     * 
+     *
      * @throws NSDParserException If the label could not be parsed.
      */
     private BlockDescription parseUnitDescription(String label)
@@ -116,11 +116,11 @@ public class NSDParser
 
     /**
      * Utility function for parsing an expression string.
-     * 
+     *
      * @param source The element the expression belongs to.
      * @param exp The expression string.
      * @return The parsed block expression.
-     * 
+     *
      * @throws NSDParserException
      */
     private Expression parseExpression(NSDElement source, String exp)
@@ -135,10 +135,10 @@ public class NSDParser
 
     /**
      * Parses the element according to its type.
-     * 
+     *
      * @param e The element to parse.
      * @return The parsed block expression.
-     * 
+     *
      * @throws NSDParserException
      */
     private BlockExpression parseElement(NSDElement e) throws NSDParserException
@@ -158,10 +158,10 @@ public class NSDParser
 
     /**
      * Parses the given "instruction" element.
-     * 
+     *
      * @param e The element to parse.
      * @return The parsed block expression.
-     * 
+     *
      * @throws NSDParserException
      */
     private BlockExpression parseInstruction(NSDInstruction e)
@@ -172,10 +172,10 @@ public class NSDParser
 
     /**
      * Parses the given "decision" element (i.e., an if or if-else).
-     * 
+     *
      * @param e The element to parse.
      * @return The parsed block expression.
-     * 
+     *
      * @throws NSDParserException
      */
     private BlockExpression parseDecision(NSDDecision e)
@@ -197,10 +197,10 @@ public class NSDParser
 
     /**
      * Parses the given "forever" loop element.
-     * 
+     *
      * @param e The element to parse.
      * @return The parsed block expression.
-     * 
+     *
      * @throws NSDParserException
      */
     private BlockExpression parseForever(NSDForever e) throws NSDParserException
@@ -211,10 +211,10 @@ public class NSDParser
 
     /**
      * Parses the given "test first" loop element.
-     * 
+     *
      * @param e The element to parse.
      * @return The parsed block expression.
-     * 
+     *
      * @throws NSDParserException
      */
     private BlockExpression parseTestFirstLoop(NSDTestFirstLoop e)
@@ -238,10 +238,10 @@ public class NSDParser
     /**
      * Parses all child elements of the given container and returns them as a
      * script expression.
-     * 
+     *
      * @param e The container element.
      * @return The parsed script expression.
-     * 
+     *
      * @throws NSDParserException
      */
     private ScriptExpression parseScript(NSDContainer<NSDElement> e)

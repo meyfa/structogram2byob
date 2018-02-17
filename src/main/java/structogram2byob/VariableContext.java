@@ -7,10 +7,10 @@ import structogram2byob.program.ProgramUnit;
 /**
  * Instances of this class describe where a certain variable is situated, which
  * is necessary information for its accessors.
- * 
+ *
  * <p>
  * There are three types of contexts:
- * 
+ *
  * <ul>
  * <li>{@link #GLOBAL} means a variable is available globally;
  * <li>{@link ScriptSpecific} means a variable is a script variable;

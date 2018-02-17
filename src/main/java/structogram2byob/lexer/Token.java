@@ -11,7 +11,7 @@ public class Token
 
     /**
      * Constructs a new token instance for the given type and value.
-     * 
+     *
      * @param type The token type.
      * @param value The raw token value, i.e. the lexeme.
      * @param line The 0-based index of the line this token was on.

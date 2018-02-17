@@ -13,12 +13,12 @@ import structogram2byob.parser.blockdescription.BlockDescriptionParserException;
 /**
  * Allows reading a {@link BlockRegistry} from an {@code InputStream} or
  * {@code Scanner}.
- * 
+ *
  * <p>
  * The file may consist of any number of sections, with any number of empty
  * lines and commented lines (starting with {@code #}) in between them.<br>
  * Every section consists of three consecutive lines:
- * 
+ *
  * <ol>
  * <li>block description, see {@link BlockDescriptionParser};
  * <li>return type, one of {@link ScratchType} or {@code "none"};
@@ -31,7 +31,7 @@ public class BlockRegistryReader implements Closeable
 
     /**
      * Constructs a new reader from the given stream.
-     * 
+     *
      * @param in The input stream to read.
      */
     public BlockRegistryReader(InputStream in)
@@ -41,7 +41,7 @@ public class BlockRegistryReader implements Closeable
 
     /**
      * Constructs a new reader from the given scanner.
-     * 
+     *
      * @param scanner The scanner to read.
      */
     public BlockRegistryReader(Scanner scanner)
@@ -51,9 +51,9 @@ public class BlockRegistryReader implements Closeable
 
     /**
      * Reads the block registry from this reader's input and returns it.
-     * 
+     *
      * @return The block registry that was read.
-     * 
+     *
      * @throws BlockDescriptionParserException If a malformed block description
      *             string is encountered.
      * @throws IllegalArgumentException If an unknown return type is
@@ -86,13 +86,13 @@ public class BlockRegistryReader implements Closeable
 
     /**
      * Parses the three given strings into a function block and returns it.
-     * 
+     *
      * @param d The block description string (first line).
      * @param ret The block's return type (second line).
      * @param met The block's Scratch method (third line).
      * @param l The line index the description is on.
      * @return The constructed block.
-     * 
+     *
      * @throws BlockDescriptionParserException If a malformed block description
      *             string is encountered.
      * @throws IllegalArgumentException If an unknown return type is

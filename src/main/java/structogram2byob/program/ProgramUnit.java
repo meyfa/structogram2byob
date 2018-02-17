@@ -40,7 +40,7 @@ public class ProgramUnit
     /**
      * Constructs a new unit from the given header description and the given
      * blocks.
-     * 
+     *
      * @param type The type of this unit.
      * @param description The unit description.
      * @param blocks The blocks that form the unit body.
@@ -90,7 +90,7 @@ public class ProgramUnit
     /**
      * Converts this unit into an array of its blocks, given a map of variables
      * and a block registry to distinguish ambiguous parts.
-     * 
+     *
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
      * @return A {@link ScratchObject}.

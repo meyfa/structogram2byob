@@ -19,7 +19,7 @@ public class NumberExpression extends Expression
 
     /**
      * Constructs a new numeric expression with the given value.
-     * 
+     *
      * @param value The expression value.
      */
     public NumberExpression(double value)

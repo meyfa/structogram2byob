@@ -22,7 +22,7 @@ public abstract class Block
 
     /**
      * Constructs a new block with the given description and return type.
-     * 
+     *
      * @param desc The block description.
      * @param returnType The type of value the block returns. May be null.
      */
@@ -51,7 +51,7 @@ public abstract class Block
     /**
      * Serializes this block into a Scratch array, as required by the Scratch
      * specification.
-     * 
+     *
      * @param params The parameters to substitute into this block.
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
@@ -62,10 +62,10 @@ public abstract class Block
 
     /**
      * Utility function for converting an expression to a variable name.
-     * 
+     *
      * @param exp The expression to convert to a variable name.
      * @return The variable name.
-     * 
+     *
      * @throws IllegalArgumentException If the given expression is not a
      *             {@link BlockDescription}, or doesn't have exactly one label
      *             part and no other parts.

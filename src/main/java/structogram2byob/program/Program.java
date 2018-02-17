@@ -33,7 +33,7 @@ public class Program
 
     /**
      * Adds the given unit to this program.
-     * 
+     *
      * @param unit The unit to add.
      */
     public void addUnit(ProgramUnit unit)
@@ -44,7 +44,7 @@ public class Program
     /**
      * Converts this program into a {@link ScratchProject} by setting up the
      * stage and a sprite, as well as serializing all the units.
-     * 
+     *
      * @param blocks The available blocks.
      * @return This program converted to a Scratch project.
      */
@@ -72,7 +72,7 @@ public class Program
     /**
      * Converts all program units into Scratch objects and stores them either as
      * a script or as a custom block.
-     * 
+     *
      * @param blocks The available blocks.
      * @param scripts The array of scripts to write to.
      * @param cBlocks The array of custom blocks to write to.
@@ -121,7 +121,7 @@ public class Program
     /**
      * Converts the given unit into a Scratch script array, consisting of the
      * script's location point and its body as another array.
-     * 
+     *
      * @param u The unit to serialize.
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks.
@@ -141,7 +141,7 @@ public class Program
 
     /**
      * Converts the given unit into a Scratch custom block definition.
-     * 
+     *
      * @param u The unit to serialize.
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks.

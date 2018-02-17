@@ -22,7 +22,7 @@ public abstract class Expression
     /**
      * Converts this instance into a proper Scratch object, given a map of
      * variables and a block registry to distinguish ambiguous parts.
-     * 
+     *
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
      * @return A {@link ScratchObject}.

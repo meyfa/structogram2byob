@@ -23,7 +23,7 @@ public class ScriptExpression extends Expression
 
     /**
      * Constructs a new expression with the given blocks.
-     * 
+     *
      * @param blocks The blocks contained in this script.
      */
     public ScriptExpression(Collection<? extends BlockExpression> blocks)

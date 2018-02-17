@@ -22,7 +22,7 @@ public class BlockDescriptionParser
      * Constructs a new block description parser from the given input,
      * optionally treating parts in parens as parameter labels as opposed to
      * parameter types.
-     * 
+     *
      * @param s The input string.
      * @param withLabels Whether to treat parts in parens as param labels.
      */
@@ -36,7 +36,7 @@ public class BlockDescriptionParser
      * Constructs a new block description parser from the given input,
      * optionally treating parts in parens as parameter labels as opposed to
      * parameter types.
-     * 
+     *
      * @param s The input string.
      * @param withLabels Whether to treat parts in parens as param labels.
      * @param pastLines The number of lines that came before this description.
@@ -51,9 +51,9 @@ public class BlockDescriptionParser
 
     /**
      * Parses the input as a {@link BlockDescription}.
-     * 
+     *
      * @return The block description that was parsed.
-     * 
+     *
      * @throws BlockDescriptionParserException If the input is malformed and
      *             cannot be parsed as a block description.
      */

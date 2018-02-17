@@ -16,7 +16,7 @@ public class LexerException extends Exception
 
     /**
      * Constructs an exception with the given detail message.
-     * 
+     *
      * @param message The detail message.
      */
     public LexerException(String message)
@@ -26,7 +26,7 @@ public class LexerException extends Exception
 
     /**
      * Constructs an exception with the given throwable as its cause.
-     * 
+     *
      * @param cause The throwable that caused this exception to be thrown.
      */
     public LexerException(Throwable cause)
@@ -37,7 +37,7 @@ public class LexerException extends Exception
     /**
      * Constructs an exception with the given detail message and the given
      * cause.
-     * 
+     *
      * @param message The detail message.
      * @param cause The throwable that caused this exception to be thrown.
      */
@@ -50,7 +50,7 @@ public class LexerException extends Exception
      * Constructs an exception with the given detail message, the given cause, a
      * flag for whether suppression is enabled, and a flag for whether the stack
      * trace shall be writable.
-     * 
+     *
      * @param message The detail message.
      * @param cause The throwable that caused this exception to be thrown.
      * @param enableSuppression Whether suppression shall be enabled.

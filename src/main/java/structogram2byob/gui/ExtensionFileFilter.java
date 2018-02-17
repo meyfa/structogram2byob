@@ -16,7 +16,7 @@ public class ExtensionFileFilter extends FileFilter
 
     /**
      * Constructs a new filter.
-     * 
+     *
      * @param name The name for this filter displayed in the chooser dropdown.
      * @param extension The extension files must have to be accepted.
      */

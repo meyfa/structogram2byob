@@ -29,7 +29,7 @@ public class AstNode implements Iterable<AstNode>
     /**
      * Constructs a new node with a direct value, but without the capability of
      * having branches added to it.
-     * 
+     *
      * @param value This node's value.
      */
     public AstNode(Token value)
@@ -40,7 +40,7 @@ public class AstNode implements Iterable<AstNode>
 
     /**
      * Adds the given node as a branch to this node.
-     * 
+     *
      * @param branch The node to add.
      */
     public void add(AstNode branch)
@@ -66,7 +66,7 @@ public class AstNode implements Iterable<AstNode>
 
     /**
      * @return The number of branches this node has.
-     * 
+     *
      * @throws NullPointerException If this is not a branching node.
      */
     public int countBranches()
@@ -76,10 +76,10 @@ public class AstNode implements Iterable<AstNode>
 
     /**
      * Returns the branch at the given index, if this is a branching node.
-     * 
+     *
      * @param index The branch index.
      * @return The branch node at the given index.
-     * 
+     *
      * @throws NullPointerException If this is not a branching node.
      */
     public AstNode getBranch(int index)
@@ -89,7 +89,7 @@ public class AstNode implements Iterable<AstNode>
 
     /**
      * Returns an iterator over this node's branches.
-     * 
+     *
      * @return An iterator over the branches.
      */
     @Override

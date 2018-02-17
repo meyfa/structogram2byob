@@ -16,7 +16,7 @@ public class AstParser
 
     /**
      * Constructs an AST (Abstract Syntax Tree) parser on the given input.
-     * 
+     *
      * @param input The input string.
      */
     public AstParser(String input)
@@ -28,10 +28,10 @@ public class AstParser
      * Checks whether there is a current token, and whether that token is of the
      * given type. If so, consumes the token (advancing the pointer), otherwise
      * throws an exception.
-     * 
+     *
      * @param type The token type required for a match.
      * @return The matched token.
-     * 
+     *
      * @throws AstParserException If there are no more tokens or the token is
      *             not of the given type.
      */
@@ -54,7 +54,7 @@ public class AstParser
 
     /**
      * Iterates over the input's tokens and constructs an AST from them.
-     * 
+     *
      * @return The AST describing this parser's input.
      * @throws AstParserException
      */

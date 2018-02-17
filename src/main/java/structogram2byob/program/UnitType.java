@@ -38,14 +38,14 @@ public enum UnitType
     /**
      * Obtains the {@link ScratchType} that would be returned by a unit of this
      * type. The following values are possible:
-     * 
+     *
      * <ul>
      * <li>{@code SCRIPT}: {@code null}
      * <li>{@code COMMAND}: {@code null}
      * <li>{@code REPORTER}: {@link ScratchType#ANY}
      * <li>{@code PREDICATE}: {@link ScratchType#BOOLEAN}
      * </ul>
-     * 
+     *
      * @return The appropriate return type for this unit type.
      */
     public ScratchType getReturnType()

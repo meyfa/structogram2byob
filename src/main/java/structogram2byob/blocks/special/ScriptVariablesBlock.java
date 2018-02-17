@@ -69,7 +69,7 @@ public class ScriptVariablesBlock extends Block
      * Obtains every variable's {@link ScratchObjectVariableFrame} instance from
      * an array serialized by {@link #toScratch(List, Map, BlockRegistry)}.
      * Having these instances is required for variable context construction.
-     * 
+     *
      * @param serialized The serialized block array.
      * @return A map of variable names to their frames.
      */

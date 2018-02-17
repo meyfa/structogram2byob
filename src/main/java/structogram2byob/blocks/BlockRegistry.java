@@ -26,7 +26,7 @@ public class BlockRegistry
     /**
      * Constructs a block registry that will extend the given base registry
      * without modifying it.
-     * 
+     *
      * @param base The block registry to be used as the base for this one.
      */
     public BlockRegistry(BlockRegistry base)
@@ -36,9 +36,9 @@ public class BlockRegistry
 
     /**
      * Registers the given block with this registry.
-     * 
+     *
      * @param block The block to register.
-     * 
+     *
      * @throws IllegalArgumentException If the block is already registered.
      */
     public void register(Block block)
@@ -52,7 +52,7 @@ public class BlockRegistry
     /**
      * Returns the block matching the given block description as per
      * {@link BlockDescription#isAssignableFrom(BlockDescription)}.
-     * 
+     *
      * @param desc The description to look up.
      * @return The block matching the given description.
      */

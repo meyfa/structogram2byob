@@ -73,7 +73,7 @@ public enum ScratchType
     /**
      * Checks whether a value of the given type would be supported for a
      * parameter of the type specified by this instance.
-     * 
+     *
      * @param o The type to check assignability for.
      * @return Whether the given type can be assigned to a field of this type.
      */

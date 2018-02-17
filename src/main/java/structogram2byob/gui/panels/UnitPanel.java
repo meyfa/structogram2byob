@@ -73,7 +73,7 @@ public class UnitPanel extends JPanel
     /**
      * Results in the given element being rendered with a red background in
      * future paint calls.
-     * 
+     *
      * @param element The element.
      */
     public void markError(NSDElement element)

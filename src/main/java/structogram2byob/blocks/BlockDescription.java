@@ -36,7 +36,7 @@ public class BlockDescription
     /**
      * Checks whether the part at the given index is a parameter, as opposed to
      * a plain label.
-     * 
+     *
      * @param index The part index.
      * @return Whether the part is a parameter.
      */
@@ -48,7 +48,7 @@ public class BlockDescription
     /**
      * Obtains the label at the given index. Note that depending on the block
      * description, parameters can be labeled as well.
-     * 
+     *
      * @param index The part index.
      * @return The part's label.
      */
@@ -62,10 +62,10 @@ public class BlockDescription
 
     /**
      * Obtains the type of the parameter part at the given index.
-     * 
+     *
      * @param index The part index.
      * @return The parameter type.
-     * 
+     *
      * @throws IllegalArgumentException If the part is not a parameter.
      */
     public ScratchType getType(int index)
@@ -80,10 +80,10 @@ public class BlockDescription
     /**
      * Checks whether the parameter part at the given index accepts a variable
      * number of values.
-     * 
+     *
      * @param index The part index.
      * @return Whether the parameter accepts a variable number of values.
-     * 
+     *
      * @throws IllegalArgumentException If the part is not a parameter.
      */
     public boolean isList(int index)
@@ -99,7 +99,7 @@ public class BlockDescription
      * Checks whether this description is compatible to the given one in the
      * sense that all the labels match, and all parameter types are compatible
      * (via {@link ScratchType#isAssignableFrom(ScratchType)}).
-     * 
+     *
      * @param o The block description to check assignability for.
      * @return Whether the description is compatible with this one.
      */
@@ -163,7 +163,7 @@ public class BlockDescription
     /**
      * Converts this description into a "user spec" as employed by custom blocks
      * (e.g. {@code "foo (bar) baz"} becomes {@code "foo %bar baz"}).
-     * 
+     *
      * @return This description as a user spec.
      */
     public String toUserSpec()
@@ -179,7 +179,7 @@ public class BlockDescription
     /**
      * Converts this description back to a builder for further editing. Changes
      * to the builder do not write back to this instance.
-     * 
+     *
      * @return An editable builder containing all parts of this description.
      */
     public Builder toBuilder()
@@ -243,7 +243,7 @@ public class BlockDescription
 
         /**
          * Adds a parameter part of the given type to the object being built.
-         * 
+         *
          * @param type The value type accepted by the parameter.
          * @return This instance.
          */
@@ -256,7 +256,7 @@ public class BlockDescription
         /**
          * Adds a labeled parameter part of the given type to the object being
          * built.
-         * 
+         *
          * @param type The value type accepted by the parameter.
          * @param label The parameter's label.
          * @return This instance.
@@ -270,7 +270,7 @@ public class BlockDescription
         /**
          * Adds a parameter part accepting a variable number of values of the
          * given type to the object being built.
-         * 
+         *
          * @param type The value type accepted by the parameter.
          * @return This instance.
          */
@@ -283,7 +283,7 @@ public class BlockDescription
         /**
          * Adds a labeled parameter part accepting a variable number of values
          * of the given type to the object being built.
-         * 
+         *
          * @param type The value type accepted by the parameter.
          * @param label The parameter's label.
          * @return This instance.
@@ -296,7 +296,7 @@ public class BlockDescription
 
         /**
          * Adds a label part to the object being built.
-         * 
+         *
          * @param label The label.
          * @return This instance.
          */
@@ -308,7 +308,7 @@ public class BlockDescription
 
         /**
          * Constructs a block description from the parts added to this builder.
-         * 
+         *
          * @return A block description.
          */
         public BlockDescription build()
@@ -329,7 +329,7 @@ public class BlockDescription
         /**
          * Constructs a new parameter that accepts the given type, may be a
          * list, and has the given label.
-         * 
+         *
          * @param type The type of value that is accepted.
          * @param list Whether the param accepts a variable number of values.
          * @param label The parameter's label. May be null if there is no label.

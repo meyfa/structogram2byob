@@ -18,7 +18,7 @@ public class StringExpression extends Expression
 
     /**
      * Constructs a new string expression with the given value.
-     * 
+     *
      * @param value The expression value.
      */
     public StringExpression(String value)

@@ -47,7 +47,7 @@ public class StructogramPanel extends JPanel
     /**
      * Results in the given element being rendered with a red background in
      * future paint calls.
-     * 
+     *
      * @param element The element.
      */
     public void markError(NSDElement element)
@@ -94,7 +94,7 @@ public class StructogramPanel extends JPanel
     /**
      * Draws this panel's diagram to an instance of {@link BufferedImage} and
      * returns it.
-     * 
+     *
      * @return The rendered image.
      */
     public BufferedImage render()

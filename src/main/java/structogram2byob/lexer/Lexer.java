@@ -18,7 +18,7 @@ public class Lexer
 
     /**
      * Constructs a new Lexer from the given input.
-     * 
+     *
      * @param input The input string.
      */
     public Lexer(String input)
@@ -28,7 +28,7 @@ public class Lexer
 
     /**
      * Constructs a new Lexer from the given input.
-     * 
+     *
      * @param input The input string.
      * @param pastLines The number of lines to offset tokens by.
      * @param lineStart The number of characters to offset tokens by.
@@ -53,7 +53,7 @@ public class Lexer
 
     /**
      * Obtains the next token starting at the current index in the input string.
-     * 
+     *
      * @return The next token, after whitespace is removed.
      * @throws LexerException If there is no token or if it is malformed.
      */
@@ -75,7 +75,7 @@ public class Lexer
 
     /**
      * Tries to obtain the next token without modifying the instance's state.
-     * 
+     *
      * @return The next token, or null if it could not be identified.
      * @throws LexerException If a token could be identified but is malformed.
      */

@@ -32,7 +32,7 @@ public class BlockExpression extends Expression
     /**
      * Constructs a new expression with the given description, and the given
      * parameters to substitute into the description.
-     * 
+     *
      * @param description The block description.
      * @param params The block parameters.
      */

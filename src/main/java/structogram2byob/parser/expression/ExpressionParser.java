@@ -28,7 +28,7 @@ public class ExpressionParser
 
     /**
      * Constructs an expression parser on the given input.
-     * 
+     *
      * @param input The input string.
      */
     public ExpressionParser(String input)
@@ -38,9 +38,9 @@ public class ExpressionParser
 
     /**
      * Parses the input as an {@link Expression}.
-     * 
+     *
      * @return The parsed expression.
-     * 
+     *
      * @throws ExpressionParserException If the input is malformed and cannot be
      *             parsed as an expression.
      */
@@ -57,10 +57,10 @@ public class ExpressionParser
     /**
      * Parses the given AST as an expression. Nested expressions are de-nested
      * before they are parsed.
-     * 
+     *
      * @param ast The AST node to parse.
      * @return The parsed expression.
-     * 
+     *
      * @throws ExpressionParserException If the node is empty, an unexpected
      *             token is encountered, or a token is malformed.
      */
@@ -83,10 +83,10 @@ public class ExpressionParser
     /**
      * Parses the given AST as an expression by taking its direct value and
      * converting it to the appropriate type.
-     * 
+     *
      * @param ast The AST node to parse.
      * @return The parsed expression.
-     * 
+     *
      * @throws ExpressionParserException If the node contains something other
      *             than a label, number or string.
      */
@@ -111,10 +111,10 @@ public class ExpressionParser
     /**
      * Parses the given list of AST nodes as a complex (multi-part or block)
      * expression.
-     * 
+     *
      * @param nodes The AST nodes to parse.
      * @return The parsed expression.
-     * 
+     *
      * @throws ExpressionParserException If the node is empty, an unexpected
      *             token is encountered, or a token is malformed.
      */
@@ -139,10 +139,10 @@ public class ExpressionParser
 
     /**
      * Converts the given string to a number expression.
-     * 
+     *
      * @param s The string to parse.
      * @return The parsed expression.
-     * 
+     *
      * @throws ExpressionParserException If the string is malformed.
      */
     private NumberExpression parseNumber(String s)
@@ -158,10 +158,10 @@ public class ExpressionParser
     /**
      * Converts the given string to a string expression by removing the outer
      * quotes.
-     * 
+     *
      * @param s The string to parse.
      * @return The parsed expression.
-     * 
+     *
      * @throws ExpressionParserException If the string is malformed.
      */
     private StringExpression parseString(String s)
