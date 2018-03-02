@@ -37,6 +37,14 @@ public class FunctionBlock extends Block
         this.method = method;
     }
 
+    /**
+     * @return The Scratch method invoked by this block.
+     */
+    public String getMethod()
+    {
+        return method;
+    }
+
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
             Map<String, VariableContext> vars, BlockRegistry blocks)
