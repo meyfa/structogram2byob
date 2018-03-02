@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.BlockRegistryReader;
+import structogram2byob.blocks.BlockRegistryReaderException;
 import structogram2byob.blocks.hats.StartClickedHatBlock;
 import structogram2byob.blocks.special.ChangeVariableBlock;
 import structogram2byob.blocks.special.ListBlock;
@@ -15,7 +16,6 @@ import structogram2byob.blocks.structures.IfBlock;
 import structogram2byob.blocks.structures.IfElseBlock;
 import structogram2byob.blocks.structures.RepeatBlock;
 import structogram2byob.gui.GuiController;
-import structogram2byob.parser.blockdescription.BlockDescriptionParserException;
 
 
 /**
@@ -33,7 +33,7 @@ public class Main
         try {
             BlockRegistry reg = createRegistry();
             createUI(reg);
-        } catch (IOException | BlockDescriptionParserException e) {
+        } catch (IOException | BlockRegistryReaderException e) {
             e.printStackTrace();
         }
     }
@@ -56,11 +56,11 @@ public class Main
      * @return The registry containing all blocks.
      *
      * @throws IOException If an I/O error occurs.
-     * @throws BlockDescriptionParserException If the resource file contains
+     * @throws BlockRegistryReaderException If the resource file contains
      *             malformed block descriptions.
      */
     private static BlockRegistry createRegistry()
-            throws IOException, BlockDescriptionParserException
+            throws IOException, BlockRegistryReaderException
     {
         try (BlockRegistryReader r = new BlockRegistryReader(
                 Main.class.getResourceAsStream("/functions.txt"))) {

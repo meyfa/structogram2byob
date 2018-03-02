@@ -28,6 +28,7 @@ import structogram2byob.parser.blockdescription.BlockDescriptionParserException;
 public class BlockRegistryReader implements Closeable
 {
     private final Scanner scanner;
+    private int lineNumber = -1;
 
     /**
      * Constructs a new reader from the given stream.
@@ -54,34 +55,51 @@ public class BlockRegistryReader implements Closeable
      *
      * @return The block registry that was read.
      *
-     * @throws BlockDescriptionParserException If a malformed block description
-     *             string is encountered.
-     * @throws IllegalArgumentException If an unknown return type is
-     *             encountered.
+     * @throws BlockRegistryReaderException If the registry is malformed or
+     *             contains invalid definitions.
      */
-    public BlockRegistry read() throws BlockDescriptionParserException
+    public BlockRegistry read() throws BlockRegistryReaderException
     {
         BlockRegistry reg = new BlockRegistry();
 
-        int i = 0;
-        while (scanner.hasNextLine()) {
+        String descLine, returnLine, methodLine;
+        while ((descLine = nextLine()) != null) {
 
-            String descLine = scanner.nextLine().trim();
-            if (descLine.isEmpty() || descLine.charAt(0) == '#') {
-                i++;
-                continue;
+            int i = lineNumber;
+
+            returnLine = nextLine();
+            methodLine = nextLine();
+
+            if (returnLine == null || methodLine == null) {
+                throw new BlockRegistryReaderException(
+                        "block definition incomplete");
             }
 
-            String returnLine = scanner.nextLine();
-            String methodLine = scanner.nextLine();
-
             reg.register(parseFunction(descLine, returnLine, methodLine, i));
-
-            i += 3;
 
         }
 
         return reg;
+    }
+
+    /**
+     * Returns the next line, skipping whitespace and comments. After this call,
+     * {@code lineNumber} is set to the index of the returned line (0-based).
+     *
+     * @return The next line in the input.
+     */
+    private String nextLine()
+    {
+        String line;
+        do {
+            if (!scanner.hasNextLine()) {
+                return null;
+            }
+            ++lineNumber;
+            line = scanner.nextLine().trim();
+        } while (line.isEmpty() || line.charAt(0) == '#');
+
+        return line;
     }
 
     /**
@@ -93,19 +111,28 @@ public class BlockRegistryReader implements Closeable
      * @param l The line index the description is on.
      * @return The constructed block.
      *
-     * @throws BlockDescriptionParserException If a malformed block description
-     *             string is encountered.
-     * @throws IllegalArgumentException If an unknown return type is
-     *             encountered.
+     * @throws BlockRegistryReaderException If a malformed block description
+     *             string or an unknown return type is encountered.
      */
     private FunctionBlock parseFunction(String d, String ret, String met, int l)
-            throws BlockDescriptionParserException
+            throws BlockRegistryReaderException
     {
-        BlockDescription desc = new BlockDescriptionParser(d, false, l, 0)
-                .parse();
+        BlockDescription desc;
+        try {
+            desc = new BlockDescriptionParser(d, false, l, 0).parse();
+        } catch (BlockDescriptionParserException e) {
+            throw new BlockRegistryReaderException(
+                    "malformed block description on line " + l, e);
+        }
 
-        ScratchType retType = ret.equalsIgnoreCase("none") ? null
-                : ScratchType.valueOf(ret.toUpperCase());
+        ScratchType retType;
+        try {
+            retType = ret.equalsIgnoreCase("none") ? null
+                    : ScratchType.valueOf(ret.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new BlockRegistryReaderException(
+                    "unknown return type on line " + l, e);
+        }
 
         return new FunctionBlock(desc, retType, met);
     }

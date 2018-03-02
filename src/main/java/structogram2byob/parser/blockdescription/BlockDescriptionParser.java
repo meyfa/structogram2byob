@@ -96,10 +96,21 @@ public class BlockDescriptionParser
                     builder.param(ScratchType.ANY, valToken.getValue());
                 } else {
                     String paramType = valToken.getValue().toUpperCase();
-                    builder.param(ScratchType.valueOf(paramType));
+                    try {
+                        builder.param(ScratchType.valueOf(paramType));
+                    } catch (IllegalArgumentException e) {
+                        throw new BlockDescriptionParserException(e);
+                    }
                 }
 
             } else {
+
+                if (t.getType() != TokenType.LABEL) {
+                    throw new BlockDescriptionParserException(
+                            "expected label but got "
+                                    + t.getType().name().toLowerCase() + " at "
+                                    + t.getLine() + ":" + t.getColumn());
+                }
 
                 builder.label(t.getValue());
 
