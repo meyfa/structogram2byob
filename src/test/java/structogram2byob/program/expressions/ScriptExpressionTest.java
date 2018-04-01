@@ -77,4 +77,23 @@ public class ScriptExpressionTest
         result = (ScratchObjectArray) obj.toScratch(vars, blocks);
         assertEquals(1, result.size());
     }
+
+    @Test
+    public void convertsToString()
+    {
+        ScriptExpression obj;
+
+        obj = new ScriptExpression(Arrays.asList(//
+                new BlockExpression(
+                        new BlockDescription.Builder().label("foo").build(),
+                        Arrays.asList()),
+                new BlockExpression(
+                        new BlockDescription.Builder().label("bar").build(),
+                        Arrays.asList()),
+                new BlockExpression(
+                        new BlockDescription.Builder().label("baz").build(),
+                        Arrays.asList())//
+        ));
+        assertEquals("(foo); (bar); (baz)", obj.toString());
+    }
 }

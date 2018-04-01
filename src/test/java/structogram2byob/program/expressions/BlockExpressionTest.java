@@ -170,4 +170,24 @@ public class BlockExpressionTest
 
         obj.toScratch(vars, blocks);
     }
+
+    @Test
+    public void convertsToString()
+    {
+        BlockExpression obj;
+
+        obj = new BlockExpression(
+                new BlockDescription.Builder().label("foo").build(),
+                Arrays.asList());
+        assertEquals("(foo)", obj.toString());
+
+        obj = new BlockExpression(
+                new BlockDescription.Builder().label("foo")
+                        .param(ScratchType.ANY).label("bar").build(),
+                Arrays.asList(//
+                        new BlockExpression(new BlockDescription.Builder()
+                                .label("param").build(), Arrays.asList())//
+                ));
+        assertEquals("(foo (param) bar)", obj.toString());
+    }
 }

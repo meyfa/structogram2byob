@@ -49,4 +49,22 @@ public class NumberExpressionTest
         result = (ScratchObjectAbstractNumber) obj.toScratch(vars, blocks);
         assertEquals(-42, result.doubleValue(), 0);
     }
+
+    @Test
+    public void convertsToString()
+    {
+        NumberExpression obj;
+
+        obj = new NumberExpression(42);
+        assertEquals("42", obj.toString());
+
+        obj = new NumberExpression(-42);
+        assertEquals("-42", obj.toString());
+
+        obj = new NumberExpression(42.125);
+        assertEquals("42.125", obj.toString());
+
+        obj = new NumberExpression(-42.125);
+        assertEquals("-42.125", obj.toString());
+    }
 }

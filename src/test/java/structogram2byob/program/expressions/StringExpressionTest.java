@@ -45,4 +45,13 @@ public class StringExpressionTest
         result = (ScratchObjectUtf8) obj.toScratch(vars, blocks);
         assertEquals("hello world", result.getValue());
     }
+
+    @Test
+    public void convertsToString()
+    {
+        StringExpression obj;
+
+        obj = new StringExpression("hello world");
+        assertEquals("\"hello world\"", obj.toString());
+    }
 }
