@@ -3,6 +3,9 @@ package structogram2byob;
 import java.awt.EventQueue;
 import java.io.IOException;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.BlockRegistryReader;
 import structogram2byob.blocks.BlockRegistryReaderException;
@@ -43,6 +46,13 @@ public class Main
         if (!EventQueue.isDispatchThread()) {
             EventQueue.invokeLater(() -> createUI(blocks));
             return;
+        }
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException
+                | IllegalAccessException | UnsupportedLookAndFeelException e) {
+            e.printStackTrace();
         }
 
         GuiController gui = new GuiController(blocks);

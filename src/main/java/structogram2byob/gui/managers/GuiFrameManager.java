@@ -5,8 +5,6 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import structogram2byob.gui.GuiController;
 import structogram2byob.gui.panels.UnitsPanel;
@@ -17,15 +15,6 @@ import structogram2byob.gui.panels.UnitsPanel;
  */
 public class GuiFrameManager
 {
-    static {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException
-                | IllegalAccessException | UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
-        }
-    }
-
     private final UnitsPanel unitsPanel;
     private final GuiMenuManager menu;
 
