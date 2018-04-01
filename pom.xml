@@ -87,6 +87,9 @@
                 <configuration>
                     <destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
                     <datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
+                    <includes>
+                        <include>structogram2byob/**</include>
+                    </includes>
                 </configuration>
                 <executions>
                     <execution>
