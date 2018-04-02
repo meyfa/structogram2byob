@@ -7,6 +7,9 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 
+/**
+ * Implementation of a dialog factory for use in a Swing GUI.
+ */
 public class SwingDialogFactory implements IDialogFactory
 {
     @Override

@@ -12,6 +12,9 @@ import structogram2byob.gui.units.IUnitsManager;
 import structogram2byob.gui.units.SwingUnitsManager;
 
 
+/**
+ * Implementation of a frame manager for the Swing GUI.
+ */
 public class SwingFrameManager implements IFrameManager
 {
     private final SwingUnitsManager units;
@@ -19,6 +22,9 @@ public class SwingFrameManager implements IFrameManager
 
     private JFrame frame;
 
+    /**
+     * Constructor.
+     */
     public SwingFrameManager()
     {
         this.units = new SwingUnitsManager();

@@ -9,10 +9,16 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
+/**
+ * Implementation of a menu manager for the Swing GUI.
+ */
 public class SwingMenuBuilder implements IMenuBuilder
 {
     private final JPanel comp;
 
+    /**
+     * Constructor.
+     */
     public SwingMenuBuilder()
     {
         comp = new JPanel(new FlowLayout(FlowLayout.LEADING));

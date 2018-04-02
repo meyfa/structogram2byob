@@ -50,7 +50,7 @@ public class NSDParser
      *
      * @return The unit that was parsed.
      *
-     * @throws NSDParserException
+     * @throws NSDParserException If an error occurs while reading the input.
      */
     public ProgramUnit parse() throws NSDParserException
     {

@@ -10,10 +10,16 @@ import nsdlib.elements.NSDRoot;
 import structogram2byob.gui.GuiController;
 
 
+/**
+ * Implementation of a units manager for the Swing GUI.
+ */
 public class SwingUnitsManager implements IUnitsManager
 {
     private final JPanel comp;
 
+    /**
+     * Constructor.
+     */
     public SwingUnitsManager()
     {
         comp = new JPanel(new GridBagLayout());

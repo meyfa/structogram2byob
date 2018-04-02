@@ -44,6 +44,8 @@ public class GuiController
 
     /**
      * @param blocks The block registry used by this instance.
+     * @param dialogFactory The factory to be used for constructing dialogs.
+     * @param frameManager The frame manager to be used.
      */
     public GuiController(BlockRegistry blocks, IDialogFactory dialogFactory,
             IFrameManager frameManager)

@@ -56,7 +56,7 @@ public class AstParser
      * Iterates over the input's tokens and constructs an AST from them.
      *
      * @return The AST describing this parser's input.
-     * @throws AstParserException
+     * @throws AstParserException If an error occurs while reading the input.
      */
     // corresponds to production S -> E
     public AstNode parse() throws AstParserException
