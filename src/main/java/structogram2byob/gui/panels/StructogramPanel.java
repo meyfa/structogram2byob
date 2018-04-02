@@ -38,10 +38,19 @@ public class StructogramPanel extends JPanel
         setBackground(Color.WHITE);
         setOpaque(true);
 
-        int bw = 16;
+        // set size
+
+        final int bw = 16;
         setBorder(BorderFactory.createEmptyBorder(bw, bw, bw, bw));
 
-        recalculateSize();
+        render.layout(renderer.createContext());
+        Size s = render.getSize();
+
+        Dimension dim = new Dimension(s.width + 2 * bw, s.height + 2 * bw);
+
+        setMinimumSize(dim);
+        setMaximumSize(dim);
+        setPreferredSize(dim);
     }
 
     /**
@@ -56,39 +65,13 @@ public class StructogramPanel extends JPanel
         p.setBackground(new RenderColor(255, 127, 127));
     }
 
-    private void recalculateSize()
-    {
-        if (render == null) {
-            return;
-        }
-
-        Insets insets = getInsets();
-
-        render.layout(renderer.createContext());
-        Size s = render.getSize();
-
-        int w = s.width + insets.left + insets.right;
-        int h = s.height + insets.top + insets.bottom;
-        Dimension dim = new Dimension(w, h);
-
-        setMinimumSize(dim);
-        setMaximumSize(dim);
-        setPreferredSize(dim);
-    }
-
     @Override
     protected void paintComponent(Graphics g)
     {
         super.paintComponent(g);
 
-        if (render == null) {
-            return;
-        }
-
         Insets insets = getInsets();
-
-        BufferedImage img = renderer.render(render);
-        g.drawImage(img, insets.left, insets.top, this);
+        g.drawImage(render(), insets.left, insets.top, this);
     }
 
     /**
