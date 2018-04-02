@@ -32,10 +32,10 @@ public class ScriptVariablesBlockTest
     {
         ScriptVariablesBlock obj = ScriptVariablesBlock.instance;
 
-        BlockExpression varA = new BlockExpression(
+        BlockExpression varA = new BlockExpression(null,
                 new BlockDescription.Builder().label("a").build(),
                 Arrays.asList());
-        BlockExpression varB = new BlockExpression(
+        BlockExpression varB = new BlockExpression(null,
                 new BlockDescription.Builder().label("b").build(),
                 Arrays.asList());
 
@@ -85,10 +85,10 @@ public class ScriptVariablesBlockTest
     {
         ScriptVariablesBlock obj = ScriptVariablesBlock.instance;
 
-        BlockExpression varA = new BlockExpression(
+        BlockExpression varA = new BlockExpression(null,
                 new BlockDescription.Builder().label("a").build(),
                 Arrays.asList());
-        BlockExpression varB = new BlockExpression(
+        BlockExpression varB = new BlockExpression(null,
                 new BlockDescription.Builder().label("b").build(),
                 Arrays.asList());
 

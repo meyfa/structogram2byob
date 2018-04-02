@@ -6,6 +6,7 @@ import java.util.Map;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.structures.IfElseBlock;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
@@ -56,9 +57,12 @@ public abstract class Block
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
      * @return An array containing the serialized block data.
+     *
+     * @throws ScratchConversionException When the conversion fails.
      */
     public abstract ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks);
+            Map<String, VariableContext> vars, BlockRegistry blocks)
+            throws ScratchConversionException;
 
     /**
      * Utility function for converting an expression to a variable name.

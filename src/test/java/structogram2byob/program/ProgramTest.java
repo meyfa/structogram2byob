@@ -26,7 +26,7 @@ import structogram2byob.program.expressions.StringExpression;
 public class ProgramTest
 {
     @Test
-    public void generatesCorrectVersion()
+    public void generatesCorrectVersion() throws ScratchConversionException
     {
         Program obj = new Program();
         ScratchProject result = obj.toScratch(new BlockRegistry());
@@ -35,7 +35,7 @@ public class ProgramTest
     }
 
     @Test
-    public void generatesStageAndSprite()
+    public void generatesStageAndSprite() throws ScratchConversionException
     {
         Program obj = new Program();
         ScratchProject result = obj.toScratch(new BlockRegistry());
@@ -45,7 +45,7 @@ public class ProgramTest
     }
 
     @Test
-    public void generatesScripts()
+    public void generatesScripts() throws ScratchConversionException
     {
         FunctionBlock say = new FunctionBlock(new BlockDescription.Builder()
                 .label("say").param(ScratchType.ANY).build(), null, "say");
@@ -57,10 +57,10 @@ public class ProgramTest
                     .label("start").label("clicked").build();
 
             ProgramUnit script;
-            script = new ProgramUnit(UnitType.SCRIPT, desc, Arrays.asList(//
-                    new BlockExpression(say.getDescription(), Arrays.asList(//
-                            new StringExpression("hello world " + i)//
-                    ))//
+            script = new ProgramUnit(null, UnitType.SCRIPT, desc, Arrays.asList(//
+                    new BlockExpression(null, say.getDescription(),
+                            Arrays.asList(new StringExpression(null,
+                                    "hello world " + i)))//
             ));
 
             obj.addUnit(script);
@@ -77,7 +77,7 @@ public class ProgramTest
     }
 
     @Test
-    public void generatesCustomBlocks()
+    public void generatesCustomBlocks() throws ScratchConversionException
     {
         Program obj = new Program();
 
@@ -85,7 +85,7 @@ public class ProgramTest
             BlockDescription desc = new BlockDescription.Builder().label("do")
                     .label("something").label(Integer.toString(i)).build();
 
-            ProgramUnit cmd = new ProgramUnit(UnitType.COMMAND, desc,
+            ProgramUnit cmd = new ProgramUnit(null, UnitType.COMMAND, desc,
                     Arrays.asList());
 
             obj.addUnit(cmd);
@@ -102,13 +102,14 @@ public class ProgramTest
 
     @Test
     public void generatesReportersWithCorrectReturnType()
+            throws ScratchConversionException
     {
         Program obj = new Program();
 
         BlockDescription desc = new BlockDescription.Builder()
                 .label("testreporter").build();
         ProgramUnit rep;
-        rep = new ProgramUnit(UnitType.REPORTER, desc, Arrays.asList());
+        rep = new ProgramUnit(null, UnitType.REPORTER, desc, Arrays.asList());
         obj.addUnit(rep);
 
         ScratchProject result = obj.toScratch(new BlockRegistry());
@@ -124,13 +125,14 @@ public class ProgramTest
 
     @Test
     public void generatesPredicatesWithCorrectReturnType()
+            throws ScratchConversionException
     {
         Program obj = new Program();
 
         BlockDescription desc = new BlockDescription.Builder()
                 .label("testreporter").build();
         ProgramUnit rep;
-        rep = new ProgramUnit(UnitType.PREDICATE, desc, Arrays.asList());
+        rep = new ProgramUnit(null, UnitType.PREDICATE, desc, Arrays.asList());
         obj.addUnit(rep);
 
         ScratchProject result = obj.toScratch(new BlockRegistry());
@@ -146,22 +148,25 @@ public class ProgramTest
 
     @Test
     public void supportsCustomBlockInvocations()
+            throws ScratchConversionException
     {
         Program obj = new Program();
 
         BlockDescription cmdDesc = new BlockDescription.Builder().label("do")
                 .label("something").build();
         ProgramUnit cmd;
-        cmd = new ProgramUnit(UnitType.COMMAND, cmdDesc, Arrays.asList());
+        cmd = new ProgramUnit(null, UnitType.COMMAND, cmdDesc, Arrays.asList());
         obj.addUnit(cmd);
 
         BlockDescription scriptDesc = new BlockDescription.Builder()
                 .label("when").label("start").label("clicked").build();
         ProgramUnit script;
-        script = new ProgramUnit(UnitType.SCRIPT, scriptDesc, Arrays.asList(//
-                new BlockExpression(cmd.getInvocationBlock().getDescription(),
-                        Arrays.asList())//
-        ));
+        script = new ProgramUnit(null, UnitType.SCRIPT, scriptDesc,
+                Arrays.asList(//
+                        new BlockExpression(null,
+                                cmd.getInvocationBlock().getDescription(),
+                                Arrays.asList())//
+                ));
         obj.addUnit(script);
 
         BlockRegistry reg = new BlockRegistry();

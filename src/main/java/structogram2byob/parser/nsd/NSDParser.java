@@ -68,7 +68,7 @@ public class NSDParser
             blocks.add(parseElement(child));
         }
 
-        return new ProgramUnit(type, desc, blocks);
+        return new ProgramUnit(nsd, type, desc, blocks);
     }
 
     /**
@@ -127,7 +127,7 @@ public class NSDParser
             throws NSDParserException
     {
         try {
-            return new ExpressionParser(exp).parse();
+            return new ExpressionParser(source, exp).parse();
         } catch (ExpressionParserException e) {
             throw new NSDParserException(source, "expression error", e);
         }
@@ -187,11 +187,11 @@ public class NSDParser
         ScriptExpression otherwise = parseScript(e.getElse());
 
         if (otherwise.size() == 0) {
-            return new BlockExpression(IfBlock.instance.getDescription(),
+            return new BlockExpression(e, IfBlock.instance.getDescription(),
                     Arrays.asList(condition, then));
         }
 
-        return new BlockExpression(IfElseBlock.instance.getDescription(),
+        return new BlockExpression(e, IfElseBlock.instance.getDescription(),
                 Arrays.asList(condition, then, otherwise));
     }
 
@@ -205,7 +205,7 @@ public class NSDParser
      */
     private BlockExpression parseForever(NSDForever e) throws NSDParserException
     {
-        return new BlockExpression(ForeverBlock.instance.getDescription(),
+        return new BlockExpression(e, ForeverBlock.instance.getDescription(),
                 Arrays.asList(parseScript(e)));
     }
 
@@ -232,7 +232,7 @@ public class NSDParser
         List<Expression> params = new ArrayList<>(exp.getParameters());
         params.add(parseScript(e));
 
-        return new BlockExpression(descBuilder.build(), params);
+        return new BlockExpression(e, descBuilder.build(), params);
     }
 
     /**
@@ -253,6 +253,6 @@ public class NSDParser
             blocks.add(parseElement(child));
         }
 
-        return new ScriptExpression(blocks);
+        return new ScriptExpression(e, blocks);
     }
 }

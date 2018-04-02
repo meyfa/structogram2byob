@@ -2,9 +2,11 @@ package structogram2byob.program.expressions;
 
 import java.util.Map;
 
+import nsdlib.elements.NSDElement;
 import scratchlib.objects.ScratchObject;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 
 
@@ -14,6 +16,24 @@ import structogram2byob.program.VariableContext;
  */
 public abstract class Expression
 {
+    private final NSDElement element;
+
+    /**
+     * @param element The element this expression stems from.
+     */
+    public Expression(NSDElement element)
+    {
+        this.element = element;
+    }
+
+    /**
+     * @return The element this expression stems from.
+     */
+    public NSDElement getElement()
+    {
+        return element;
+    }
+
     /**
      * @return The {@link ScratchType} that this expression is of.
      */
@@ -26,9 +46,11 @@ public abstract class Expression
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
      * @return A {@link ScratchObject}.
+     *
+     * @throws ScratchConversionException When the conversion fails.
      */
     public abstract ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks);
+            BlockRegistry blocks) throws ScratchConversionException;
 
     @Override
     public abstract String toString();

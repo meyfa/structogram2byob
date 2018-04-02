@@ -19,7 +19,7 @@ public class StringExpressionTest
     @Test
     public void returnsValue()
     {
-        StringExpression obj = new StringExpression("hello world");
+        StringExpression obj = new StringExpression(null, "hello world");
 
         assertEquals("hello world", obj.getValue());
     }
@@ -27,7 +27,7 @@ public class StringExpressionTest
     @Test
     public void returnsCorrectType()
     {
-        StringExpression obj = new StringExpression("hello world");
+        StringExpression obj = new StringExpression(null, "hello world");
 
         assertSame(ScratchType.TEXT, obj.getType());
     }
@@ -41,7 +41,7 @@ public class StringExpressionTest
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        obj = new StringExpression("hello world");
+        obj = new StringExpression(null, "hello world");
         result = (ScratchObjectUtf8) obj.toScratch(vars, blocks);
         assertEquals("hello world", result.getValue());
     }
@@ -51,7 +51,7 @@ public class StringExpressionTest
     {
         StringExpression obj;
 
-        obj = new StringExpression("hello world");
+        obj = new StringExpression(null, "hello world");
         assertEquals("\"hello world\"", obj.toString());
     }
 }

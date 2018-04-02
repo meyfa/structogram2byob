@@ -22,6 +22,7 @@ import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.FunctionBlock;
 import structogram2byob.program.ProgramUnit;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.UnitType;
 import structogram2byob.program.VariableContext;
 
@@ -37,8 +38,8 @@ public class BlockExpressionTest
     @Test
     public void returnsDescription()
     {
-        BlockExpression obj = new BlockExpression(DESC,
-                Arrays.asList(new NumberExpression(42)));
+        BlockExpression obj = new BlockExpression(null, DESC,
+                Arrays.asList(new NumberExpression(null, 42)));
 
         assertSame(DESC, obj.getDescription());
     }
@@ -47,38 +48,39 @@ public class BlockExpressionTest
     public void returnsUnmodifiableParametersList()
     {
         List<Expression> params = new ArrayList<>();
-        params.add(new NumberExpression(42));
+        params.add(new NumberExpression(null, 42));
 
-        BlockExpression obj = new BlockExpression(DESC, params);
+        BlockExpression obj = new BlockExpression(null, DESC, params);
 
         assertEquals(params, obj.getParameters());
 
         // throws
-        obj.getParameters().set(0, new NumberExpression(37));
+        obj.getParameters().set(0, new NumberExpression(null, 37));
     }
 
     @Test
     public void returnsCorrectType()
     {
-        BlockExpression obj = new BlockExpression(DESC,
-                Arrays.asList(new NumberExpression(42)));
+        BlockExpression obj = new BlockExpression(null, DESC,
+                Arrays.asList(new NumberExpression(null, 42)));
 
         assertSame(ScratchType.ANY, obj.getType());
     }
 
     @Test
     public void convertsFunctionBlockToScratch()
+            throws ScratchConversionException
     {
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
         Block block = new FunctionBlock(DESC, null, "forward:");
         blocks.register(block);
 
-        BlockExpression obj = new BlockExpression(DESC,
-                Arrays.asList(new NumberExpression(42)));
+        BlockExpression obj = new BlockExpression(null, DESC,
+                Arrays.asList(new NumberExpression(null, 42)));
 
         ScratchObjectArray blockResult = block.toScratch(
-                Arrays.asList(new NumberExpression(42)), vars, blocks);
+                Arrays.asList(new NumberExpression(null, 42)), vars, blocks);
         ScratchObjectArray objResult = (ScratchObjectArray) obj.toScratch(vars,
                 blocks);
 
@@ -92,12 +94,14 @@ public class BlockExpressionTest
 
     @Test
     public void convertsGlobalVariableToScratch()
+            throws ScratchConversionException
     {
         Map<String, VariableContext> vars = new HashMap<>();
         vars.put("foobar", VariableContext.GLOBAL);
         BlockRegistry blocks = new BlockRegistry();
 
-        BlockExpression obj = new BlockExpression(DESC_VAR, Arrays.asList());
+        BlockExpression obj = new BlockExpression(null, DESC_VAR,
+                Arrays.asList());
 
         ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars,
                 blocks);
@@ -110,8 +114,9 @@ public class BlockExpressionTest
 
     @Test
     public void convertsUnitVariableToScratch()
+            throws ScratchConversionException
     {
-        ProgramUnit unit = new ProgramUnit(//
+        ProgramUnit unit = new ProgramUnit(null, //
                 UnitType.COMMAND, // type
                 new BlockDescription.Builder().label("doSomething")
                         .param(ScratchType.ANY, "foobar").build(), // desc
@@ -122,7 +127,8 @@ public class BlockExpressionTest
         vars.put("foobar", new VariableContext.UnitSpecific(unit));
         BlockRegistry blocks = new BlockRegistry();
 
-        BlockExpression obj = new BlockExpression(DESC_VAR, Arrays.asList());
+        BlockExpression obj = new BlockExpression(null, DESC_VAR,
+                Arrays.asList());
 
         ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars,
                 blocks);
@@ -139,13 +145,15 @@ public class BlockExpressionTest
 
     @Test
     public void convertsScriptVariableToScratch()
+            throws ScratchConversionException
     {
         Map<String, VariableContext> vars = new HashMap<>();
         ScratchObjectVariableFrame frame = new ScratchObjectVariableFrame();
         vars.put("foobar", new VariableContext.ScriptSpecific(frame));
         BlockRegistry blocks = new BlockRegistry();
 
-        BlockExpression obj = new BlockExpression(DESC_VAR, Arrays.asList());
+        BlockExpression obj = new BlockExpression(null, DESC_VAR,
+                Arrays.asList());
 
         ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars,
                 blocks);
@@ -159,14 +167,14 @@ public class BlockExpressionTest
         assertSame(frame, result.get(4));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void throwsForUnknownBlock()
+    @Test(expected = ScratchConversionException.class)
+    public void throwsForUnknownBlock() throws ScratchConversionException
     {
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        BlockExpression obj = new BlockExpression(DESC,
-                Arrays.asList(new NumberExpression(42)));
+        BlockExpression obj = new BlockExpression(null, DESC,
+                Arrays.asList(new NumberExpression(null, 42)));
 
         obj.toScratch(vars, blocks);
     }
@@ -176,17 +184,19 @@ public class BlockExpressionTest
     {
         BlockExpression obj;
 
-        obj = new BlockExpression(
+        obj = new BlockExpression(null,
                 new BlockDescription.Builder().label("foo").build(),
                 Arrays.asList());
         assertEquals("(foo)", obj.toString());
 
-        obj = new BlockExpression(
+        obj = new BlockExpression(null,
                 new BlockDescription.Builder().label("foo")
                         .param(ScratchType.ANY).label("bar").build(),
                 Arrays.asList(//
-                        new BlockExpression(new BlockDescription.Builder()
-                                .label("param").build(), Arrays.asList())//
+                        new BlockExpression(
+                                null, new BlockDescription.Builder()
+                                        .label("param").build(),
+                                Arrays.asList())//
                 ));
         assertEquals("(foo (param) bar)", obj.toString());
     }

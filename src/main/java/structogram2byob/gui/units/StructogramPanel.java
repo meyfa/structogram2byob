@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.image.BufferedImage;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -27,6 +29,7 @@ public class StructogramPanel extends JPanel
     private static final AwtRenderer renderer = new AwtRenderer();
 
     private final RenderPart render;
+    private final Set<RenderPart> errorMarks = new HashSet<>();
 
     /**
      * @param diagram The structogram to be displayed by this panel.
@@ -62,7 +65,22 @@ public class StructogramPanel extends JPanel
     public void markError(NSDElement element)
     {
         RenderPart p = render.findForSource(element);
+        if (p == null) {
+            return;
+        }
         p.setBackground(new RenderColor(255, 127, 127));
+        errorMarks.add(p);
+    }
+
+    /**
+     * Removes all error marks that were previously set.
+     */
+    public void clearErrorMarks()
+    {
+        for (RenderPart p : errorMarks) {
+            p.setBackground(null);
+        }
+        errorMarks.clear();
     }
 
     @Override

@@ -24,11 +24,11 @@ public class ExpressionParserTest
     {
         Expression result;
 
-        result = new ExpressionParser("\"hello world\"").parse();
+        result = new ExpressionParser(null, "\"hello world\"").parse();
         assertThat(result, instanceOf(StringExpression.class));
         assertEquals("hello world", ((StringExpression) result).getValue());
 
-        result = new ExpressionParser("\"\"").parse();
+        result = new ExpressionParser(null, "\"\"").parse();
         assertThat(result, instanceOf(StringExpression.class));
         assertEquals("", ((StringExpression) result).getValue());
     }
@@ -38,15 +38,15 @@ public class ExpressionParserTest
     {
         Expression result;
 
-        result = new ExpressionParser("5").parse();
+        result = new ExpressionParser(null, "5").parse();
         assertThat(result, instanceOf(NumberExpression.class));
         assertEquals(5, ((NumberExpression) result).getValue(), 0.0000001);
 
-        result = new ExpressionParser("+0.5").parse();
+        result = new ExpressionParser(null, "+0.5").parse();
         assertThat(result, instanceOf(NumberExpression.class));
         assertEquals(0.5, ((NumberExpression) result).getValue(), 0.0000001);
 
-        result = new ExpressionParser("-42.37").parse();
+        result = new ExpressionParser(null, "-42.37").parse();
         assertThat(result, instanceOf(NumberExpression.class));
         assertEquals(-42.37, ((NumberExpression) result).getValue(), 0.0000001);
     }
@@ -59,7 +59,8 @@ public class ExpressionParserTest
 
         // simple
 
-        result = (BlockExpression) new ExpressionParser("foo bar").parse();
+        result = (BlockExpression) new ExpressionParser(null, "foo bar")
+                .parse();
         assertEquals(new BlockDescription.Builder().label("foo").label("bar")
                 .build(), result.getDescription());
         params = result.getParameters();
@@ -67,8 +68,8 @@ public class ExpressionParserTest
 
         // literal parameters
 
-        result = (BlockExpression) new ExpressionParser("a (42) (\"test\") b")
-                .parse();
+        result = (BlockExpression) new ExpressionParser(null,
+                "a (42) (\"test\") b").parse();
         // description
         assertEquals(new BlockDescription.Builder().label("a")
                 .param(ScratchType.NUMBER).param(ScratchType.TEXT).label("b")
@@ -82,7 +83,7 @@ public class ExpressionParserTest
 
         // literal parameters without parentheses
 
-        result = (BlockExpression) new ExpressionParser("a 42 \"test\" b")
+        result = (BlockExpression) new ExpressionParser(null, "a 42 \"test\" b")
                 .parse();
         // description
         assertEquals(new BlockDescription.Builder().label("a")
@@ -97,8 +98,8 @@ public class ExpressionParserTest
 
         // nested blocks
 
-        result = (BlockExpression) new ExpressionParser("(bar (baz qu)) b (c)")
-                .parse();
+        result = (BlockExpression) new ExpressionParser(null,
+                "(bar (baz qu)) b (c)").parse();
         // description
         assertEquals(
                 new BlockDescription.Builder().param(ScratchType.ANY).label("b")
@@ -124,12 +125,12 @@ public class ExpressionParserTest
     @Test(expected = ExpressionParserException.class)
     public void throwsForEmptyParentheses() throws ExpressionParserException
     {
-        new ExpressionParser("foo ()").parse();
+        new ExpressionParser(null, "foo ()").parse();
     }
 
     @Test(expected = ExpressionParserException.class)
     public void throwsForSyntaxErrors() throws ExpressionParserException
     {
-        new ExpressionParser("foo \"test").parse();
+        new ExpressionParser(null, "foo \"test").parse();
     }
 }

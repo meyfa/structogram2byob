@@ -23,6 +23,7 @@ import structogram2byob.gui.menu.IMenuBuilder;
 import structogram2byob.parser.nsd.NSDParser;
 import structogram2byob.parser.nsd.NSDParserException;
 import structogram2byob.program.Program;
+import structogram2byob.program.ScratchConversionException;
 
 
 /**
@@ -97,6 +98,9 @@ public class GuiController
      */
     private void updateProject()
     {
+        this.project = null;
+        frameManager.getUnits().clearErrorMarks();
+
         Program prog = new Program();
 
         boolean failed = false;
@@ -110,14 +114,25 @@ public class GuiController
             } catch (NSDParserException e) {
                 NSDElement el = e.getElement();
                 if (el != null) {
-                    frameManager.getUnits().markError(i, el);
+                    frameManager.getUnits().markError(el);
                 }
                 failed = true;
             }
 
         }
 
-        this.project = failed ? null : prog.toScratch(blocks);
+        if (failed) {
+            return;
+        }
+
+        try {
+            this.project = prog.toScratch(blocks);
+        } catch (ScratchConversionException e) {
+            NSDElement el = e.getElement();
+            if (el != null) {
+                frameManager.getUnits().markError(el);
+            }
+        }
     }
 
     /**

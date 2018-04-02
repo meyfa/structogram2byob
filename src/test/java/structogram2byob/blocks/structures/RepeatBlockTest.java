@@ -15,6 +15,7 @@ import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.inline.ScratchObjectAbstractNumber;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.NumberExpression;
@@ -24,12 +25,12 @@ import structogram2byob.program.expressions.ScriptExpression;
 public class RepeatBlockTest
 {
     @Test
-    public void convertsToScratch()
+    public void convertsToScratch() throws ScratchConversionException
     {
         RepeatBlock obj = RepeatBlock.instance;
 
-        List<Expression> params = Arrays.asList(new NumberExpression(10),
-                new ScriptExpression(Arrays.asList()));
+        List<Expression> params = Arrays.asList(new NumberExpression(null, 10),
+                new ScriptExpression(null, Arrays.asList()));
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 

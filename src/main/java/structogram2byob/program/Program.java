@@ -46,8 +46,11 @@ public class Program
      *
      * @param blocks The available blocks.
      * @return This program converted to a Scratch project.
+     *
+     * @throws ScratchConversionException When the conversion fails.
      */
     public ScratchProject toScratch(BlockRegistry blocks)
+            throws ScratchConversionException
     {
         ScratchProject project = new ScratchProject(ScratchVersion.BYOB311);
 
@@ -75,9 +78,12 @@ public class Program
      * @param blocks The available blocks.
      * @param scripts The array of scripts to write to.
      * @param cBlocks The array of custom blocks to write to.
+     *
+     * @throws ScratchConversionException When the conversion fails.
      */
     private void serializeUnits(BlockRegistry blocks,
             ScratchObjectArray scripts, ScratchObjectOrderedCollection cBlocks)
+            throws ScratchConversionException
     {
         Map<String, VariableContext> vars = new HashMap<>();
         vars = Collections.unmodifiableMap(vars);
@@ -86,7 +92,11 @@ public class Program
         BlockRegistry blocksExtended = new BlockRegistry(blocks);
         for (ProgramUnit u : units) {
             if (u.getType() != UnitType.SCRIPT) {
-                blocksExtended.register(u.getInvocationBlock());
+                try {
+                    blocksExtended.register(u.getInvocationBlock());
+                } catch (IllegalArgumentException e) {
+                    throw new ScratchConversionException(u.getElement(), e);
+                }
             }
         }
 
@@ -126,9 +136,12 @@ public class Program
      * @param blocks The available blocks.
      * @param y The y coordinate for script placement.
      * @return A Scratch object describing a script.
+     *
+     * @throws ScratchConversionException When the conversion fails.
      */
     private ScratchObjectArray serializeUnitAsScript(ProgramUnit u,
             Map<String, VariableContext> vars, BlockRegistry blocks, int y)
+            throws ScratchConversionException
     {
         ScratchObjectArray script = new ScratchObjectArray();
 
@@ -145,10 +158,12 @@ public class Program
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks.
      * @return A {@link ScratchObjectCustomBlockDefinition} instance.
+     *
+     * @throws ScratchConversionException When the conversion fails.
      */
     private ScratchObjectCustomBlockDefinition serializeUnitAsBlock(
             ProgramUnit u, Map<String, VariableContext> vars,
-            BlockRegistry blocks)
+            BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectCustomBlockDefinition cbd = new ScratchObjectCustomBlockDefinition();
 

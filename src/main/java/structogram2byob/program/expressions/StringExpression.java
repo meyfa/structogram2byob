@@ -2,6 +2,7 @@ package structogram2byob.program.expressions;
 
 import java.util.Map;
 
+import nsdlib.elements.NSDElement;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
@@ -19,10 +20,13 @@ public class StringExpression extends Expression
     /**
      * Constructs a new string expression with the given value.
      *
+     * @param element The element this expression stems from.
      * @param value The expression value.
      */
-    public StringExpression(String value)
+    public StringExpression(NSDElement element, String value)
     {
+        super(element);
+
         this.value = value;
     }
 

@@ -40,8 +40,12 @@ public interface IUnitsManager
     /**
      * Marks the given element as containing an error.
      *
-     * @param index The index of the unit containing the given element.
      * @param element The element that is faulty.
      */
-    void markError(int index, NSDElement element);
+    void markError(NSDElement element);
+
+    /**
+     * Removes all error marks.
+     */
+    void clearErrorMarks();
 }

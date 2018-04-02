@@ -20,6 +20,7 @@ import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.ProgramUnit;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.UnitType;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.BlockExpression;
@@ -30,13 +31,13 @@ import structogram2byob.program.expressions.NumberExpression;
 public class ChangeVariableBlockTest
 {
     @Test
-    public void convertsToScratch()
+    public void convertsToScratch() throws ScratchConversionException
     {
         ChangeVariableBlock obj = ChangeVariableBlock.instance;
 
-        List<Expression> params = Arrays.asList(new BlockExpression(
+        List<Expression> params = Arrays.asList(new BlockExpression(null,
                 new BlockDescription.Builder().label("foobar").build(),
-                Arrays.asList()), new NumberExpression(42));
+                Arrays.asList()), new NumberExpression(null, 42));
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
@@ -57,7 +58,7 @@ public class ChangeVariableBlockTest
 
         // unit specific (parameter)
 
-        ProgramUnit unit = new ProgramUnit(UnitType.COMMAND,
+        ProgramUnit unit = new ProgramUnit(null, UnitType.COMMAND,
                 new BlockDescription.Builder().label("doSomething")
                         .param(ScratchType.ANY, "foobar").build(),
                 Arrays.asList());

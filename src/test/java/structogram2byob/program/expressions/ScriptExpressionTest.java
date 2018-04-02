@@ -16,6 +16,7 @@ import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.FunctionBlock;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 
 
@@ -27,8 +28,9 @@ public class ScriptExpressionTest
     @Test
     public void returnsSize()
     {
-        BlockExpression block = new BlockExpression(DESC, Arrays.asList());
-        ScriptExpression obj = new ScriptExpression(
+        BlockExpression block = new BlockExpression(null, DESC,
+                Arrays.asList());
+        ScriptExpression obj = new ScriptExpression(null,
                 Arrays.asList(block, block, block));
 
         assertEquals(3, obj.size());
@@ -37,11 +39,12 @@ public class ScriptExpressionTest
     @Test(expected = UnsupportedOperationException.class)
     public void returnsUnmodifiableBlocksList()
     {
-        BlockExpression block = new BlockExpression(DESC, Arrays.asList());
+        BlockExpression block = new BlockExpression(null, DESC,
+                Arrays.asList());
         List<BlockExpression> blocks = new ArrayList<>();
         blocks.add(block);
 
-        ScriptExpression obj = new ScriptExpression(blocks);
+        ScriptExpression obj = new ScriptExpression(null, blocks);
 
         assertEquals(blocks, obj.getBlocks());
 
@@ -52,13 +55,13 @@ public class ScriptExpressionTest
     @Test
     public void returnsCorrectType()
     {
-        ScriptExpression obj = new ScriptExpression(Arrays.asList());
+        ScriptExpression obj = new ScriptExpression(null, Arrays.asList());
 
         assertSame(ScratchType.LOOP, obj.getType());
     }
 
     @Test
-    public void convertsToScratch()
+    public void convertsToScratch() throws ScratchConversionException
     {
         ScriptExpression obj;
         ScratchObjectArray result;
@@ -66,14 +69,14 @@ public class ScriptExpressionTest
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        obj = new ScriptExpression(Arrays.asList());
+        obj = new ScriptExpression(null, Arrays.asList());
         result = (ScratchObjectArray) obj.toScratch(vars, blocks);
         assertEquals(0, result.size());
 
         blocks.register(new FunctionBlock(DESC, ScratchType.NUMBER, "xpos"));
 
-        obj = new ScriptExpression(
-                Arrays.asList(new BlockExpression(DESC, Arrays.asList())));
+        obj = new ScriptExpression(null, Arrays
+                .asList(new BlockExpression(null, DESC, Arrays.asList())));
         result = (ScratchObjectArray) obj.toScratch(vars, blocks);
         assertEquals(1, result.size());
     }
@@ -83,14 +86,14 @@ public class ScriptExpressionTest
     {
         ScriptExpression obj;
 
-        obj = new ScriptExpression(Arrays.asList(//
-                new BlockExpression(
+        obj = new ScriptExpression(null, Arrays.asList(//
+                new BlockExpression(null,
                         new BlockDescription.Builder().label("foo").build(),
                         Arrays.asList()),
-                new BlockExpression(
+                new BlockExpression(null,
                         new BlockDescription.Builder().label("bar").build(),
                         Arrays.asList()),
-                new BlockExpression(
+                new BlockExpression(null,
                         new BlockDescription.Builder().label("baz").build(),
                         Arrays.asList())//
         ));

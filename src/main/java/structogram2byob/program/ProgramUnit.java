@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import nsdlib.elements.NSDRoot;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.collections.ScratchObjectAbstractCollection;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
@@ -25,11 +26,12 @@ import structogram2byob.program.expressions.Expression;
 
 
 /**
- * A "program unit" is either a script or an invocable method that is part of a
+ * A "program unit" is either a script or an invokable method that is part of a
  * {@link Program} and can be converted to a Scratch array of its blocks.
  */
 public class ProgramUnit
 {
+    private final NSDRoot element;
     private final UnitType type;
     private final BlockDescription description;
     private final List<BlockExpression> blocks;
@@ -39,18 +41,30 @@ public class ProgramUnit
      * Constructs a new unit from the given header description and the given
      * blocks.
      *
+     * @param element The element this unit was constructed from.
      * @param type The type of this unit.
      * @param description The unit description.
      * @param blocks The blocks that form the unit body.
      */
-    public ProgramUnit(UnitType type, BlockDescription description,
+    public ProgramUnit(NSDRoot element, UnitType type,
+            BlockDescription description,
             Collection<? extends BlockExpression> blocks)
     {
+        this.element = element;
+
         this.type = type;
         this.description = description;
         this.blocks = Collections.unmodifiableList(new ArrayList<>(blocks));
 
         this.unitBlock = new UnitBlock(description, ScratchType.ANY);
+    }
+
+    /**
+     * @return The element this unit was constructed from.
+     */
+    public NSDRoot getElement()
+    {
+        return element;
     }
 
     /**
@@ -92,9 +106,12 @@ public class ProgramUnit
      * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks, including all custom blocks.
      * @return A {@link ScratchObject}.
+     *
+     * @throws ScratchConversionException When the conversion fails.
      */
     public ScratchObjectAbstractCollection toScratch(
             Map<String, VariableContext> vars, BlockRegistry blocks)
+            throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 
@@ -109,6 +126,10 @@ public class ProgramUnit
 
         if (type == UnitType.SCRIPT) {
             Block hat = blocks.lookup(description);
+            if (hat == null) {
+                throw new ScratchConversionException(element,
+                        "unknown block: " + description);
+            }
             a.add(hat.toScratch(Arrays.asList(), newVars, blocks));
         }
 
@@ -157,6 +178,7 @@ public class ProgramUnit
         @Override
         public ScratchObjectArray toScratch(List<Expression> params,
                 Map<String, VariableContext> vars, BlockRegistry blocks)
+                throws ScratchConversionException
         {
             ScratchObjectArray a = new ScratchObjectArray();
 

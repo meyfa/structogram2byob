@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import nsdlib.elements.NSDElement;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 
 
@@ -24,10 +26,14 @@ public class ScriptExpression extends Expression
     /**
      * Constructs a new expression with the given blocks.
      *
+     * @param element The element this expression stems from.
      * @param blocks The blocks contained in this script.
      */
-    public ScriptExpression(Collection<? extends BlockExpression> blocks)
+    public ScriptExpression(NSDElement element,
+            Collection<? extends BlockExpression> blocks)
     {
+        super(element);
+
         this.blocks = Collections.unmodifiableList(new ArrayList<>(blocks));
     }
 
@@ -55,7 +61,7 @@ public class ScriptExpression extends Expression
 
     @Override
     public ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks)
+            BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

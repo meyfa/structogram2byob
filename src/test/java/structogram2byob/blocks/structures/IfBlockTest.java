@@ -18,6 +18,7 @@ import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.FunctionBlock;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
@@ -27,7 +28,7 @@ import structogram2byob.program.expressions.ScriptExpression;
 public class IfBlockTest
 {
     @Test
-    public void convertsToScratch()
+    public void convertsToScratch() throws ScratchConversionException
     {
         IfBlock obj = IfBlock.instance;
 
@@ -35,8 +36,8 @@ public class IfBlockTest
                 .build();
 
         List<Expression> params = Arrays.asList(
-                new BlockExpression(trueDesc, Arrays.asList()),
-                new ScriptExpression(Arrays.asList()));
+                new BlockExpression(null, trueDesc, Arrays.asList()),
+                new ScriptExpression(null, Arrays.asList()));
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
         blocks.register(

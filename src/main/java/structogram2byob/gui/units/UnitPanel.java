@@ -80,4 +80,12 @@ public class UnitPanel extends JPanel
     {
         display.markError(element);
     }
+
+    /**
+     * Removes all error marks that were previously set.
+     */
+    public void clearErrorMarks()
+    {
+        display.clearErrorMarks();
+    }
 }

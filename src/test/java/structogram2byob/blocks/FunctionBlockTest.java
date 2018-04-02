@@ -16,6 +16,7 @@ import scratchlib.objects.fixed.data.ScratchObjectAbstractString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.inline.ScratchObjectAbstractNumber;
 import structogram2byob.ScratchType;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.NumberExpression;
@@ -25,7 +26,7 @@ import structogram2byob.program.expressions.StringExpression;
 public class FunctionBlockTest
 {
     @Test
-    public void convertsToScratch()
+    public void convertsToScratch() throws ScratchConversionException
     {
         FunctionBlock obj = new FunctionBlock(
                 new BlockDescription.Builder().label("foo")
@@ -33,8 +34,8 @@ public class FunctionBlockTest
                         .param(ScratchType.ANY, "param2").build(),
                 ScratchType.BOOLEAN, "do:something:");
 
-        List<Expression> params = Arrays.asList(new NumberExpression(42),
-                new StringExpression("hello"));
+        List<Expression> params = Arrays.asList(new NumberExpression(null, 42),
+                new StringExpression(null, "hello"));
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 

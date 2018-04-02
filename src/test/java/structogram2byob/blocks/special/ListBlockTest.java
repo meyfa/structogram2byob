@@ -16,6 +16,7 @@ import scratchlib.objects.fixed.data.ScratchObjectString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.user.morphs.ScratchObjectListMorph;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.StringExpression;
@@ -24,12 +25,13 @@ import structogram2byob.program.expressions.StringExpression;
 public class ListBlockTest
 {
     @Test
-    public void convertsToScratch()
+    public void convertsToScratch() throws ScratchConversionException
     {
         ListBlock obj = ListBlock.instance;
 
-        List<Expression> params = Arrays.asList(new StringExpression("hello"),
-                new StringExpression("world"));
+        List<Expression> params = Arrays.asList(
+                new StringExpression(null, "hello"),
+                new StringExpression(null, "world"));
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 

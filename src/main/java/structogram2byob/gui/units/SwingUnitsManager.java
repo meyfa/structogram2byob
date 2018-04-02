@@ -1,5 +1,6 @@
 package structogram2byob.gui.units;
 
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
@@ -75,9 +76,24 @@ public class SwingUnitsManager implements IUnitsManager
     }
 
     @Override
-    public void markError(int index, NSDElement element)
+    public void markError(NSDElement element)
     {
-        UnitPanel p = (UnitPanel) comp.getComponent(index);
-        p.markError(element);
+        for (int i = 0, n = comp.getComponentCount(); i < n; ++i) {
+            Component c = comp.getComponent(i);
+            if (c instanceof UnitPanel) {
+                ((UnitPanel) c).markError(element);
+            }
+        }
+    }
+
+    @Override
+    public void clearErrorMarks()
+    {
+        for (int i = 0, n = comp.getComponentCount(); i < n; ++i) {
+            Component c = comp.getComponent(i);
+            if (c instanceof UnitPanel) {
+                ((UnitPanel) c).clearErrorMarks();
+            }
+        }
     }
 }

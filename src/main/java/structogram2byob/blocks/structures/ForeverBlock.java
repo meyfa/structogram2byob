@@ -9,6 +9,7 @@ import structogram2byob.ScratchType;
 import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 
@@ -34,6 +35,7 @@ public class ForeverBlock extends Block
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
             Map<String, VariableContext> vars, BlockRegistry blocks)
+            throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

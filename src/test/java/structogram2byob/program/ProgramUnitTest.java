@@ -40,7 +40,7 @@ public class ProgramUnitTest
                 .label("do").label("something").build();
         List<BlockExpression> blocks = new ArrayList<>();
 
-        ProgramUnit obj = new ProgramUnit(UnitType.COMMAND, desc, blocks);
+        ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
         assertSame(UnitType.COMMAND, obj.getType());
         assertEquals(blocks, obj.getBlocks());
@@ -48,19 +48,19 @@ public class ProgramUnitTest
     }
 
     @Test
-    public void constructsInvocationBlock()
+    public void constructsInvocationBlock() throws ScratchConversionException
     {
         BlockDescription desc = new BlockDescription.Builder()//
                 .label("add").param(ScratchType.ANY, "a")
                 .param(ScratchType.ANY, "b").build();
         List<BlockExpression> blocks = new ArrayList<>();
 
-        ProgramUnit obj = new ProgramUnit(UnitType.COMMAND, desc, blocks);
+        ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
         Block invoc = obj.getInvocationBlock();
 
-        List<Expression> params = Arrays.asList(new NumberExpression(10),
-                new NumberExpression(20));
+        List<Expression> params = Arrays.asList(new NumberExpression(null, 10),
+                new NumberExpression(null, 20));
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
 
@@ -80,13 +80,13 @@ public class ProgramUnitTest
     }
 
     @Test
-    public void generatesEmptyCommand()
+    public void generatesEmptyCommand() throws ScratchConversionException
     {
         BlockDescription desc = new BlockDescription.Builder()//
                 .label("do").label("something").build();
         List<BlockExpression> blocks = new ArrayList<>();
 
-        ProgramUnit obj = new ProgramUnit(UnitType.COMMAND, desc, blocks);
+        ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
@@ -97,13 +97,13 @@ public class ProgramUnitTest
     }
 
     @Test
-    public void generatesScriptHat()
+    public void generatesScriptHat() throws ScratchConversionException
     {
         BlockDescription desc = new BlockDescription.Builder()//
                 .label("when").label("start").label("clicked").build();
         List<BlockExpression> blocks = new ArrayList<>();
 
-        ProgramUnit obj = new ProgramUnit(UnitType.SCRIPT, desc, blocks);
+        ProgramUnit obj = new ProgramUnit(null, UnitType.SCRIPT, desc, blocks);
 
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
@@ -115,15 +115,16 @@ public class ProgramUnitTest
     }
 
     @Test
-    public void generatesBlocks()
+    public void generatesBlocks() throws ScratchConversionException
     {
         BlockDescription desc = new BlockDescription.Builder()//
                 .label("when").label("start").label("clicked").build();
         List<BlockExpression> blocks = new ArrayList<>();
-        blocks.add(new BlockExpression(ForeverBlock.instance.getDescription(),
-                Arrays.asList(new ScriptExpression(Arrays.asList()))));
+        blocks.add(new BlockExpression(null,
+                ForeverBlock.instance.getDescription(),
+                Arrays.asList(new ScriptExpression(null, Arrays.asList()))));
 
-        ProgramUnit obj = new ProgramUnit(UnitType.SCRIPT, desc, blocks);
+        ProgramUnit obj = new ProgramUnit(null, UnitType.SCRIPT, desc, blocks);
 
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
@@ -137,6 +138,7 @@ public class ProgramUnitTest
 
     @Test
     public void supportsCustomBlockParameters()
+            throws ScratchConversionException
     {
         FunctionBlock report = new FunctionBlock(new BlockDescription.Builder()
                 .label("report").param(ScratchType.ANY).build(), null,
@@ -150,16 +152,22 @@ public class ProgramUnitTest
                 .label("add").param(ScratchType.ANY, "a")
                 .param(ScratchType.ANY, "b").build();
         List<BlockExpression> blocks = new ArrayList<>();
-        blocks.add(new BlockExpression(report.getDescription(), Arrays.asList(//
-                new BlockExpression(add.getDescription(), Arrays.asList(//
-                        new BlockExpression(new BlockDescription.Builder()
-                                .label("a").build(), Arrays.asList()), //
-                        new BlockExpression(new BlockDescription.Builder()
-                                .label("b").build(), Arrays.asList())//
-                ))//
-        )));
+        blocks.add(new BlockExpression(null, report.getDescription(),
+                Arrays.asList(//
+                        new BlockExpression(null, add.getDescription(),
+                                Arrays.asList(//
+                                        new BlockExpression(null,
+                                                new BlockDescription.Builder()
+                                                        .label("a").build(),
+                                                Arrays.asList()), //
+                                        new BlockExpression(null,
+                                                new BlockDescription.Builder()
+                                                        .label("b").build(),
+                                                Arrays.asList())//
+                                ))//
+                )));
 
-        ProgramUnit obj = new ProgramUnit(UnitType.COMMAND, desc, blocks);
+        ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
@@ -172,7 +180,7 @@ public class ProgramUnitTest
     }
 
     @Test
-    public void supportsScriptVariablesBlock()
+    public void supportsScriptVariablesBlock() throws ScratchConversionException
     {
         ScriptVariablesBlock svars = ScriptVariablesBlock.instance;
         FunctionBlock say = new FunctionBlock(new BlockDescription.Builder()
@@ -181,18 +189,18 @@ public class ProgramUnitTest
         BlockDescription desc = new BlockDescription.Builder()//
                 .label("do").label("something").build();
         List<BlockExpression> blocks = new ArrayList<>();
-        blocks.add(new BlockExpression(svars.getDescription(), Arrays.asList(//
-                new BlockExpression(
-                        new BlockDescription.Builder().label("foo").build(),
-                        Arrays.asList()))//
+        blocks.add(new BlockExpression(null, svars.getDescription(),
+                Arrays.asList(//
+                        new BlockExpression(null, new BlockDescription.Builder()
+                                .label("foo").build(), Arrays.asList()))//
         ));
-        blocks.add(new BlockExpression(say.getDescription(), Arrays.asList(//
-                new BlockExpression(
-                        new BlockDescription.Builder().label("foo").build(),
-                        Arrays.asList())//
-        )));
+        blocks.add(new BlockExpression(null, say.getDescription(),
+                Arrays.asList(//
+                        new BlockExpression(null, new BlockDescription.Builder()
+                                .label("foo").build(), Arrays.asList())//
+                )));
 
-        ProgramUnit obj = new ProgramUnit(UnitType.COMMAND, desc, blocks);
+        ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();

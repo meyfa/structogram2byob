@@ -14,6 +14,7 @@ import org.junit.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.ScriptExpression;
@@ -22,12 +23,12 @@ import structogram2byob.program.expressions.ScriptExpression;
 public class ForeverBlockTest
 {
     @Test
-    public void convertsToScratch()
+    public void convertsToScratch() throws ScratchConversionException
     {
         ForeverBlock obj = ForeverBlock.instance;
 
         List<Expression> params = Arrays
-                .asList(new ScriptExpression(Arrays.asList()));
+                .asList(new ScriptExpression(null, Arrays.asList()));
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 

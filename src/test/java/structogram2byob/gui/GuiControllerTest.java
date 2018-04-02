@@ -1,8 +1,11 @@
 package structogram2byob.gui;
 
+import static org.hamcrest.CoreMatchers.anyOf;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.image.BufferedImage;
@@ -96,7 +99,6 @@ public class GuiControllerTest
         private boolean removeAllCalled = false;
 
         private boolean markErrorCalled = false;
-        private int markErrorWithIndex;
         private NSDElement markErrorWithElement;
 
         @Override
@@ -127,11 +129,15 @@ public class GuiControllerTest
         }
 
         @Override
-        public void markError(int index, NSDElement element)
+        public void markError(NSDElement element)
         {
             markErrorCalled = true;
-            markErrorWithIndex = index;
             markErrorWithElement = element;
+        }
+
+        @Override
+        public void clearErrorMarks()
+        {
         }
     }
 
@@ -206,7 +212,27 @@ public class GuiControllerTest
     }
 
     @Test
-    public void marksParseErrors()
+    public void marksLexerErrors()
+    {
+        BlockRegistry reg = new BlockRegistry();
+        MockDialogFactory dialogs = new MockDialogFactory();
+        MockFrameManager frame = new MockFrameManager();
+
+        GuiController obj = new GuiController(reg, dialogs, frame);
+
+        NSDRoot unit0 = new NSDRoot("COMMAND foo");
+        obj.add(unit0);
+        NSDRoot unit1 = new NSDRoot("COMMAND bar");
+        NSDInstruction faulty = new NSDInstruction("lexer \"error");
+        unit1.addChild(faulty);
+        obj.add(unit1);
+
+        assertTrue(frame.units.markErrorCalled);
+        assertSame(faulty, frame.units.markErrorWithElement);
+    }
+
+    @Test
+    public void marksAstParserErrors()
     {
         BlockRegistry reg = new BlockRegistry();
         MockDialogFactory dialogs = new MockDialogFactory();
@@ -222,8 +248,46 @@ public class GuiControllerTest
         obj.add(unit1);
 
         assertTrue(frame.units.markErrorCalled);
-        assertEquals(1, frame.units.markErrorWithIndex);
         assertSame(faulty, frame.units.markErrorWithElement);
+    }
+
+    @Test
+    public void marksUnknownBlocks()
+    {
+        BlockRegistry reg = new BlockRegistry();
+        MockDialogFactory dialogs = new MockDialogFactory();
+        MockFrameManager frame = new MockFrameManager();
+
+        GuiController obj = new GuiController(reg, dialogs, frame);
+
+        NSDRoot unit0 = new NSDRoot("COMMAND foo");
+        obj.add(unit0);
+        NSDRoot unit1 = new NSDRoot("COMMAND bar");
+        NSDInstruction faulty = new NSDInstruction("missing instruction");
+        unit1.addChild(faulty);
+        obj.add(unit1);
+
+        assertTrue(frame.units.markErrorCalled);
+        assertSame(faulty, frame.units.markErrorWithElement);
+    }
+
+    @Test
+    public void marksDuplicateDefinitions()
+    {
+        BlockRegistry reg = new BlockRegistry();
+        MockDialogFactory dialogs = new MockDialogFactory();
+        MockFrameManager frame = new MockFrameManager();
+
+        GuiController obj = new GuiController(reg, dialogs, frame);
+
+        NSDRoot unit0 = new NSDRoot("COMMAND foo (a) (b)");
+        obj.add(unit0);
+        NSDRoot unit1 = new NSDRoot("COMMAND foo (a) (b)");
+        obj.add(unit1);
+
+        assertTrue(frame.units.markErrorCalled);
+        assertThat(frame.units.markErrorWithElement,
+                anyOf(is(unit0), is(unit1)));
     }
 
     @Test

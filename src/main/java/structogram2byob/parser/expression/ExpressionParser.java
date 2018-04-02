@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import nsdlib.elements.NSDElement;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.lexer.Token;
 import structogram2byob.lexer.TokenType;
@@ -24,15 +25,18 @@ import structogram2byob.program.expressions.StringExpression;
  */
 public class ExpressionParser
 {
+    private final NSDElement element;
     private final AstParser astParser;
 
     /**
      * Constructs an expression parser on the given input.
      *
+     * @param element The element this expression stems from.
      * @param input The input string.
      */
-    public ExpressionParser(String input)
+    public ExpressionParser(NSDElement element, String input)
     {
+        this.element = element;
         this.astParser = new AstParser(input);
     }
 
@@ -134,7 +138,7 @@ public class ExpressionParser
             }
         }
 
-        return new BlockExpression(builder.build(), params);
+        return new BlockExpression(element, builder.build(), params);
     }
 
     /**
@@ -149,7 +153,7 @@ public class ExpressionParser
             throws ExpressionParserException
     {
         try {
-            return new NumberExpression(Double.parseDouble(s));
+            return new NumberExpression(element, Double.parseDouble(s));
         } catch (NumberFormatException e) {
             throw new ExpressionParserException(e);
         }
@@ -168,7 +172,8 @@ public class ExpressionParser
             throws ExpressionParserException
     {
         try {
-            return new StringExpression(s.substring(1, s.length() - 1));
+            return new StringExpression(element,
+                    s.substring(1, s.length() - 1));
         } catch (IndexOutOfBoundsException e) {
             throw new ExpressionParserException(e);
         }

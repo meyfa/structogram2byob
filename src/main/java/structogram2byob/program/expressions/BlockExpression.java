@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import nsdlib.elements.NSDElement;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectString;
@@ -16,6 +17,7 @@ import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.ProgramUnit;
+import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.VariableContext.ScriptSpecific;
 import structogram2byob.program.VariableContext.UnitSpecific;
@@ -33,12 +35,15 @@ public class BlockExpression extends Expression
      * Constructs a new expression with the given description, and the given
      * parameters to substitute into the description.
      *
+     * @param element The element this expression stems from.
      * @param description The block description.
      * @param params The block parameters.
      */
-    public BlockExpression(BlockDescription description,
+    public BlockExpression(NSDElement element, BlockDescription description,
             Collection<? extends Expression> params)
     {
+        super(element);
+
         this.description = description;
         this.parameters = Collections.unmodifiableList(new ArrayList<>(params));
     }
@@ -67,7 +72,7 @@ public class BlockExpression extends Expression
 
     @Override
     public ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks)
+            BlockRegistry blocks) throws ScratchConversionException
     {
         // check if this is a variable
         if (description.countParts() == 1 && !description.isParameter(0)) {
@@ -82,7 +87,8 @@ public class BlockExpression extends Expression
         // serialize as block
         Block b = blocks.lookup(description);
         if (b == null) {
-            throw new IllegalArgumentException("unknown block: " + description);
+            throw new ScratchConversionException(getElement(),
+                    "unknown block: " + description);
         }
 
         return b.toScratch(parameters, vars, blocks);
