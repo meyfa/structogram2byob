@@ -16,7 +16,6 @@ import scratchlib.objects.user.morphs.ScratchObjectStageMorph;
 import scratchlib.project.ScratchProject;
 import scratchlib.project.ScratchVersion;
 import structogram2byob.ScratchType;
-import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;

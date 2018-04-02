@@ -10,8 +10,8 @@ import java.util.stream.Collectors;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
-import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.VariableContext;
 
 
 /**

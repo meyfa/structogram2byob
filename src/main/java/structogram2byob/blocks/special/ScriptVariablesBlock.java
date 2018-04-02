@@ -10,10 +10,10 @@ import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import scratchlib.objects.user.ScratchObjectVariableFrame;
 import structogram2byob.ScratchType;
-import structogram2byob.VariableContext;
 import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 
 

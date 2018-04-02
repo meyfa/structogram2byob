@@ -15,8 +15,8 @@ import scratchlib.objects.fixed.data.ScratchObjectAbstractString;
 import scratchlib.objects.fixed.data.ScratchObjectString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.user.morphs.ScratchObjectListMorph;
-import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.StringExpression;
 

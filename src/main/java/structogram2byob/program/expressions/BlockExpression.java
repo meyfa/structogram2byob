@@ -12,13 +12,13 @@ import scratchlib.objects.fixed.data.ScratchObjectString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
-import structogram2byob.VariableContext;
-import structogram2byob.VariableContext.ScriptSpecific;
-import structogram2byob.VariableContext.UnitSpecific;
 import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.ProgramUnit;
+import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableContext.ScriptSpecific;
+import structogram2byob.program.VariableContext.UnitSpecific;
 
 
 /**

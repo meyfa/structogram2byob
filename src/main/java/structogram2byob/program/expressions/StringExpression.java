@@ -5,8 +5,8 @@ import java.util.Map;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
-import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.VariableContext;
 
 
 /**

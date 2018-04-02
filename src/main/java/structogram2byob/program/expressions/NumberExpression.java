@@ -6,8 +6,8 @@ import scratchlib.objects.ScratchObject;
 import scratchlib.objects.inline.ScratchObjectFloat;
 import scratchlib.objects.inline.ScratchObjectSmallInteger;
 import structogram2byob.ScratchType;
-import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.VariableContext;
 
 
 /**

@@ -1,7 +1,6 @@
-package structogram2byob;
+package structogram2byob.program;
 
 import scratchlib.objects.user.ScratchObjectVariableFrame;
-import structogram2byob.program.ProgramUnit;
 
 
 /**

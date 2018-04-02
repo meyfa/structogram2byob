@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
-import structogram2byob.VariableContext;
 import structogram2byob.blocks.BlockRegistry;
+import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.ScriptExpression;
 
