@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root xmlns:nsd="http://structorizer.fisch.lu/" version="3.26-01" preRepeat="until " postFor="to" preReturn="return" postForIn="in" preWhile="while " output="OUTPUT" input="INPUT" preFor="for" preExit="exit" preLeave="leave" ignoreCase="true" preForIn="foreach" stepFor="by" text="&#34;COMMAND do something&#34;" comment="&#34;&#34;" color="ffffff" type="program" style="nice">
+	<children>
+	</children>
+</root>

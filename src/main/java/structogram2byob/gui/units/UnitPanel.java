@@ -1,4 +1,4 @@
-package structogram2byob.gui.panels;
+package structogram2byob.gui.units;
 
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;

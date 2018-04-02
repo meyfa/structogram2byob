@@ -91,6 +91,10 @@ public class AstParser
     // corresponds to production F -> "(" E ")" | G
     private void parseOptionallyWrapped(AstNode ast) throws AstParserException
     {
+        if (current == null) {
+            throw new AstParserException("expected a token but got nothing");
+        }
+
         if (current.getType() == TokenType.PAREN_OPEN) {
 
             match(TokenType.PAREN_OPEN);

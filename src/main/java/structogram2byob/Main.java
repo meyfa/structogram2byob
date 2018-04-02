@@ -19,6 +19,10 @@ import structogram2byob.blocks.structures.IfBlock;
 import structogram2byob.blocks.structures.IfElseBlock;
 import structogram2byob.blocks.structures.RepeatBlock;
 import structogram2byob.gui.GuiController;
+import structogram2byob.gui.dialogs.IDialogFactory;
+import structogram2byob.gui.dialogs.SwingDialogFactory;
+import structogram2byob.gui.frame.IFrameManager;
+import structogram2byob.gui.frame.SwingFrameManager;
 
 
 /**
@@ -55,7 +59,10 @@ public class Main
             e.printStackTrace();
         }
 
-        GuiController gui = new GuiController(blocks);
+        IDialogFactory dialogs = new SwingDialogFactory();
+        IFrameManager frame = new SwingFrameManager();
+
+        GuiController gui = new GuiController(blocks, dialogs, frame);
         gui.show();
     }
 

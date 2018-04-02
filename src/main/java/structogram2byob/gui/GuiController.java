@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 
 import nsdlib.elements.NSDElement;
 import nsdlib.elements.NSDRoot;
@@ -18,7 +16,10 @@ import nsdlib.reader.StructorizerReader;
 import scratchlib.project.ScratchProject;
 import scratchlib.writer.ScratchWriter;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.gui.managers.GuiFrameManager;
+import structogram2byob.gui.dialogs.IDialog;
+import structogram2byob.gui.dialogs.IDialogFactory;
+import structogram2byob.gui.frame.IFrameManager;
+import structogram2byob.gui.menu.IMenuBuilder;
 import structogram2byob.parser.nsd.NSDParser;
 import structogram2byob.parser.nsd.NSDParserException;
 import structogram2byob.program.Program;
@@ -29,11 +30,14 @@ import structogram2byob.program.Program;
  */
 public class GuiController
 {
-    private static JFileChooser importChooser, exportChooser, saveImageChooser;
     private static final StructorizerReader reader = new StructorizerReader();
 
     private final BlockRegistry blocks;
-    private final GuiFrameManager frameMan;
+
+    private final IDialogFactory dialogFactory;
+    private final IDialog<File> importChooser, exportChooser, saveImageChooser;
+
+    private final IFrameManager frameManager;
 
     private final List<NSDRoot> diagrams = new ArrayList<>();
     private ScratchProject project;
@@ -41,39 +45,29 @@ public class GuiController
     /**
      * @param blocks The block registry used by this instance.
      */
-    public GuiController(BlockRegistry blocks)
+    public GuiController(BlockRegistry blocks, IDialogFactory dialogFactory,
+            IFrameManager frameManager)
     {
         this.blocks = blocks;
-        this.frameMan = new GuiFrameManager(this);
 
-        if (importChooser == null) {
-            importChooser = new JFileChooser();
-            importChooser.setFileFilter(
-                    new ExtensionFileFilter("Structorizer Files", "nsd"));
-            importChooser.setAcceptAllFileFilterUsed(true);
-        }
+        this.dialogFactory = dialogFactory;
 
-        if (exportChooser == null) {
-            exportChooser = new JFileChooser();
-            exportChooser.setFileFilter(
-                    new ExtensionFileFilter("BYOB Project Files", "ypr"));
-            exportChooser.setAcceptAllFileFilterUsed(true);
-        }
+        importChooser = dialogFactory.createOpenDialog(
+                new ExtensionFileFilter("Structorizer Files", "nsd"));
+        exportChooser = dialogFactory.createSaveDialog(
+                new ExtensionFileFilter("BYOB Project Files", "ypr"));
+        saveImageChooser = dialogFactory.createSaveDialog(
+                new ExtensionFileFilter("Portable Network Graphics", "png"));
 
-        if (saveImageChooser == null) {
-            saveImageChooser = new JFileChooser();
-            saveImageChooser.setFileFilter(new ExtensionFileFilter(
-                    "Portable Network Graphics", "png"));
-            saveImageChooser.setAcceptAllFileFilterUsed(false);
-        }
-    }
+        this.frameManager = frameManager;
 
-    /**
-     * @return The block registry used by this instance.
-     */
-    public BlockRegistry getBlockRegistry()
-    {
-        return blocks;
+        IMenuBuilder menu = frameManager.getMenu();
+        menu.addControl("Import Structogram", this::openImportDialog);
+        menu.addControl("Remove All", this::removeAll);
+        menu.addSeparator();
+        menu.addControl("Export as BYOB Project", this::openExportDialog);
+
+        updateProject();
     }
 
     /**
@@ -81,7 +75,7 @@ public class GuiController
      */
     public void show()
     {
-        frameMan.show();
+        frameManager.show();
     }
 
     /**
@@ -92,9 +86,7 @@ public class GuiController
      */
     private boolean confirm(String msg)
     {
-        return JOptionPane.showConfirmDialog(frameMan.getFrame(), msg,
-                "Confirm action", JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION;
+        return dialogFactory.createConfirmationDialog(msg).show();
     }
 
     /**
@@ -116,7 +108,7 @@ public class GuiController
             } catch (NSDParserException e) {
                 NSDElement el = e.getElement();
                 if (el != null) {
-                    frameMan.getUnitsPanel().markError(i, el);
+                    frameManager.getUnits().markError(i, el);
                 }
                 failed = true;
             }
@@ -134,7 +126,7 @@ public class GuiController
     public void add(NSDRoot nsd)
     {
         diagrams.add(nsd);
-        frameMan.getUnitsPanel().doAdd(nsd);
+        frameManager.getUnits().addUnit(this, nsd);
 
         updateProject();
     }
@@ -152,7 +144,7 @@ public class GuiController
             int index = diagrams.indexOf(nsd);
 
             diagrams.remove(index);
-            frameMan.getUnitsPanel().doRemove(index);
+            frameManager.getUnits().removeUnit(index);
 
             updateProject();
 
@@ -168,7 +160,7 @@ public class GuiController
         if (confirm("Do you really want to remove all project units?")) {
 
             diagrams.clear();
-            frameMan.getUnitsPanel().doClear();
+            frameManager.getUnits().removeAllUnits();
 
             updateProject();
 
@@ -180,17 +172,15 @@ public class GuiController
      */
     public void openImportDialog()
     {
-        int result = importChooser.showOpenDialog(frameMan.getFrame());
-        if (result == JFileChooser.APPROVE_OPTION) {
+        File file = importChooser.show();
+        if (file == null) {
+            return;
+        }
 
-            File file = importChooser.getSelectedFile();
-
-            try (FileInputStream in = new FileInputStream(file)) {
-                add(reader.read(in));
-            } catch (NSDReaderException | IOException e) {
-                e.printStackTrace();
-            }
-
+        try (FileInputStream in = new FileInputStream(file)) {
+            add(reader.read(in));
+        } catch (NSDReaderException | IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -203,21 +193,20 @@ public class GuiController
             return;
         }
 
-        int result = exportChooser.showSaveDialog(frameMan.getFrame());
-        if (result == JFileChooser.APPROVE_OPTION) {
+        File file = exportChooser.show();
+        if (file == null) {
+            return;
+        }
 
-            File file = exportChooser.getSelectedFile();
-            if (!file.getName().toLowerCase().endsWith(".ypr")) {
-                file = new File(file.getParentFile(), file.getName() + ".ypr");
-            }
+        if (!file.getName().toLowerCase().endsWith(".ypr")) {
+            file = new File(file.getParentFile(), file.getName() + ".ypr");
+        }
 
-            ScratchWriter w = new ScratchWriter(file);
-            try {
-                w.write(project);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        ScratchWriter w = new ScratchWriter(file);
+        try {
+            w.write(project);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -228,20 +217,19 @@ public class GuiController
      */
     public void openImageSaveDialog(BufferedImage img)
     {
-        int result = saveImageChooser.showSaveDialog(frameMan.getFrame());
-        if (result == JFileChooser.APPROVE_OPTION) {
+        File file = saveImageChooser.show();
+        if (file == null) {
+            return;
+        }
 
-            File file = saveImageChooser.getSelectedFile();
-            if (!file.getName().toLowerCase().endsWith(".png")) {
-                file = new File(file.getParentFile(), file.getName() + ".png");
-            }
+        if (!file.getName().toLowerCase().endsWith(".png")) {
+            file = new File(file.getParentFile(), file.getName() + ".png");
+        }
 
-            try {
-                ImageIO.write(img, "PNG", file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+        try {
+            ImageIO.write(img, "PNG", file);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
