@@ -74,7 +74,7 @@ public class Lexer
     }
 
     /**
-     * Tries to obtain the next token without modifying the instance's state.
+     * Tries to obtain the next token. This does not modify the instance state.
      *
      * @return The next token, or null if it could not be identified.
      * @throws LexerException If a token could be identified but is malformed.
@@ -84,63 +84,86 @@ public class Lexer
         char c = input.charAt(index);
 
         if (c == '(') {
-            return new Token(TokenType.PAREN_OPEN, Character.toString(c),
-                    pastLines, index - lineStart);
+            return peekParenOpen();
         } else if (c == ')') {
-            return new Token(TokenType.PAREN_CLOSE, Character.toString(c),
-                    pastLines, index - lineStart);
+            return peekParenClose();
         } else if (c == '"') {
-
-            // find string end index
-            int end = input.indexOf('"', index + 1);
-            if (end < 0) {
-                throw new LexerException("string is unending");
-            }
-
-            return new Token(TokenType.STRING, input.substring(index, end + 1),
-                    pastLines, index - lineStart);
-
+            return peekString();
         } else if (('0' <= c && '9' >= c) || c == '-' || c == '+') {
-
-            // collect all characters potentially part of the number
-            StringBuilder sb = new StringBuilder();
-            for (int i = index; i < input.length(); ++i) {
-                c = input.charAt(i);
-                if (i != index && (c < '0' || '9' < c) && c != '.') {
-                    break;
-                }
-                sb.append(c);
-            }
-
-            String s = sb.toString();
-            // sign only is a label
-            if (s.length() == 1 && (s.charAt(0) == '-' || s.charAt(0) == '+')) {
-                return new Token(TokenType.LABEL, s, pastLines,
-                        index - lineStart);
-            }
-            // validate string to be numeric
-            if (!PATTERN_NUMBER.matcher(s).matches()) {
-                throw new LexerException("illegal number format for " + s);
-            }
-
-            return new Token(TokenType.NUMBER, s, pastLines, index - lineStart);
-
+            return peekNumber();
         }
 
         // nothing else matched, so this is a label
+        return peekLabel();
+    }
 
-        // collect all characters until next token start or whitespace
+    private Token peekParenOpen()
+    {
+        char c = input.charAt(index);
+        return new Token(TokenType.PAREN_OPEN, Character.toString(c), pastLines,
+                index - lineStart);
+    }
+
+    private Token peekParenClose()
+    {
+        char c = input.charAt(index);
+        return new Token(TokenType.PAREN_CLOSE, Character.toString(c),
+                pastLines, index - lineStart);
+    }
+
+    private Token peekString() throws LexerException
+    {
+        // find string end index
+        int end = input.indexOf('"', index + 1);
+        if (end == -1) {
+            throw new LexerException("string is unending");
+        }
+        String s = input.substring(index, end + 1);
+
+        return new Token(TokenType.STRING, s, pastLines, index - lineStart);
+    }
+
+    private Token peekNumber() throws LexerException
+    {
+        // collect all characters potentially part of the number
         StringBuilder sb = new StringBuilder();
         for (int i = index; i < input.length(); ++i) {
-            c = input.charAt(i);
-            if (c == '(' || c == ')' || c == '"' || Character.isWhitespace(c)) {
+            char c = input.charAt(i);
+            if (i != index && (c < '0' || c > '9') && c != '.') {
                 break;
             }
             sb.append(c);
         }
 
-        return new Token(TokenType.LABEL, sb.toString(), pastLines,
-                index - lineStart);
+        String s = sb.toString();
+
+        // sign only is a label
+        if (s.equals("-") || s.equals("+")) {
+            return new Token(TokenType.LABEL, s, pastLines, index - lineStart);
+        }
+
+        // validate string to be numeric
+        if (!PATTERN_NUMBER.matcher(s).matches()) {
+            throw new LexerException("illegal number format for " + s);
+        }
+
+        return new Token(TokenType.NUMBER, s, pastLines, index - lineStart);
+    }
+
+    private Token peekLabel() throws LexerException
+    {
+        // collect all characters until next token start or whitespace
+        StringBuilder sb = new StringBuilder();
+        for (int i = index; i < input.length(); ++i) {
+            char c = input.charAt(i);
+            if (c == '(' || c == ')' || c == '"' || Character.isWhitespace(c)) {
+                break;
+            }
+            sb.append(c);
+        }
+        String s = sb.toString();
+
+        return new Token(TokenType.LABEL, s, pastLines, index - lineStart);
     }
 
     /**

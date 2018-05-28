@@ -121,6 +121,13 @@ public class LexerTest
         obj.next();
     }
 
+    @Test(expected = LexerException.class)
+    public void throwsForIllegalNumberFormats() throws LexerException
+    {
+        Lexer obj = new Lexer("10.3.42");
+        obj.next();
+    }
+
     @Test
     public void setsTokenPosition() throws LexerException
     {
