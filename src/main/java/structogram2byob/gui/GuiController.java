@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Consumer;
 
 import javax.imageio.ImageIO;
 
@@ -114,27 +115,14 @@ public class GuiController
         this.project = null;
         frameManager.getUnits().clearErrorMarks();
 
-        Program prog = new Program();
-
-        boolean failed = false;
-        for (int i = 0; i < diagrams.size(); ++i) {
-
-            NSDRoot nsd = diagrams.get(i);
-            NSDParser parser = new NSDParser(nsd);
-
-            try {
-                prog.addUnit(parser.parse());
-            } catch (NSDParserException e) {
-                NSDElement el = e.getElement();
-                if (el != null) {
-                    frameManager.getUnits().markError(el);
-                }
-                failed = true;
+        Program prog = createProgram(err -> {
+            NSDElement el = err.getElement();
+            if (el != null) {
+                frameManager.getUnits().markError(el);
             }
+        });
 
-        }
-
-        if (failed) {
+        if (prog == null) {
             return;
         }
 
@@ -146,6 +134,24 @@ public class GuiController
                 frameManager.getUnits().markError(el);
             }
         }
+    }
+
+    private Program createProgram(Consumer<NSDParserException> errorHandler)
+    {
+        Program prog = new Program();
+        boolean failed = false;
+
+        for (NSDRoot nsd : diagrams) {
+            NSDParser parser = new NSDParser(nsd);
+            try {
+                prog.addUnit(parser.parse());
+            } catch (NSDParserException err) {
+                errorHandler.accept(err);
+                failed = true;
+            }
+        }
+
+        return failed ? null : prog;
     }
 
     /**
