@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.StringJoiner;
 
 import nsdlib.elements.NSDElement;
 import scratchlib.objects.ScratchObject;
@@ -135,21 +136,16 @@ public class BlockExpression extends Expression
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder();
+        StringJoiner sj = new StringJoiner(" ", "(", ")");
 
-        sb.append('(');
         for (int i = 0, n = description.countParts(), pi = 0; i < n; ++i) {
-            if (i > 0) {
-                sb.append(' ');
-            }
             if (description.isParameter(i)) {
-                sb.append(parameters.get(pi++));
+                sj.add(parameters.get(pi++).toString());
             } else {
-                sb.append(description.getLabel(i));
+                sj.add(description.getLabel(i));
             }
         }
-        sb.append(')');
 
-        return sb.toString();
+        return sj.toString();
     }
 }

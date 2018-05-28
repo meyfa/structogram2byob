@@ -191,26 +191,8 @@ public class BlockDescription
     @Override
     public String toString()
     {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < parts.size(); ++i) {
-
-            if (isParameter(i)) {
-                sb.append('(');
-                sb.append(getType(i).name().toLowerCase());
-                if (isList(i)) {
-                    sb.append("...");
-                }
-                sb.append(") ");
-                continue;
-            }
-
-            sb.append(parts.get(i));
-            sb.append(' ');
-
-        }
-
-        return sb.toString().trim();
+        return parts.stream().map(Object::toString)
+                .collect(Collectors.joining(" "));
     }
 
     /**
@@ -343,6 +325,21 @@ public class BlockDescription
             Parameter other = (Parameter) obj;
             return Objects.equals(label, other.label) && list == other.list
                     && type == other.type;
+        }
+
+        @Override
+        public String toString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.append('(');
+            sb.append(type.name().toLowerCase());
+            if (list) {
+                sb.append("...");
+            }
+            sb.append(')');
+
+            return sb.toString();
         }
     }
 }
