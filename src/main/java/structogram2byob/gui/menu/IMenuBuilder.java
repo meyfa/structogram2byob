@@ -26,6 +26,12 @@ public interface IMenuBuilder
     void addSeparator();
 
     /**
+     * Adds a separator that takes up all remaining space, so that components
+     * added after it are placed at the right edge of the menu.
+     */
+    void addFiller();
+
+    /**
      * @return The managed panel, or {@code null} if not using Swing.
      */
     JPanel getPanel();

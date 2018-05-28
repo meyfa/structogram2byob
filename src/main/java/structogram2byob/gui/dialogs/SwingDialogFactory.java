@@ -45,4 +45,14 @@ public class SwingDialogFactory implements IDialogFactory
                 "Confirm action", JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION;
     }
+
+    @Override
+    public IDialog<Void> createMessageDialog(String message)
+    {
+        return () -> {
+            JOptionPane.showMessageDialog(null, message, "Information",
+                    JOptionPane.INFORMATION_MESSAGE);
+            return null;
+        };
+    }
 }

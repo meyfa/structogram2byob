@@ -40,6 +40,9 @@ public class GuiControllerTest
         private File saveResult;
         private boolean saveCalled;
 
+        private boolean messageCalled;
+        private String messageText;
+
         @Override
         public IDialog<File> createSaveDialog(FileFilter type)
         {
@@ -66,6 +69,16 @@ public class GuiControllerTest
                 return confirmationResult;
             };
         }
+
+        @Override
+        public IDialog<Void> createMessageDialog(String message)
+        {
+            return () -> {
+                messageCalled = true;
+                messageText = message;
+                return null;
+            };
+        }
     }
 
     private static class MockMenuBuilder implements IMenuBuilder
@@ -77,6 +90,11 @@ public class GuiControllerTest
 
         @Override
         public void addSeparator()
+        {
+        }
+
+        @Override
+        public void addFiller()
         {
         }
 
@@ -483,5 +501,20 @@ public class GuiControllerTest
                 new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
 
         assertTrue(out.isFile());
+    }
+
+    @Test
+    public void showsAboutDialog()
+    {
+        BlockRegistry reg = new BlockRegistry();
+        MockDialogFactory dialogs = new MockDialogFactory();
+        MockFrameManager frame = new MockFrameManager();
+
+        GuiController obj = new GuiController(reg, dialogs, frame);
+
+        obj.openAboutDialog();
+
+        assertTrue(dialogs.messageCalled);
+        assertTrue(dialogs.messageText.contains("Copyright"));
     }
 }

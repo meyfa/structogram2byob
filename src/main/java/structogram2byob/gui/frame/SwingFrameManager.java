@@ -32,7 +32,7 @@ public class SwingFrameManager implements IFrameManager
 
         frame = new JFrame("structogram2byob");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setMinimumSize(new Dimension(480, 360));
+        frame.setMinimumSize(new Dimension(540, 360));
         frame.setPreferredSize(new Dimension(1280, 720));
 
         frame.setLayout(new BorderLayout());

@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 
@@ -69,6 +70,8 @@ public class GuiController
         menu.addControl("Remove All", this::removeAll);
         menu.addSeparator();
         menu.addControl("Export as BYOB Project", this::openExportDialog);
+        menu.addFiller();
+        menu.addControl("About", this::openAboutDialog);
 
         updateProject();
     }
@@ -248,5 +251,23 @@ public class GuiController
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Shows a dialog with explanatory and licensing information.
+     */
+    public void openAboutDialog()
+    {
+        StringBuilder sb = new StringBuilder();
+
+        try (Scanner sc = new Scanner(
+                getClass().getResourceAsStream("/about.txt"))) {
+            while (sc.hasNextLine()) {
+                sb.append(sc.nextLine());
+                sb.append('\n');
+            }
+        }
+
+        dialogFactory.createMessageDialog(sb.toString()).show();
     }
 }

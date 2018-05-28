@@ -34,4 +34,12 @@ public interface IDialogFactory
      * @return A new dialog.
      */
     IDialog<Boolean> createConfirmationDialog(String message);
+
+    /**
+     * Creates a new dialog that shows a simple message to the user.
+     *
+     * @param message The message to show.
+     * @return A new dialog.
+     */
+    IDialog<Void> createMessageDialog(String message);
 }

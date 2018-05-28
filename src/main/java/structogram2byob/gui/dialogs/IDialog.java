@@ -7,5 +7,10 @@ package structogram2byob.gui.dialogs;
  */
 public interface IDialog<T>
 {
+    /**
+     * Opens this dialog and obtains a result value from the user.
+     *
+     * @return The result value.
+     */
     T show();
 }
