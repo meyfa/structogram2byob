@@ -105,60 +105,38 @@ public class BlockDescription
      */
     public boolean isAssignableFrom(BlockDescription o)
     {
+        final int iMax = countParts(), jMax = o.countParts();
         int i, j;
 
-        for (i = 0, j = i; i < countParts(); ++i, ++j) {
-
-            if (j >= o.countParts()) {
-                return false;
-            }
-
-            // check both either label or param
-            if (isParameter(i) != o.isParameter(j)
-                    && (!isParameter(i) || !isList(i))) {
-                return false;
-            }
+        for (i = 0, j = i; i < iMax && j < jMax; ++i) {
 
             if (isParameter(i)) {
+                ScratchType paramType = getType(i);
 
                 if (isList(i)) {
-                    ScratchType listType = getType(i);
-                    // list might be empty
-                    if (!o.isParameter(j)
-                            || !listType.isAssignableFrom(o.getType(j))) {
-                        j--;
-                        continue;
-                    }
-                    // list not empty, so consume all params that match
-                    // (+1 because j is incremented naturally in the for loop)
-                    while (j + 1 < o.countParts() && o.isParameter(j + 1)
-                            && listType.isAssignableFrom(o.getType(j + 1))) {
-                        j++;
+                    // consume all params that match
+                    while (j < jMax && o.isParameter(j)
+                            && paramType.isAssignableFrom(o.getType(j))) {
+                        ++j;
                     }
                     continue;
                 }
 
                 // check param types compatible
-                if (!getType(i).isAssignableFrom(o.getType(j))) {
+                if (!o.isParameter(j)
+                        || !paramType.isAssignableFrom(o.getType(j))) {
                     return false;
                 }
-
-                continue;
-            }
-
-            // check labels equal
-            if (!getLabel(i).equals(o.getLabel(j))) {
+            } else if (o.isParameter(j) || !getLabel(i).equals(o.getLabel(j))) {
+                // labels must match for non-parameters
                 return false;
             }
 
+            ++j;
         }
 
         // verify that both descriptions were iterated over completely
-        if (i < countParts() || j < o.countParts()) {
-            return false;
-        }
-
-        return true;
+        return i == iMax && j == jMax;
     }
 
     /**
