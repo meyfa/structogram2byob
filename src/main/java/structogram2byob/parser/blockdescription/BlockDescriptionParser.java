@@ -72,52 +72,64 @@ public class BlockDescriptionParser
         BlockDescription.Builder builder = new BlockDescription.Builder();
 
         while (lexer.hasNext()) {
-
-            Token t = lexer.next();
+            Token t = next(null);
 
             if (t.getType() == TokenType.PAREN_OPEN) {
 
-                Token valToken = lexer.next();
-                if (valToken.getType() != TokenType.LABEL) {
-                    throw new BlockDescriptionParserException(
-                            "expected label but got "
-                                    + valToken.getType().name().toLowerCase()
-                                    + " at " + valToken.getLine() + ":"
-                                    + valToken.getColumn());
-                }
-
-                Token endParenToken = lexer.next();
-                if (endParenToken.getType() != TokenType.PAREN_CLOSE) {
-                    throw new BlockDescriptionParserException(
-                            "expected closing paren");
-                }
+                Token valToken = next(TokenType.LABEL);
+                next(TokenType.PAREN_CLOSE);
 
                 if (withLabels) {
                     builder.param(ScratchType.ANY, valToken.getValue());
                 } else {
-                    String paramType = valToken.getValue().toUpperCase();
-                    try {
-                        builder.param(ScratchType.valueOf(paramType));
-                    } catch (IllegalArgumentException e) {
-                        throw new BlockDescriptionParserException(e);
-                    }
+                    builder.param(parseScratchType(valToken));
                 }
 
             } else {
-
-                if (t.getType() != TokenType.LABEL) {
-                    throw new BlockDescriptionParserException(
-                            "expected label but got "
-                                    + t.getType().name().toLowerCase() + " at "
-                                    + t.getLine() + ":" + t.getColumn());
-                }
-
+                checkTokenType(t, TokenType.LABEL);
                 builder.label(t.getValue());
-
             }
-
         }
 
         return builder.build();
+    }
+
+    private Token next(TokenType expected)
+            throws BlockDescriptionParserException, LexerException
+    {
+        Token t = lexer.next();
+        if (expected != null) {
+            checkTokenType(t, expected);
+        }
+        return t;
+    }
+
+    private void checkTokenType(Token t, TokenType expected)
+            throws BlockDescriptionParserException
+    {
+        if (t.getType() != expected) {
+            String expName = expected.name().toLowerCase();
+            String actName = t.getType().name().toLowerCase();
+
+            String msg = String.format("expected %s but got %s at %d:%d",
+                    expName, actName, t.getLine(), t.getColumn());
+
+            throw new BlockDescriptionParserException(msg);
+        }
+    }
+
+    private ScratchType parseScratchType(Token t)
+            throws BlockDescriptionParserException
+    {
+        String name = t.getValue().toUpperCase();
+
+        ScratchType type;
+        try {
+            type = ScratchType.valueOf(name);
+        } catch (IllegalArgumentException e) {
+            throw new BlockDescriptionParserException(e);
+        }
+
+        return type;
     }
 }
