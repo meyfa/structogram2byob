@@ -96,6 +96,16 @@ public class GuiController
     }
 
     /**
+     * Shows a message dialog with the given error message.
+     *
+     * @param msg The error message.
+     */
+    private void showErrorMessage(String msg)
+    {
+        dialogFactory.createMessageDialog("Error: " + msg).show();
+    }
+
+    /**
      * Tries parsing the current project, initiating appropriate actions in the
      * case of errors.
      */
@@ -199,8 +209,12 @@ public class GuiController
 
         try (FileInputStream in = new FileInputStream(file)) {
             add(reader.read(in));
-        } catch (NSDReaderException | IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
+            showErrorMessage("File could not be read");
+        } catch (NSDReaderException e) {
+            e.printStackTrace();
+            showErrorMessage("Structogram could not be understood");
         }
     }
 
@@ -227,6 +241,7 @@ public class GuiController
             w.write(project);
         } catch (IOException e) {
             e.printStackTrace();
+            showErrorMessage("File could not be saved");
         }
     }
 
@@ -250,6 +265,7 @@ public class GuiController
             ImageIO.write(img, "PNG", file);
         } catch (IOException e) {
             e.printStackTrace();
+            showErrorMessage("Image could not be saved");
         }
     }
 
