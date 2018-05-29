@@ -113,56 +113,106 @@ public class ProgramUnit
             Map<String, VariableContext> vars, BlockRegistry blocks)
             throws ScratchConversionException
     {
-        ScratchObjectArray a = new ScratchObjectArray();
+        ScratchObjectArray arr = new ScratchObjectArray();
 
-        VariableContext thisContext = new VariableContext.UnitSpecific(this);
-        Map<String, VariableContext> newVars = new HashMap<>(vars);
-        for (int i = 0, n = description.countParts(); i < n; ++i) {
-            if (description.isParameter(i)) {
-                newVars.put(description.getLabel(i), thisContext);
-            }
-        }
-        newVars = Collections.unmodifiableMap(newVars);
+        // add parameters to available variables
+        vars = combine(vars, getParameterVariables());
 
         if (type == UnitType.SCRIPT) {
+            // create hat block
             Block hat = blocks.lookup(description);
             if (hat == null) {
                 throw new ScratchConversionException(element,
                         "unknown block: " + description);
             }
-            a.add(hat.toScratch(Arrays.asList(), newVars, blocks));
+            arr.add(hat.toScratch(Arrays.asList(), vars, blocks));
         }
 
+        // add script body
         for (BlockExpression block : this.blocks) {
 
-            ScratchObject obj = block.toScratch(newVars, blocks);
-            a.add(obj);
+            ScratchObject obj = block.toScratch(vars, blocks);
+            arr.add(obj);
 
             // check whether the block is a "script variables" block
             if (ScriptVariablesBlock.instance.getDescription()
                     .isAssignableFrom(block.getDescription())) {
-
-                Map<String, ScratchObjectVariableFrame> frames = ScriptVariablesBlock
-                        .retrieveFrames((ScratchObjectArray) obj);
-
-                // extend set of available variables
-                newVars = new HashMap<>(newVars);
-                for (Expression param : block.getParameters()) {
-
-                    BlockExpression pblock = (BlockExpression) param;
-                    String varName = pblock.getDescription().getLabel(0);
-
-                    ScratchObjectVariableFrame f = frames.get(varName);
-                    newVars.put(varName, new VariableContext.ScriptSpecific(f));
-
-                }
-                newVars = Collections.unmodifiableMap(newVars);
-
+                // extend available variables
+                vars = combine(vars, retrieveScriptVariables(block, obj));
             }
 
         }
 
-        return a;
+        return arr;
+    }
+
+    /**
+     * Obtains this unit's parameters as a variable map for use in script
+     * serialization.
+     *
+     * @return A variable map.
+     */
+    private Map<String, VariableContext> getParameterVariables()
+    {
+        Map<String, VariableContext> variables = new HashMap<>();
+
+        VariableContext thisContext = new VariableContext.UnitSpecific(this);
+        for (int i = 0, n = description.countParts(); i < n; ++i) {
+            if (description.isParameter(i)) {
+                variables.put(description.getLabel(i), thisContext);
+            }
+        }
+
+        return variables;
+    }
+
+    /**
+     * Given a "script variables" block and its object representation, retrieves
+     * all the variable definitions.
+     *
+     * @param block The "script variables" block.
+     * @param obj The block's Scratch object conversion result.
+     * @return A variable map.
+     */
+    private Map<String, VariableContext> retrieveScriptVariables(
+            BlockExpression block, ScratchObject obj)
+    {
+        Map<String, VariableContext> variables = new HashMap<>();
+
+        // retrieve the frames for context construction
+        Map<String, ScratchObjectVariableFrame> frames = ScriptVariablesBlock
+                .retrieveFrames((ScratchObjectArray) obj);
+
+        for (Expression param : block.getParameters()) {
+            // get the variable name and corresponding frame
+            BlockExpression pblock = (BlockExpression) param;
+            String varName = pblock.getDescription().getLabel(0);
+            ScratchObjectVariableFrame frame = frames.get(varName);
+
+            variables.put(varName, new VariableContext.ScriptSpecific(frame));
+        }
+
+        return variables;
+    }
+
+    /**
+     * Combines the two variable maps into a new map, which is then returned.
+     * The resulting map is unmodifiable. There are no changes to the input
+     * maps.
+     *
+     * @param m1 The first source map.
+     * @param m2 The second source map.
+     * @return A new map containing all the mappings from both sources.
+     */
+    private Map<String, VariableContext> combine(
+            Map<String, VariableContext> m1, Map<String, VariableContext> m2)
+    {
+        Map<String, VariableContext> newMap = new HashMap<>();
+
+        newMap.putAll(m1);
+        newMap.putAll(m2);
+
+        return Collections.unmodifiableMap(newMap);
     }
 
     /**
