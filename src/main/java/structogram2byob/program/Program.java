@@ -1,6 +1,7 @@
 package structogram2byob.program;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -59,12 +60,12 @@ public class Program
         ScratchObjectSpriteMorph sprite = new ScratchObjectSpriteMorph();
         stage.addSprite(sprite);
 
+        ScratchObjectArray blocksBin = new ScratchObjectArray();
+        sprite.setField(ScratchObjectSpriteMorph.FIELD_BLOCKS_BIN, blocksBin);
+
         ScratchObjectOrderedCollection cBlocks = new ScratchObjectOrderedCollection();
         stage.setField(ScratchObjectStageMorph.FIELD_CUSTOM_BLOCKS, cBlocks);
         sprite.setField(ScratchObjectSpriteMorph.FIELD_CUSTOM_BLOCKS, cBlocks);
-
-        ScratchObjectArray blocksBin = new ScratchObjectArray();
-        sprite.setField(ScratchObjectSpriteMorph.FIELD_BLOCKS_BIN, blocksBin);
 
         serializeUnits(blocks, blocksBin, cBlocks);
 
@@ -77,40 +78,51 @@ public class Program
      *
      * @param blocks The available blocks.
      * @param scripts The array of scripts to write to.
-     * @param cBlocks The array of custom blocks to write to.
+     * @param customBlocks The array of custom blocks to write to.
      *
      * @throws ScratchConversionException When the conversion fails.
      */
     private void serializeUnits(BlockRegistry blocks,
-            ScratchObjectArray scripts, ScratchObjectOrderedCollection cBlocks)
+            ScratchObjectArray scripts,
+            ScratchObjectOrderedCollection customBlocks)
             throws ScratchConversionException
     {
         Map<String, VariableContext> vars = new HashMap<>();
         vars = Collections.unmodifiableMap(vars);
 
         // extend the block registry by all available custom blocks
-        BlockRegistry blocksExtended = new BlockRegistry(blocks);
-        for (ProgramUnit u : units) {
-            if (u.getType() != UnitType.SCRIPT) {
-                try {
-                    blocksExtended.register(u.getInvocationBlock());
-                } catch (IllegalArgumentException e) {
-                    throw new ScratchConversionException(u.getElement(), e);
-                }
-            }
-        }
+        blocks = new BlockRegistry(blocks);
+        registerUnits(blocks);
 
         // write the units
         int y = 20;
         for (ProgramUnit u : units) {
             if (u.getType() == UnitType.SCRIPT) {
-                scripts.add(serializeUnitAsScript(u, vars, blocksExtended, y));
-                y += 50 + u.getBlocks().stream().mapToInt(this::estimateHeight)
-                        .sum();
+                scripts.add(serializeUnitAsScript(u, vars, blocks, y));
+                y += 50 + estimateHeight(u.getBlocks());
             } else {
-                cBlocks.add(serializeUnitAsBlock(u, vars, blocksExtended));
+                customBlocks.add(serializeUnitAsBlock(u, vars, blocks));
             }
         }
+    }
+
+    private void registerUnits(BlockRegistry registry)
+            throws ScratchConversionException
+    {
+        for (ProgramUnit u : units) {
+            if (u.getType() != UnitType.SCRIPT) {
+                try {
+                    registry.register(u.getInvocationBlock());
+                } catch (IllegalArgumentException e) {
+                    throw new ScratchConversionException(u.getElement(), e);
+                }
+            }
+        }
+    }
+
+    private int estimateHeight(Collection<BlockExpression> blocks)
+    {
+        return blocks.stream().mapToInt(this::estimateHeight).sum();
     }
 
     private int estimateHeight(BlockExpression exp)
