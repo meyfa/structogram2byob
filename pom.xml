@@ -5,7 +5,7 @@
     
     <groupId>net.meyfa.structogram2byob</groupId>
     <artifactId>structogram2byob</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     
     <name>structogram2byob</name>
     <description>Compiles structograms into executable BYOB scripts</description>
