@@ -1,6 +1,6 @@
 structogram2byob
 
-Copyright (c) 2017 - 2019 Fabian Meyer (meyfa.net)
+Copyright (c) 2017 - 2020 Fabian Meyer (meyfa.net)
 
 Source code and documentation:
 https://github.com/meyfa/structogram2byob
