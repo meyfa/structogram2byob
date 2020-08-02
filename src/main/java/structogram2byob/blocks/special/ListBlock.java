@@ -37,8 +37,7 @@ public class ListBlock extends Block
 
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException
+            Map<String, VariableContext> vars, BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 
@@ -47,8 +46,7 @@ public class ListBlock extends Block
         a.add(new ScratchObjectSymbol("newList:"));
 
         ScratchObjectListMorph list = new ScratchObjectListMorph();
-        list.setField(ScratchObjectListMorph.FIELD_BOUNDS,
-                new ScratchObjectRectangle(0, 0, 95, 115));
+        list.setField(ScratchObjectListMorph.FIELD_BOUNDS, new ScratchObjectRectangle(0, 0, 95, 115));
 
         ScratchObjectArray cellMorphs = new ScratchObjectArray();
         list.setField(ScratchObjectListMorph.FIELD_CELL_MORPHS, cellMorphs);

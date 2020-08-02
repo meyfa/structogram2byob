@@ -23,8 +23,7 @@ import structogram2byob.program.expressions.Expression;
 public class ScriptVariablesBlock extends Block
 {
     private static final BlockDescription description = new BlockDescription.Builder()
-            .label("script").label("variables").paramList(ScratchType.ANY)
-            .build();
+            .label("script").label("variables").paramList(ScratchType.ANY).build();
 
     /**
      * The singleton instance.
@@ -73,15 +72,13 @@ public class ScriptVariablesBlock extends Block
      * @param serialized The serialized block array.
      * @return A map of variable names to their frames.
      */
-    public static Map<String, ScratchObjectVariableFrame> retrieveFrames(
-            ScratchObjectArray serialized)
+    public static Map<String, ScratchObjectVariableFrame> retrieveFrames(ScratchObjectArray serialized)
     {
         Map<String, ScratchObjectVariableFrame> frames = new HashMap<>();
 
         for (int i = 3; i < serialized.size(); ++i) {
             ScratchObjectArray va = (ScratchObjectArray) serialized.get(i);
-            frames.put(((ScratchObjectUtf8) va.get(3)).getValue(),
-                    (ScratchObjectVariableFrame) va.get(4));
+            frames.put(((ScratchObjectUtf8) va.get(3)).getValue(), (ScratchObjectVariableFrame) va.get(4));
         }
 
         return frames;

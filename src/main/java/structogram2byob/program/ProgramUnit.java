@@ -1,7 +1,6 @@
 package structogram2byob.program;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -38,16 +37,14 @@ public class ProgramUnit
     private final Block unitBlock;
 
     /**
-     * Constructs a new unit from the given header description and the given
-     * blocks.
+     * Constructs a new unit from the given header description and the given blocks.
      *
      * @param element The element this unit was constructed from.
      * @param type The type of this unit.
      * @param description The unit description.
      * @param blocks The blocks that form the unit body.
      */
-    public ProgramUnit(NSDRoot element, UnitType type,
-            BlockDescription description,
+    public ProgramUnit(NSDRoot element, UnitType type, BlockDescription description,
             Collection<? extends BlockExpression> blocks)
     {
         this.element = element;
@@ -109,8 +106,7 @@ public class ProgramUnit
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    public ScratchObjectAbstractCollection toScratch(
-            Map<String, VariableContext> vars, BlockRegistry blocks)
+    public ScratchObjectAbstractCollection toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
             throws ScratchConversionException
     {
         ScratchObjectArray arr = new ScratchObjectArray();
@@ -122,25 +118,21 @@ public class ProgramUnit
             // create hat block
             Block hat = blocks.lookup(description);
             if (hat == null) {
-                throw new ScratchConversionException(element,
-                        "unknown block: " + description);
+                throw new ScratchConversionException(element, "unknown block: " + description);
             }
-            arr.add(hat.toScratch(Arrays.asList(), vars, blocks));
+            arr.add(hat.toScratch(Collections.emptyList(), vars, blocks));
         }
 
         // add script body
         for (BlockExpression block : this.blocks) {
-
             ScratchObject obj = block.toScratch(vars, blocks);
             arr.add(obj);
 
             // check whether the block is a "script variables" block
-            if (ScriptVariablesBlock.instance.getDescription()
-                    .isAssignableFrom(block.getDescription())) {
+            if (ScriptVariablesBlock.instance.getDescription().isAssignableFrom(block.getDescription())) {
                 // extend available variables
                 vars = combine(vars, retrieveScriptVariables(block, obj));
             }
-
         }
 
         return arr;
@@ -174,14 +166,12 @@ public class ProgramUnit
      * @param obj The block's Scratch object conversion result.
      * @return A variable map.
      */
-    private Map<String, VariableContext> retrieveScriptVariables(
-            BlockExpression block, ScratchObject obj)
+    private Map<String, VariableContext> retrieveScriptVariables(BlockExpression block, ScratchObject obj)
     {
         Map<String, VariableContext> variables = new HashMap<>();
 
         // retrieve the frames for context construction
-        Map<String, ScratchObjectVariableFrame> frames = ScriptVariablesBlock
-                .retrieveFrames((ScratchObjectArray) obj);
+        Map<String, ScratchObjectVariableFrame> frames = ScriptVariablesBlock.retrieveFrames((ScratchObjectArray) obj);
 
         for (Expression param : block.getParameters()) {
             // get the variable name and corresponding frame
@@ -204,8 +194,7 @@ public class ProgramUnit
      * @param m2 The second source map.
      * @return A new map containing all the mappings from both sources.
      */
-    private Map<String, VariableContext> combine(
-            Map<String, VariableContext> m1, Map<String, VariableContext> m2)
+    private Map<String, VariableContext> combine(Map<String, VariableContext> m1, Map<String, VariableContext> m2)
     {
         Map<String, VariableContext> newMap = new HashMap<>();
 

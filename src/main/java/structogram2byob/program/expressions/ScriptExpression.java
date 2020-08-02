@@ -29,8 +29,7 @@ public class ScriptExpression extends Expression
      * @param element The element this expression stems from.
      * @param blocks The blocks contained in this script.
      */
-    public ScriptExpression(NSDElement element,
-            Collection<? extends BlockExpression> blocks)
+    public ScriptExpression(NSDElement element, Collection<? extends BlockExpression> blocks)
     {
         super(element);
 
@@ -60,8 +59,8 @@ public class ScriptExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks) throws ScratchConversionException
+    public ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
+            throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

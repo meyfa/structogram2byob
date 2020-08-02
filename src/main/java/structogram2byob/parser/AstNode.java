@@ -3,6 +3,7 @@ package structogram2byob.parser;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import structogram2byob.lexer.Token;
@@ -17,8 +18,7 @@ public class AstNode implements Iterable<AstNode>
     private final List<AstNode> branches;
 
     /**
-     * Constructs a new node with no direct value that can have branches added
-     * to it.
+     * Constructs a new node with no direct value that can have branches added to it.
      */
     public AstNode()
     {
@@ -31,10 +31,11 @@ public class AstNode implements Iterable<AstNode>
      * having branches added to it.
      *
      * @param value This node's value.
+     * @throws NullPointerException If value is null.
      */
     public AstNode(Token value)
     {
-        this.value = value;
+        this.value = Objects.requireNonNull(value);
         this.branches = null;
     }
 
@@ -42,9 +43,13 @@ public class AstNode implements Iterable<AstNode>
      * Adds the given node as a branch to this node.
      *
      * @param branch The node to add.
+     * @throws UnsupportedOperationException If this is not a branching node.
      */
     public void add(AstNode branch)
     {
+        if (branches == null) {
+            throw new UnsupportedOperationException("is a leaf");
+        }
         branches.add(branch);
     }
 
@@ -67,10 +72,13 @@ public class AstNode implements Iterable<AstNode>
     /**
      * @return The number of branches this node has.
      *
-     * @throws NullPointerException If this is not a branching node.
+     * @throws UnsupportedOperationException If this is not a branching node.
      */
     public int countBranches()
     {
+        if (branches == null) {
+            throw new UnsupportedOperationException("is a leaf");
+        }
         return branches.size();
     }
 
@@ -80,10 +88,13 @@ public class AstNode implements Iterable<AstNode>
      * @param index The branch index.
      * @return The branch node at the given index.
      *
-     * @throws NullPointerException If this is not a branching node.
+     * @throws UnsupportedOperationException If this is not a branching node.
      */
     public AstNode getBranch(int index)
     {
+        if (branches == null) {
+            throw new UnsupportedOperationException("is a leaf");
+        }
         return branches.get(index);
     }
 
@@ -91,10 +102,14 @@ public class AstNode implements Iterable<AstNode>
      * Returns an iterator over this node's branches.
      *
      * @return An iterator over the branches.
+     * @throws UnsupportedOperationException If this is not a branching node.
      */
     @Override
     public Iterator<AstNode> iterator()
     {
+        if (branches == null) {
+            throw new UnsupportedOperationException("is a leaf");
+        }
         return branches.iterator();
     }
 
@@ -105,6 +120,7 @@ public class AstNode implements Iterable<AstNode>
             return "[" + value + "]";
         }
 
+        assert branches != null;
         return branches.stream().map(AstNode::toString)
                 .collect(Collectors.joining(", ", "(", ")"));
     }

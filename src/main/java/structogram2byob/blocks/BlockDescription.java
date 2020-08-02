@@ -71,8 +71,7 @@ public class BlockDescription
     public ScratchType getType(int index)
     {
         if (!isParameter(index)) {
-            throw new IllegalArgumentException(
-                    "tried accessing label as parameter");
+            throw new IllegalArgumentException("tried accessing label as parameter");
         }
         return ((Parameter) parts.get(index)).type;
     }
@@ -89,8 +88,7 @@ public class BlockDescription
     public boolean isList(int index)
     {
         if (!isParameter(index)) {
-            throw new IllegalArgumentException(
-                    "tried accessing label as parameter");
+            throw new IllegalArgumentException("tried accessing label as parameter");
         }
         return ((Parameter) parts.get(index)).list;
     }
@@ -115,16 +113,14 @@ public class BlockDescription
 
                 if (isList(i)) {
                     // consume all params that match
-                    while (j < jMax && o.isParameter(j)
-                            && paramType.isAssignableFrom(o.getType(j))) {
+                    while (j < jMax && o.isParameter(j) && paramType.isAssignableFrom(o.getType(j))) {
                         ++j;
                     }
                     continue;
                 }
 
                 // check param types compatible
-                if (!o.isParameter(j)
-                        || !paramType.isAssignableFrom(o.getType(j))) {
+                if (!o.isParameter(j) || !paramType.isAssignableFrom(o.getType(j))) {
                     return false;
                 }
             } else if (o.isParameter(j) || !getLabel(i).equals(o.getLabel(j))) {
@@ -172,7 +168,7 @@ public class BlockDescription
     @Override
     public int hashCode()
     {
-        return 31 + Objects.hashCode(parts);
+        return Objects.hashCode(parts);
     }
 
     @Override
@@ -191,8 +187,7 @@ public class BlockDescription
     @Override
     public String toString()
     {
-        return parts.stream().map(Object::toString)
-                .collect(Collectors.joining(" "));
+        return parts.stream().map(Object::toString).collect(Collectors.joining(" "));
     }
 
     /**
@@ -305,12 +300,7 @@ public class BlockDescription
         @Override
         public int hashCode()
         {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((label == null) ? 0 : label.hashCode());
-            result = prime * result + (list ? 1231 : 1237);
-            result = prime * result + ((type == null) ? 0 : type.hashCode());
-            return result;
+            return Objects.hash(label, list, type);
         }
 
         @Override
@@ -323,8 +313,7 @@ public class BlockDescription
                 return false;
             }
             Parameter other = (Parameter) obj;
-            return Objects.equals(label, other.label) && list == other.list
-                    && type == other.type;
+            return Objects.equals(label, other.label) && list == other.list && type == other.type;
         }
 
         @Override

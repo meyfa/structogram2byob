@@ -1,6 +1,6 @@
 package structogram2byob.parser.expression;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -56,66 +56,52 @@ public class ExpressionParserTest
 
         // simple
 
-        result = (BlockExpression) new ExpressionParser(null, "foo bar")
-                .parse();
-        assertEquals(new BlockDescription.Builder().label("foo").label("bar")
-                .build(), result.getDescription());
+        result = (BlockExpression) new ExpressionParser(null, "foo bar").parse();
+        assertEquals(new BlockDescription.Builder().label("foo").label("bar").build(), result.getDescription());
         params = result.getParameters();
-        assertEquals(Arrays.asList(), params);
+        assertEquals(Collections.emptyList(), params);
 
         // literal parameters
 
-        result = (BlockExpression) new ExpressionParser(null,
-                "a (42) (\"test\") b").parse();
+        result = (BlockExpression) new ExpressionParser(null, "a (42) (\"test\") b").parse();
         // description
         assertEquals(new BlockDescription.Builder().label("a")
-                .param(ScratchType.NUMBER).param(ScratchType.TEXT).label("b")
-                .build(), result.getDescription());
+                .param(ScratchType.NUMBER).param(ScratchType.TEXT).label("b").build(), result.getDescription());
         // params
         params = result.getParameters();
         assertEquals(2, params.size());
-        assertEquals(42, ((NumberExpression) params.get(0)).getValue(),
-                0.0000001);
+        assertEquals(42, ((NumberExpression) params.get(0)).getValue(), 0.0000001);
         assertEquals("test", ((StringExpression) params.get(1)).getValue());
 
         // literal parameters without parentheses
 
-        result = (BlockExpression) new ExpressionParser(null, "a 42 \"test\" b")
-                .parse();
+        result = (BlockExpression) new ExpressionParser(null, "a 42 \"test\" b").parse();
         // description
         assertEquals(new BlockDescription.Builder().label("a")
-                .param(ScratchType.NUMBER).param(ScratchType.TEXT).label("b")
-                .build(), result.getDescription());
+                .param(ScratchType.NUMBER).param(ScratchType.TEXT).label("b").build(), result.getDescription());
         // params
         params = result.getParameters();
         assertEquals(2, params.size());
-        assertEquals(42, ((NumberExpression) params.get(0)).getValue(),
-                0.0000001);
+        assertEquals(42, ((NumberExpression) params.get(0)).getValue(), 0.0000001);
         assertEquals("test", ((StringExpression) params.get(1)).getValue());
 
         // nested blocks
 
-        result = (BlockExpression) new ExpressionParser(null,
-                "(bar (baz qu)) b (c)").parse();
+        result = (BlockExpression) new ExpressionParser(null, "(bar (baz qu)) b (c)").parse();
         // description
-        assertEquals(
-                new BlockDescription.Builder().param(ScratchType.ANY).label("b")
-                        .param(ScratchType.ANY).build(),
+        assertEquals(new BlockDescription.Builder().param(ScratchType.ANY).label("b").param(ScratchType.ANY).build(),
                 result.getDescription());
         // params
         params = result.getParameters();
         assertEquals(2, params.size());
-        assertEquals(
-                new BlockDescription.Builder().label("bar")
-                        .param(ScratchType.ANY).build(),
+        assertEquals(new BlockDescription.Builder().label("bar").param(ScratchType.ANY).build(),
                 ((BlockExpression) params.get(0)).getDescription());
         assertEquals(new BlockDescription.Builder().label("c").build(),
                 ((BlockExpression) params.get(1)).getDescription());
         // nested params
         params = ((BlockExpression) params.get(0)).getParameters();
         assertEquals(1, params.size());
-        assertEquals(
-                new BlockDescription.Builder().label("baz").label("qu").build(),
+        assertEquals(new BlockDescription.Builder().label("baz").label("qu").build(),
                 ((BlockExpression) params.get(0)).getDescription());
     }
 

@@ -471,8 +471,7 @@ public class GuiControllerTest
         GuiController obj = new GuiController(reg, dialogs, frame);
 
         dialogs.saveResult = null;
-        obj.openImageSaveDialog(
-                new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
+        obj.openImageSaveDialog(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
 
         assertTrue(dialogs.saveCalled);
     }
@@ -489,8 +488,7 @@ public class GuiControllerTest
         GuiController obj = new GuiController(reg, dialogs, frame);
 
         dialogs.saveResult = out;
-        obj.openImageSaveDialog(
-                new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
+        obj.openImageSaveDialog(new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB));
 
         assertTrue(out.isFile());
     }

@@ -42,8 +42,7 @@ public class BlockDescriptionParserTest
         assertFalse(desc.isParameter(4));
         assertEquals("secs", desc.getLabel(4));
 
-        desc = new BlockDescriptionParser("(number) mod (number)", false)
-                .parse();
+        desc = new BlockDescriptionParser("(number) mod (number)", false).parse();
         assertEquals(3, desc.countParts());
         // (number)
         assertTrue(desc.isParameter(0));
@@ -57,13 +56,11 @@ public class BlockDescriptionParserTest
     }
 
     @Test
-    public void parsesCorrectlyWithLabels()
-            throws BlockDescriptionParserException
+    public void parsesCorrectlyWithLabels() throws BlockDescriptionParserException
     {
         BlockDescription desc;
 
-        desc = new BlockDescriptionParser("say (message) for (time) secs", true)
-                .parse();
+        desc = new BlockDescriptionParser("say (message) for (time) secs", true).parse();
         assertEquals(5, desc.countParts());
         // say
         assertFalse(desc.isParameter(0));

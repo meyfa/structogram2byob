@@ -31,8 +31,7 @@ public class FunctionBlock extends Block
      * @param returnType The type of value the block returns. May be null.
      * @param method The Scratch method this block calls.
      */
-    public FunctionBlock(BlockDescription desc, ScratchType returnType,
-            String method)
+    public FunctionBlock(BlockDescription desc, ScratchType returnType, String method)
     {
         super(desc, returnType);
         this.method = method;
@@ -48,8 +47,7 @@ public class FunctionBlock extends Block
 
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException
+            Map<String, VariableContext> vars, BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

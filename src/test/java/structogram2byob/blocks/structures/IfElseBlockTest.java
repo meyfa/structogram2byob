@@ -1,6 +1,7 @@
 package structogram2byob.blocks.structures;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,25 +29,23 @@ public class IfElseBlockTest
     {
         IfElseBlock obj = IfElseBlock.instance;
 
-        BlockDescription trueDesc = new BlockDescription.Builder().label("true")
-                .build();
+        BlockDescription trueDesc = new BlockDescription.Builder().label("true").build();
 
         List<Expression> params = Arrays.asList(
-                new BlockExpression(null, trueDesc, Arrays.asList()),
-                new ScriptExpression(null, Arrays.asList()),
-                new ScriptExpression(null, Arrays.asList()));
+                new BlockExpression(null, trueDesc, Collections.emptyList()),
+                new ScriptExpression(null, Collections.emptyList()),
+                new ScriptExpression(null, Collections.emptyList())
+        );
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
-        blocks.register(
-                new FunctionBlock(trueDesc, ScratchType.BOOLEAN, "getTrue"));
+        blocks.register(new FunctionBlock(trueDesc, ScratchType.BOOLEAN, "getTrue"));
 
         ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
 
         assertEquals(4, scratch.size());
 
         // starts with method call
-        assertEquals("doIfElse",
-                ((ScratchObjectSymbol) scratch.get(0)).getValue());
+        assertEquals("doIfElse", ((ScratchObjectSymbol) scratch.get(0)).getValue());
 
         // continues with condition
         assertTrue(scratch.get(1) instanceof ScratchObjectArray);

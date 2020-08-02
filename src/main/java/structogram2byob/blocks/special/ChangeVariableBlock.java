@@ -23,8 +23,7 @@ import structogram2byob.program.expressions.Expression;
 public class ChangeVariableBlock extends Block
 {
     private static final BlockDescription description = new BlockDescription.Builder()
-            .label("change").param(ScratchType.ANY).label("by")
-            .param(ScratchType.NUMBER).build();
+            .label("change").param(ScratchType.ANY).label("by").param(ScratchType.NUMBER).build();
 
     /**
      * The singleton instance.
@@ -38,8 +37,7 @@ public class ChangeVariableBlock extends Block
 
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException
+            Map<String, VariableContext> vars, BlockRegistry blocks) throws ScratchConversionException
     {
         String name = asVariableName(params.get(0));
         VariableContext context = vars.get(name);

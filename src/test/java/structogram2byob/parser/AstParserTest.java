@@ -36,25 +36,19 @@ public class AstParserTest
         node = new AstParser("(a(b)c)").parse();
         assertEquals(1, node.countBranches());
         assertEquals(3, node.getBranch(0).countBranches());
-        assertToken(TokenType.LABEL, "a",
-                node.getBranch(0).getBranch(0).getValue());
+        assertToken(TokenType.LABEL, "a", node.getBranch(0).getBranch(0).getValue());
         assertEquals(1, node.getBranch(0).getBranch(1).countBranches());
-        assertToken(TokenType.LABEL, "b",
-                node.getBranch(0).getBranch(1).getBranch(0).getValue());
-        assertToken(TokenType.LABEL, "c",
-                node.getBranch(0).getBranch(2).getValue());
+        assertToken(TokenType.LABEL, "b", node.getBranch(0).getBranch(1).getBranch(0).getValue());
+        assertToken(TokenType.LABEL, "c", node.getBranch(0).getBranch(2).getValue());
 
         // (([LABEL:'a'], ([STRING:'"b"']), [LABEL:'c']))
         node = new AstParser("(a(\"b\")c)").parse();
         assertEquals(1, node.countBranches());
         assertEquals(3, node.getBranch(0).countBranches());
-        assertToken(TokenType.LABEL, "a",
-                node.getBranch(0).getBranch(0).getValue());
+        assertToken(TokenType.LABEL, "a", node.getBranch(0).getBranch(0).getValue());
         assertEquals(1, node.getBranch(0).getBranch(1).countBranches());
-        assertToken(TokenType.STRING, "\"b\"",
-                node.getBranch(0).getBranch(1).getBranch(0).getValue());
-        assertToken(TokenType.LABEL, "c",
-                node.getBranch(0).getBranch(2).getValue());
+        assertToken(TokenType.STRING, "\"b\"", node.getBranch(0).getBranch(1).getBranch(0).getValue());
+        assertToken(TokenType.LABEL, "c", node.getBranch(0).getBranch(2).getValue());
     }
 
     @Test

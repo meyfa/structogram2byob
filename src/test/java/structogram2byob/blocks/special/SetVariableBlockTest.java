@@ -1,6 +1,7 @@
 package structogram2byob.blocks.special;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,9 +34,11 @@ public class SetVariableBlockTest
     {
         SetVariableBlock obj = SetVariableBlock.instance;
 
-        List<Expression> params = Arrays.asList(new BlockExpression(null,
-                new BlockDescription.Builder().label("foobar").build(),
-                Arrays.asList()), new NumberExpression(null, 42));
+        List<Expression> params = Arrays.asList(
+                new BlockExpression(null, new BlockDescription.Builder().label("foobar").build(),
+                        Collections.emptyList()),
+                new NumberExpression(null, 42)
+        );
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
@@ -46,33 +49,26 @@ public class SetVariableBlockTest
 
         assertEquals(4, scratch.size());
 
-        assertEquals("changeVariable",
-                ((ScratchObjectSymbol) scratch.get(0)).getValue());
+        assertEquals("changeVariable", ((ScratchObjectSymbol) scratch.get(0)).getValue());
         assertEquals("foobar", ((ScratchObjectUtf8) scratch.get(1)).getValue());
-        assertEquals("setVar:to:",
-                ((ScratchObjectSymbol) scratch.get(2)).getValue());
-        assertEquals(42,
-                ((ScratchObjectAbstractNumber) scratch.get(3)).intValue());
+        assertEquals("setVar:to:", ((ScratchObjectSymbol) scratch.get(2)).getValue());
+        assertEquals(42, ((ScratchObjectAbstractNumber) scratch.get(3)).intValue());
 
         // unit specific (parameter)
 
         ProgramUnit unit = new ProgramUnit(null, UnitType.COMMAND,
-                new BlockDescription.Builder().label("doSomething")
-                        .param(ScratchType.ANY, "foobar").build(),
-                Arrays.asList());
+                new BlockDescription.Builder().label("doSomething").param(ScratchType.ANY, "foobar").build(),
+                Collections.emptyList());
         vars.put("foobar", new VariableContext.UnitSpecific(unit));
         scratch = obj.toScratch(params, vars, blocks);
 
         assertEquals(5, scratch.size());
 
-        assertEquals("changeBlockVariable",
-                ((ScratchObjectSymbol) scratch.get(0)).getValue());
+        assertEquals("changeBlockVariable", ((ScratchObjectSymbol) scratch.get(0)).getValue());
         assertEquals("foobar", ((ScratchObjectUtf8) scratch.get(1)).getValue());
-        assertEquals("setVar:to:",
-                ((ScratchObjectSymbol) scratch.get(2)).getValue());
+        assertEquals("setVar:to:", ((ScratchObjectSymbol) scratch.get(2)).getValue());
         assertSame(ScratchObject.NIL, scratch.get(3));
-        assertEquals(42,
-                ((ScratchObjectAbstractNumber) scratch.get(4)).intValue());
+        assertEquals(42, ((ScratchObjectAbstractNumber) scratch.get(4)).intValue());
 
         // script specific (script variables)
 
@@ -82,13 +78,10 @@ public class SetVariableBlockTest
 
         assertEquals(5, scratch.size());
 
-        assertEquals("changeBlockVariable",
-                ((ScratchObjectSymbol) scratch.get(0)).getValue());
+        assertEquals("changeBlockVariable", ((ScratchObjectSymbol) scratch.get(0)).getValue());
         assertEquals("foobar", ((ScratchObjectUtf8) scratch.get(1)).getValue());
-        assertEquals("setVar:to:",
-                ((ScratchObjectSymbol) scratch.get(2)).getValue());
+        assertEquals("setVar:to:", ((ScratchObjectSymbol) scratch.get(2)).getValue());
         assertSame(frame, scratch.get(3));
-        assertEquals(42,
-                ((ScratchObjectAbstractNumber) scratch.get(4)).intValue());
+        assertEquals(42, ((ScratchObjectAbstractNumber) scratch.get(4)).intValue());
     }
 }

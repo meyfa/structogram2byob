@@ -45,8 +45,7 @@ public class StringExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks)
+    public ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
     {
         return new ScratchObjectUtf8(value);
     }

@@ -40,8 +40,7 @@ public class BlockExpression extends Expression
      * @param description The block description.
      * @param params The block parameters.
      */
-    public BlockExpression(NSDElement element, BlockDescription description,
-            Collection<? extends Expression> params)
+    public BlockExpression(NSDElement element, BlockDescription description, Collection<? extends Expression> params)
     {
         super(element);
 
@@ -72,8 +71,8 @@ public class BlockExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks) throws ScratchConversionException
+    public ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
+            throws ScratchConversionException
     {
         // check if this is a variable
         if (description.countParts() == 1 && !description.isParameter(0)) {
@@ -88,8 +87,7 @@ public class BlockExpression extends Expression
         // serialize as block
         Block b = blocks.lookup(description);
         if (b == null) {
-            throw new ScratchConversionException(getElement(),
-                    "unknown block: " + description);
+            throw new ScratchConversionException(getElement(), "unknown block: " + description);
         }
 
         return b.toScratch(parameters, vars, blocks);

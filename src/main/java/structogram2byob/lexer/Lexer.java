@@ -10,11 +10,12 @@ import java.util.regex.Pattern;
 public class Lexer
 {
     private static final Pattern NEWLINE = Pattern.compile("\r\n|\r|\n");
-    private static final Pattern PATTERN_NUMBER = Pattern
-            .compile("^[+-]?\\d+(?:\\.\\d+)?$");
+    private static final Pattern PATTERN_NUMBER = Pattern.compile("^[+-]?\\d+(?:\\.\\d+)?$");
 
-    private String input;
-    private int index = 0, pastLines = 0, lineStart = 0;
+    private final String input;
+    private int index = 0;
+    private int pastLines;
+    private int lineStart;
 
     /**
      * Constructs a new Lexer from the given input.
@@ -100,15 +101,13 @@ public class Lexer
     private Token peekParenOpen()
     {
         char c = input.charAt(index);
-        return new Token(TokenType.PAREN_OPEN, Character.toString(c), pastLines,
-                index - lineStart);
+        return new Token(TokenType.PAREN_OPEN, Character.toString(c), pastLines, index - lineStart);
     }
 
     private Token peekParenClose()
     {
         char c = input.charAt(index);
-        return new Token(TokenType.PAREN_CLOSE, Character.toString(c),
-                pastLines, index - lineStart);
+        return new Token(TokenType.PAREN_CLOSE, Character.toString(c), pastLines, index - lineStart);
     }
 
     private Token peekString() throws LexerException

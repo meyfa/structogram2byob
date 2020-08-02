@@ -34,10 +34,10 @@ public class BlockRegistryReaderTest
 
         BlockRegistryReader obj = new BlockRegistryReader(in);
 
-        assertFalse(b[0] == magic);
+        assertNotEquals(magic, b[0]);
 
         obj.close();
-        assertTrue(b[0] == magic);
+        assertEquals(magic, b[0]);
     }
 
     @Test
@@ -47,29 +47,19 @@ public class BlockRegistryReaderTest
 
         BlockRegistryReader obj = new BlockRegistryReader(sc);
 
-        // this would throw if it was already closed
         sc.nextInt();
-
         obj.close();
-        try {
-            sc.nextInt();
-            fail("Scanner not closed");
-        } catch (IllegalStateException e) {
-        }
+
+        assertThrows(IllegalStateException.class, sc::nextInt, "scanner should have been closed");
     }
 
     @Test
-    public void readsFunctionBlocks()
-            throws IOException, BlockRegistryReaderException
+    public void readsFunctionBlocks() throws IOException, BlockRegistryReaderException
     {
-        String s = "";
-        s += "move (number) steps\n" + "none\n" + "forward:\n";
-        s += "x position\n" + "number\n" + "xpos\n";
+        String s = "move (number) steps\nnone\nforward:\nx position\nnumber\nxpos\n";
 
         BlockRegistry result;
-
-        try (BlockRegistryReader obj = new BlockRegistryReader(
-                new Scanner(s))) {
+        try (BlockRegistryReader obj = new BlockRegistryReader(new Scanner(s))) {
             result = obj.read();
         }
 
@@ -83,17 +73,12 @@ public class BlockRegistryReaderTest
     }
 
     @Test
-    public void ignoresWhitespace()
-            throws IOException, BlockRegistryReaderException
+    public void ignoresWhitespace() throws IOException, BlockRegistryReaderException
     {
-        String s = "\n\n\r\n";
-        s += "  move (number) steps \n" + "\n" + " none\n" + "forward:\n\n";
-        s += "x position\n" + "number\n" + "xpos";
+        String s = "\n\n\r\n  move (number) steps \n\n none\nforward:\n\nx position\nnumber\nxpos";
 
         BlockRegistry result;
-
-        try (BlockRegistryReader obj = new BlockRegistryReader(
-                new Scanner(s))) {
+        try (BlockRegistryReader obj = new BlockRegistryReader(new Scanner(s))) {
             result = obj.read();
         }
 
@@ -102,18 +87,12 @@ public class BlockRegistryReaderTest
     }
 
     @Test
-    public void ignoresComments()
-            throws IOException, BlockRegistryReaderException
+    public void ignoresComments() throws IOException, BlockRegistryReaderException
     {
-        String s = "  # comment\n";
-        s += "move (number) steps\n" + "none\n" + "forward:\n";
-        s += "#test\n";
-        s += "x position\n" + "number\n" + "# in between\n" + "xpos\n";
+        String s = "  # comment\nmove (number) steps\nnone\nforward:\n#test\nx position\nnumber\n# in between\nxpos\n";
 
         BlockRegistry result;
-
-        try (BlockRegistryReader obj = new BlockRegistryReader(
-                new Scanner(s))) {
+        try (BlockRegistryReader obj = new BlockRegistryReader(new Scanner(s))) {
             result = obj.read();
         }
 

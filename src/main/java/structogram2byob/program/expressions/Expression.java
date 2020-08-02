@@ -49,8 +49,8 @@ public abstract class Expression
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    public abstract ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks) throws ScratchConversionException;
+    public abstract ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
+            throws ScratchConversionException;
 
     @Override
     public abstract String toString();

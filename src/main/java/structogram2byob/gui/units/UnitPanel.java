@@ -21,7 +21,6 @@ public class UnitPanel extends JPanel
 {
     private static final long serialVersionUID = -1587434284244337436L;
 
-    private final JPanel controls;
     private final StructogramPanel display;
 
     /**
@@ -38,7 +37,7 @@ public class UnitPanel extends JPanel
         gbc.gridx = gbc.gridy = 0;
 
         // create dependencies
-        controls = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        JPanel controls = new JPanel(new FlowLayout(FlowLayout.LEADING));
         display = new StructogramPanel(nsd);
 
         // fill controls
@@ -48,8 +47,7 @@ public class UnitPanel extends JPanel
             controls.add(removeBtn);
 
             JButton saveImageBtn = new JButton("Save image");
-            saveImageBtn.addActionListener(
-                    e -> controller.openImageSaveDialog(display.render()));
+            saveImageBtn.addActionListener(e -> controller.openImageSaveDialog(display.render()));
             controls.add(saveImageBtn);
         }
         // add controls

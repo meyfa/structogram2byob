@@ -1,7 +1,7 @@
 package structogram2byob.program.expressions;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class BlockExpressionTest
     public void returnsDescription()
     {
         BlockExpression obj = new BlockExpression(null, DESC,
-                Arrays.asList(new NumberExpression(null, 42)));
+                Collections.singletonList(new NumberExpression(null, 42)));
 
         assertSame(DESC, obj.getDescription());
     }
@@ -61,14 +61,13 @@ public class BlockExpressionTest
     public void returnsCorrectType()
     {
         BlockExpression obj = new BlockExpression(null, DESC,
-                Arrays.asList(new NumberExpression(null, 42)));
+                Collections.singletonList(new NumberExpression(null, 42)));
 
         assertSame(ScratchType.ANY, obj.getType());
     }
 
     @Test
-    public void convertsFunctionBlockToScratch()
-            throws ScratchConversionException
+    public void convertsFunctionBlockToScratch() throws ScratchConversionException
     {
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
@@ -76,18 +75,16 @@ public class BlockExpressionTest
         blocks.register(block);
 
         BlockExpression obj = new BlockExpression(null, DESC,
-                Arrays.asList(new NumberExpression(null, 42)));
+                Collections.singletonList(new NumberExpression(null, 42)));
 
         ScratchObjectArray blockResult = block.toScratch(
-                Arrays.asList(new NumberExpression(null, 42)), vars, blocks);
-        ScratchObjectArray objResult = (ScratchObjectArray) obj.toScratch(vars,
-                blocks);
+                Collections.singletonList(new NumberExpression(null, 42)), vars, blocks);
+        ScratchObjectArray objResult = (ScratchObjectArray) obj.toScratch(vars, blocks);
 
         assertEquals(blockResult.size(), objResult.size());
 
         for (int i = 0; i < blockResult.size(); ++i) {
-            assertEquals(blockResult.get(i).getClass(),
-                    objResult.get(i).getClass());
+            assertEquals(blockResult.get(i).getClass(), objResult.get(i).getClass());
         }
     }
 
@@ -100,7 +97,7 @@ public class BlockExpressionTest
         BlockRegistry blocks = new BlockRegistry();
 
         BlockExpression obj = new BlockExpression(null, DESC_VAR,
-                Arrays.asList());
+                Collections.emptyList());
 
         ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars,
                 blocks);
@@ -117,17 +114,15 @@ public class BlockExpressionTest
     {
         ProgramUnit unit = new ProgramUnit(null, //
                 UnitType.COMMAND, // type
-                new BlockDescription.Builder().label("doSomething")
-                        .param(ScratchType.ANY, "foobar").build(), // desc
-                Arrays.asList() // blocks
+                new BlockDescription.Builder().label("doSomething").param(ScratchType.ANY, "foobar").build(), // desc
+                Collections.emptyList() // blocks
         );
 
         Map<String, VariableContext> vars = new HashMap<>();
         vars.put("foobar", new VariableContext.UnitSpecific(unit));
         BlockRegistry blocks = new BlockRegistry();
 
-        BlockExpression obj = new BlockExpression(null, DESC_VAR,
-                Arrays.asList());
+        BlockExpression obj = new BlockExpression(null, DESC_VAR, Collections.emptyList());
 
         ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars,
                 blocks);
@@ -135,11 +130,9 @@ public class BlockExpressionTest
         assertEquals(5, result.size());
         assertEquals("byob", ((ScratchObjectSymbol) result.get(0)).getValue());
         assertEquals("", ((ScratchObjectString) result.get(1)).getValue());
-        assertEquals("readBlockVariable",
-                ((ScratchObjectSymbol) result.get(2)).getValue());
+        assertEquals("readBlockVariable", ((ScratchObjectSymbol) result.get(2)).getValue());
         assertEquals("foobar", ((ScratchObjectUtf8) result.get(3)).getValue());
-        assertEquals("doSomething %foobar",
-                ((ScratchObjectUtf8) result.get(4)).getValue());
+        assertEquals("doSomething %foobar", ((ScratchObjectUtf8) result.get(4)).getValue());
     }
 
     @Test
@@ -151,17 +144,14 @@ public class BlockExpressionTest
         vars.put("foobar", new VariableContext.ScriptSpecific(frame));
         BlockRegistry blocks = new BlockRegistry();
 
-        BlockExpression obj = new BlockExpression(null, DESC_VAR,
-                Arrays.asList());
+        BlockExpression obj = new BlockExpression(null, DESC_VAR, Collections.emptyList());
 
-        ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars,
-                blocks);
+        ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars, blocks);
 
         assertEquals(5, result.size());
         assertEquals("byob", ((ScratchObjectSymbol) result.get(0)).getValue());
         assertEquals("", ((ScratchObjectString) result.get(1)).getValue());
-        assertEquals("readBlockVariable",
-                ((ScratchObjectSymbol) result.get(2)).getValue());
+        assertEquals("readBlockVariable", ((ScratchObjectSymbol) result.get(2)).getValue());
         assertEquals("foobar", ((ScratchObjectUtf8) result.get(3)).getValue());
         assertSame(frame, result.get(4));
     }
@@ -173,7 +163,7 @@ public class BlockExpressionTest
         BlockRegistry blocks = new BlockRegistry();
 
         BlockExpression obj = new BlockExpression(null, DESC,
-                Arrays.asList(new NumberExpression(null, 42)));
+                Collections.singletonList(new NumberExpression(null, 42)));
 
         assertThrows(ScratchConversionException.class, () -> obj.toScratch(vars, blocks));
     }
@@ -183,19 +173,14 @@ public class BlockExpressionTest
     {
         BlockExpression obj;
 
-        obj = new BlockExpression(null,
-                new BlockDescription.Builder().label("foo").build(),
-                Arrays.asList());
+        obj = new BlockExpression(null, new BlockDescription.Builder().label("foo").build(), Collections.emptyList());
         assertEquals("(foo)", obj.toString());
 
         obj = new BlockExpression(null,
-                new BlockDescription.Builder().label("foo")
-                        .param(ScratchType.ANY).label("bar").build(),
-                Arrays.asList(//
-                        new BlockExpression(
-                                null, new BlockDescription.Builder()
-                                        .label("param").build(),
-                                Arrays.asList())//
+                new BlockDescription.Builder().label("foo").param(ScratchType.ANY).label("bar").build(),
+                Collections.singletonList(
+                        new BlockExpression(null, new BlockDescription.Builder().label("param").build(),
+                                Collections.emptyList())
                 ));
         assertEquals("(foo (param) bar)", obj.toString());
     }

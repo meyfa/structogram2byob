@@ -34,16 +34,14 @@ public class BlockRegistryTest
     {
         BlockRegistry obj = new BlockRegistry();
 
-        Block block = new MockBlock(new BlockDescription.Builder().label("foo")
-                .param(ScratchType.ANY).build(), ScratchType.BOOLEAN);
+        Block block = new MockBlock(new BlockDescription.Builder().label("foo").param(ScratchType.ANY).build(),
+                ScratchType.BOOLEAN);
         obj.register(block);
 
-        Block lookup = obj.lookup(new BlockDescription.Builder().label("foo")
-                .param(ScratchType.NUMBER).build());
+        Block lookup = obj.lookup(new BlockDescription.Builder().label("foo").param(ScratchType.NUMBER).build());
         assertSame(block, lookup);
 
-        Block unknown = obj
-                .lookup(new BlockDescription.Builder().label("bar").build());
+        Block unknown = obj.lookup(new BlockDescription.Builder().label("bar").build());
         assertNull(unknown);
     }
 
@@ -52,12 +50,12 @@ public class BlockRegistryTest
     {
         BlockRegistry obj = new BlockRegistry();
 
-        obj.register(new MockBlock(new BlockDescription.Builder().label("foo")
-                .param(ScratchType.ANY).build(), ScratchType.BOOLEAN));
+        obj.register(new MockBlock(new BlockDescription.Builder().label("foo").param(ScratchType.ANY).build(),
+                ScratchType.BOOLEAN));
 
         assertThrows(IllegalArgumentException.class, () -> {
-            obj.register(new MockBlock(new BlockDescription.Builder().label("foo")
-                    .param(ScratchType.ANY).build(), ScratchType.BOOLEAN));
+            obj.register(new MockBlock(new BlockDescription.Builder().label("foo").param(ScratchType.ANY).build(),
+                    ScratchType.BOOLEAN));
         });
     }
 
@@ -66,14 +64,13 @@ public class BlockRegistryTest
     {
         BlockRegistry base = new BlockRegistry();
 
-        Block block = new MockBlock(new BlockDescription.Builder().label("foo")
-                .param(ScratchType.ANY).build(), ScratchType.BOOLEAN);
+        Block block = new MockBlock(new BlockDescription.Builder().label("foo").param(ScratchType.ANY).build(),
+                ScratchType.BOOLEAN);
         base.register(block);
 
         BlockRegistry obj = new BlockRegistry(base);
 
-        Block lookup = obj.lookup(new BlockDescription.Builder().label("foo")
-                .param(ScratchType.NUMBER).build());
+        Block lookup = obj.lookup(new BlockDescription.Builder().label("foo").param(ScratchType.NUMBER).build());
         assertSame(block, lookup);
     }
 }

@@ -73,15 +73,11 @@ public class Main
      * @return The registry containing all blocks.
      *
      * @throws IOException If an I/O error occurs.
-     * @throws BlockRegistryReaderException If the resource file contains
-     *             malformed block descriptions.
+     * @throws BlockRegistryReaderException If the resource file contains malformed block descriptions.
      */
-    private static BlockRegistry createRegistry()
-            throws IOException, BlockRegistryReaderException
+    private static BlockRegistry createRegistry() throws IOException, BlockRegistryReaderException
     {
-        try (BlockRegistryReader r = new BlockRegistryReader(
-                Main.class.getResourceAsStream("/functions.txt"))) {
-
+        try (BlockRegistryReader r = new BlockRegistryReader(Main.class.getResourceAsStream("/functions.txt"))) {
             BlockRegistry reg = r.read();
 
             reg.register(StartClickedHatBlock.instance);
@@ -97,7 +93,6 @@ public class Main
             reg.register(ForeverBlock.instance);
 
             return reg;
-
         }
     }
 }

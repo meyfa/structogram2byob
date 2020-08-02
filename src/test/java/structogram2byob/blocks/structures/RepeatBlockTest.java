@@ -1,6 +1,7 @@
 package structogram2byob.blocks.structures;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,10 @@ public class RepeatBlockTest
     {
         RepeatBlock obj = RepeatBlock.instance;
 
-        List<Expression> params = Arrays.asList(new NumberExpression(null, 10),
-                new ScriptExpression(null, Arrays.asList()));
+        List<Expression> params = Arrays.asList(
+                new NumberExpression(null, 10),
+                new ScriptExpression(null, Collections.emptyList())
+        );
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
@@ -36,12 +39,10 @@ public class RepeatBlockTest
         assertEquals(3, scratch.size());
 
         // starts with method call
-        assertEquals("doRepeat",
-                ((ScratchObjectSymbol) scratch.get(0)).getValue());
+        assertEquals("doRepeat", ((ScratchObjectSymbol) scratch.get(0)).getValue());
 
         // continues with condition
-        assertEquals(10,
-                ((ScratchObjectAbstractNumber) scratch.get(1)).intValue());
+        assertEquals(10, ((ScratchObjectAbstractNumber) scratch.get(1)).intValue());
 
         // ends with script
         assertTrue(scratch.get(2) instanceof ScratchObjectArray);

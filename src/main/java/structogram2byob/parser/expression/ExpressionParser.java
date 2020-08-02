@@ -1,7 +1,7 @@
 package structogram2byob.parser.expression;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -45,17 +45,17 @@ public class ExpressionParser
      *
      * @return The parsed expression.
      *
-     * @throws ExpressionParserException If the input is malformed and cannot be
-     *             parsed as an expression.
+     * @throws ExpressionParserException If the input is malformed and cannot be parsed as an expression.
      */
     public Expression parse() throws ExpressionParserException
     {
+        AstNode ast;
         try {
-            AstNode ast = astParser.parse();
-            return parse(ast);
+            ast = astParser.parse();
         } catch (AstParserException e) {
             throw new ExpressionParserException(e);
         }
+        return parse(ast);
     }
 
     /**
@@ -65,8 +65,8 @@ public class ExpressionParser
      * @param ast The AST node to parse.
      * @return The parsed expression.
      *
-     * @throws ExpressionParserException If the node is empty, an unexpected
-     *             token is encountered, or a token is malformed.
+     * @throws ExpressionParserException If the node is empty, an unexpected token is encountered,
+     *          or a token is malformed.
      */
     private Expression parse(AstNode ast) throws ExpressionParserException
     {
@@ -81,7 +81,7 @@ public class ExpressionParser
         }
 
         return parseComplex(IntStream.range(0, ast.countBranches())
-                .mapToObj(i -> ast.getBranch(i)).collect(Collectors.toList()));
+                .mapToObj(ast::getBranch).collect(Collectors.toList()));
     }
 
     /**
@@ -91,8 +91,7 @@ public class ExpressionParser
      * @param ast The AST node to parse.
      * @return The parsed expression.
      *
-     * @throws ExpressionParserException If the node contains something other
-     *             than a label, number or string.
+     * @throws ExpressionParserException If the node contains something other than a label, number or string.
      */
     private Expression parseSingle(AstNode ast) throws ExpressionParserException
     {
@@ -100,7 +99,7 @@ public class ExpressionParser
 
         switch (t.getType()) {
             case LABEL:
-                return parseComplex(Arrays.asList(ast));
+                return parseComplex(Collections.singletonList(ast));
             case NUMBER:
                 return parseNumber(t.getValue());
             case STRING:
@@ -119,11 +118,10 @@ public class ExpressionParser
      * @param nodes The AST nodes to parse.
      * @return The parsed expression.
      *
-     * @throws ExpressionParserException If the node is empty, an unexpected
-     *             token is encountered, or a token is malformed.
+     * @throws ExpressionParserException If the node is empty, an unexpected token is encountered,
+     *          or a token is malformed.
      */
-    private Expression parseComplex(List<AstNode> nodes)
-            throws ExpressionParserException
+    private Expression parseComplex(List<AstNode> nodes) throws ExpressionParserException
     {
         BlockDescription.Builder builder = new BlockDescription.Builder();
         List<Expression> params = new ArrayList<>();
@@ -149,14 +147,15 @@ public class ExpressionParser
      *
      * @throws ExpressionParserException If the string is malformed.
      */
-    private NumberExpression parseNumber(String s)
-            throws ExpressionParserException
+    private NumberExpression parseNumber(String s) throws ExpressionParserException
     {
+        double value;
         try {
-            return new NumberExpression(element, Double.parseDouble(s));
+            value = Double.parseDouble(s);
         } catch (NumberFormatException e) {
             throw new ExpressionParserException(e);
         }
+        return new NumberExpression(element, value);
     }
 
     /**
@@ -168,14 +167,14 @@ public class ExpressionParser
      *
      * @throws ExpressionParserException If the string is malformed.
      */
-    private StringExpression parseString(String s)
-            throws ExpressionParserException
+    private StringExpression parseString(String s) throws ExpressionParserException
     {
+        String value;
         try {
-            return new StringExpression(element,
-                    s.substring(1, s.length() - 1));
+            value = s.substring(1, s.length() - 1);
         } catch (IndexOutOfBoundsException e) {
             throw new ExpressionParserException(e);
         }
+        return new StringExpression(element, value);
     }
 }

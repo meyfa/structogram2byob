@@ -32,8 +32,7 @@ public class AstParser
      * @param type The token type required for a match.
      * @return The matched token.
      *
-     * @throws AstParserException If there are no more tokens or the token is
-     *             not of the given type.
+     * @throws AstParserException If there are no more tokens or the token is not of the given type.
      */
     private Token match(TokenType type) throws AstParserException
     {
@@ -96,7 +95,6 @@ public class AstParser
         }
 
         if (current.getType() == TokenType.PAREN_OPEN) {
-
             match(TokenType.PAREN_OPEN);
 
             AstNode wrapped = new AstNode();
@@ -104,7 +102,6 @@ public class AstParser
             ast.add(wrapped);
 
             match(TokenType.PAREN_CLOSE);
-
         } else {
             parseTerminal(ast);
         }

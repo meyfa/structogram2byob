@@ -2,6 +2,7 @@ package structogram2byob.parser.nsd;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import nsdlib.elements.NSDContainer;
@@ -28,8 +29,7 @@ import structogram2byob.program.expressions.ScriptExpression;
 
 
 /**
- * Parser for constructing {@link ProgramUnit} instances from Nassi-Shneiderman
- * Diagram elements.
+ * Parser for constructing {@link ProgramUnit} instances from Nassi-Shneiderman Diagram elements.
  */
 public class NSDParser
 {
@@ -103,8 +103,7 @@ public class NSDParser
      *
      * @throws NSDParserException If the label could not be parsed.
      */
-    private BlockDescription parseUnitDescription(String label)
-            throws NSDParserException
+    private BlockDescription parseUnitDescription(String label) throws NSDParserException
     {
         BlockDescriptionParser bdp = new BlockDescriptionParser(label, true);
         try {
@@ -123,8 +122,7 @@ public class NSDParser
      *
      * @throws NSDParserException
      */
-    private Expression parseExpression(NSDElement source, String exp)
-            throws NSDParserException
+    private Expression parseExpression(NSDElement source, String exp) throws NSDParserException
     {
         try {
             return new ExpressionParser(source, exp).parse();
@@ -164,8 +162,7 @@ public class NSDParser
      *
      * @throws NSDParserException
      */
-    private BlockExpression parseInstruction(NSDInstruction e)
-            throws NSDParserException
+    private BlockExpression parseInstruction(NSDInstruction e) throws NSDParserException
     {
         return (BlockExpression) parseExpression(e, e.getLabel());
     }
@@ -178,8 +175,7 @@ public class NSDParser
      *
      * @throws NSDParserException
      */
-    private BlockExpression parseDecision(NSDDecision e)
-            throws NSDParserException
+    private BlockExpression parseDecision(NSDDecision e) throws NSDParserException
     {
         Expression condition = parseExpression(e, e.getLabel());
 
@@ -206,7 +202,7 @@ public class NSDParser
     private BlockExpression parseForever(NSDForever e) throws NSDParserException
     {
         return new BlockExpression(e, ForeverBlock.instance.getDescription(),
-                Arrays.asList(parseScript(e)));
+                Collections.singletonList(parseScript(e)));
     }
 
     /**
@@ -217,8 +213,7 @@ public class NSDParser
      *
      * @throws NSDParserException
      */
-    private BlockExpression parseTestFirstLoop(NSDTestFirstLoop e)
-            throws NSDParserException
+    private BlockExpression parseTestFirstLoop(NSDTestFirstLoop e) throws NSDParserException
     {
         // parse as normal block
         String label = e.getLabel();
@@ -244,15 +239,12 @@ public class NSDParser
      *
      * @throws NSDParserException
      */
-    private ScriptExpression parseScript(NSDContainer<NSDElement> e)
-            throws NSDParserException
+    private ScriptExpression parseScript(NSDContainer<NSDElement> e) throws NSDParserException
     {
         List<BlockExpression> blocks = new ArrayList<>();
-
         for (NSDElement child : e) {
             blocks.add(parseElement(child));
         }
-
         return new ScriptExpression(e, blocks);
     }
 }

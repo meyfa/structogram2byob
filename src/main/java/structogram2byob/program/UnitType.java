@@ -30,7 +30,7 @@ public enum UnitType
 
     private final ScratchType returnType;
 
-    private UnitType(ScratchType returnType)
+    UnitType(ScratchType returnType)
     {
         this.returnType = returnType;
     }

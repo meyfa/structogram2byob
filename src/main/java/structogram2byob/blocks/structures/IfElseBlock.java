@@ -35,8 +35,7 @@ public class IfElseBlock extends Block
 
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException
+            Map<String, VariableContext> vars, BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

@@ -1,6 +1,6 @@
 package structogram2byob.blocks.structures;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +24,7 @@ public class ForeverBlockTest
     {
         ForeverBlock obj = ForeverBlock.instance;
 
-        List<Expression> params = Arrays
-                .asList(new ScriptExpression(null, Arrays.asList()));
+        List<Expression> params = Collections.singletonList(new ScriptExpression(null, Collections.emptyList()));
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
@@ -34,8 +33,7 @@ public class ForeverBlockTest
         assertEquals(2, scratch.size());
 
         // starts with method call
-        assertEquals("doForever",
-                ((ScratchObjectSymbol) scratch.get(0)).getValue());
+        assertEquals("doForever", ((ScratchObjectSymbol) scratch.get(0)).getValue());
 
         // ends with script
         assertTrue(scratch.get(1) instanceof ScratchObjectArray);

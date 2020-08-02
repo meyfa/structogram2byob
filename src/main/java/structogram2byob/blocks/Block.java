@@ -70,9 +70,8 @@ public abstract class Block
      * @param exp The expression to convert to a variable name.
      * @return The variable name.
      *
-     * @throws IllegalArgumentException If the given expression is not a
-     *             {@link BlockDescription}, or doesn't have exactly one label
-     *             part and no other parts.
+     * @throws IllegalArgumentException If the given expression is not a {@link BlockDescription},
+     *          or doesn't have exactly one label part and no other parts.
      */
     protected static String asVariableName(Expression exp)
     {

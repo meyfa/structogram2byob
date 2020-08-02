@@ -50,8 +50,7 @@ public class Program
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    public ScratchProject toScratch(BlockRegistry blocks)
-            throws ScratchConversionException
+    public ScratchProject toScratch(BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchProject project = new ScratchProject(ScratchVersion.BYOB311);
 
@@ -106,8 +105,7 @@ public class Program
         }
     }
 
-    private void registerUnits(BlockRegistry registry)
-            throws ScratchConversionException
+    private void registerUnits(BlockRegistry registry) throws ScratchConversionException
     {
         for (ProgramUnit u : units) {
             if (u.getType() != UnitType.SCRIPT) {
@@ -173,8 +171,7 @@ public class Program
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    private ScratchObjectCustomBlockDefinition serializeUnitAsBlock(
-            ProgramUnit u, Map<String, VariableContext> vars,
+    private ScratchObjectCustomBlockDefinition serializeUnitAsBlock(ProgramUnit u, Map<String, VariableContext> vars,
             BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectCustomBlockDefinition cbd = new ScratchObjectCustomBlockDefinition();
@@ -184,8 +181,7 @@ public class Program
 
         ScratchType type = u.getType().getReturnType();
         String typeName = type == null ? "none" : type.name().toLowerCase();
-        cbd.setField(ScratchObjectCustomBlockDefinition.FIELD_TYPE,
-                new ScratchObjectSymbol(typeName));
+        cbd.setField(ScratchObjectCustomBlockDefinition.FIELD_TYPE, new ScratchObjectSymbol(typeName));
 
         return cbd;
     }

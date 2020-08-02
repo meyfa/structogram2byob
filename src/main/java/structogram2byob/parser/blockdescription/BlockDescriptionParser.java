@@ -42,8 +42,7 @@ public class BlockDescriptionParser
      * @param pastLines The number of lines that came before this description.
      * @param lineStart The number of chars that came before this description.
      */
-    public BlockDescriptionParser(String s, boolean withLabels, int pastLines,
-            int lineStart)
+    public BlockDescriptionParser(String s, boolean withLabels, int pastLines, int lineStart)
     {
         this.lexer = new Lexer(s, pastLines, lineStart);
         this.withLabels = withLabels;
@@ -66,8 +65,7 @@ public class BlockDescriptionParser
         }
     }
 
-    private BlockDescription doParse()
-            throws LexerException, BlockDescriptionParserException
+    private BlockDescription doParse() throws LexerException, BlockDescriptionParserException
     {
         BlockDescription.Builder builder = new BlockDescription.Builder();
 
@@ -94,8 +92,7 @@ public class BlockDescriptionParser
         return builder.build();
     }
 
-    private Token next(TokenType expected)
-            throws BlockDescriptionParserException, LexerException
+    private Token next(TokenType expected) throws BlockDescriptionParserException, LexerException
     {
         Token t = lexer.next();
         if (expected != null) {
@@ -104,8 +101,7 @@ public class BlockDescriptionParser
         return t;
     }
 
-    private void checkTokenType(Token t, TokenType expected)
-            throws BlockDescriptionParserException
+    private void checkTokenType(Token t, TokenType expected) throws BlockDescriptionParserException
     {
         if (t.getType() != expected) {
             String expName = expected.name().toLowerCase();
@@ -118,8 +114,7 @@ public class BlockDescriptionParser
         }
     }
 
-    private ScratchType parseScratchType(Token t)
-            throws BlockDescriptionParserException
+    private ScratchType parseScratchType(Token t) throws BlockDescriptionParserException
     {
         String name = t.getValue().toUpperCase();
 

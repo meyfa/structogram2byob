@@ -8,7 +8,7 @@ import nsdlib.elements.NSDElement;
  */
 public class NSDParserException extends Exception
 {
-    private static final long serialVersionUID = 895616247524762328L;
+    private static final long serialVersionUID = 1906621534912929210L;
 
     private final NSDElement element;
 
@@ -58,25 +58,6 @@ public class NSDParserException extends Exception
             Throwable cause)
     {
         super(message, cause);
-        this.element = element;
-    }
-
-    /**
-     * Constructs an exception with the given detail message, the given cause, a
-     * flag for whether suppression is enabled, and a flag for whether the stack
-     * trace shall be writable.
-     *
-     * @param element The element that caused this exception.
-     * @param message The detail message.
-     * @param cause The throwable that caused this exception to be thrown.
-     * @param enableSuppression Whether suppression shall be enabled.
-     * @param writableStackTrace Whether the stack trace shall be writable.
-     */
-    public NSDParserException(NSDElement element, String message,
-            Throwable cause, boolean enableSuppression,
-            boolean writableStackTrace)
-    {
-        super(message, cause, enableSuppression, writableStackTrace);
         this.element = element;
     }
 

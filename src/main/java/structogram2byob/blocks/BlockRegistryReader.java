@@ -55,8 +55,7 @@ public class BlockRegistryReader implements Closeable
      *
      * @return The block registry that was read.
      *
-     * @throws BlockRegistryReaderException If the registry is malformed or
-     *             contains invalid definitions.
+     * @throws BlockRegistryReaderException If the registry is malformed or contains invalid definitions.
      */
     public BlockRegistry read() throws BlockRegistryReaderException
     {
@@ -64,19 +63,16 @@ public class BlockRegistryReader implements Closeable
 
         String descLine, returnLine, methodLine;
         while ((descLine = nextLine()) != null) {
-
             int i = lineNumber;
 
             returnLine = nextLine();
             methodLine = nextLine();
 
             if (returnLine == null || methodLine == null) {
-                throw new BlockRegistryReaderException(
-                        "block definition incomplete");
+                throw new BlockRegistryReaderException("block definition incomplete");
             }
 
             reg.register(parseFunction(descLine, returnLine, methodLine, i));
-
         }
 
         return reg;
@@ -111,27 +107,23 @@ public class BlockRegistryReader implements Closeable
      * @param l The line index the description is on.
      * @return The constructed block.
      *
-     * @throws BlockRegistryReaderException If a malformed block description
-     *             string or an unknown return type is encountered.
+     * @throws BlockRegistryReaderException If a malformed block description string
+     *          or an unknown return type is encountered.
      */
-    private FunctionBlock parseFunction(String d, String ret, String met, int l)
-            throws BlockRegistryReaderException
+    private FunctionBlock parseFunction(String d, String ret, String met, int l) throws BlockRegistryReaderException
     {
         BlockDescription desc;
         try {
             desc = new BlockDescriptionParser(d, false, l, 0).parse();
         } catch (BlockDescriptionParserException e) {
-            throw new BlockRegistryReaderException(
-                    "malformed block description on line " + l, e);
+            throw new BlockRegistryReaderException(String.format("malformed block description on line %d", l), e);
         }
 
         ScratchType retType;
         try {
-            retType = ret.equalsIgnoreCase("none") ? null
-                    : ScratchType.valueOf(ret.toUpperCase());
+            retType = ret.equalsIgnoreCase("none") ? null : ScratchType.valueOf(ret.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new BlockRegistryReaderException(
-                    "unknown return type on line " + l, e);
+            throw new BlockRegistryReaderException(String.format("unknown return type on line %d", l), e);
         }
 
         return new FunctionBlock(desc, retType, met);

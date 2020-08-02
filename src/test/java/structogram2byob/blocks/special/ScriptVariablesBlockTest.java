@@ -1,6 +1,7 @@
 package structogram2byob.blocks.special;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +30,10 @@ public class ScriptVariablesBlockTest
 
         BlockExpression varA = new BlockExpression(null,
                 new BlockDescription.Builder().label("a").build(),
-                Arrays.asList());
+                Collections.emptyList());
         BlockExpression varB = new BlockExpression(null,
                 new BlockDescription.Builder().label("b").build(),
-                Arrays.asList());
+                Collections.emptyList());
 
         List<Expression> params = Arrays.asList(varA, varB);
         Map<String, VariableContext> vars = new HashMap<>();
@@ -45,8 +46,7 @@ public class ScriptVariablesBlockTest
         // starts with method call
         assertEquals("byob", ((ScratchObjectSymbol) scratch.get(0)).getValue());
         assertEquals("", ((ScratchObjectString) scratch.get(1)).getValue());
-        assertEquals("doDeclareVariables",
-                ((ScratchObjectSymbol) scratch.get(2)).getValue());
+        assertEquals("doDeclareVariables", ((ScratchObjectSymbol) scratch.get(2)).getValue());
 
         // continues with first variable
         ScratchObjectArray v0 = (ScratchObjectArray) scratch.get(3);
@@ -54,8 +54,7 @@ public class ScriptVariablesBlockTest
         // - method call
         assertEquals("byob", ((ScratchObjectSymbol) v0.get(0)).getValue());
         assertEquals("", ((ScratchObjectString) v0.get(1)).getValue());
-        assertEquals("readBlockVariable",
-                ((ScratchObjectSymbol) v0.get(2)).getValue());
+        assertEquals("readBlockVariable", ((ScratchObjectSymbol) v0.get(2)).getValue());
         // - name
         assertEquals("a", ((ScratchObjectUtf8) v0.get(3)).getValue());
         // - variable frame
@@ -67,8 +66,7 @@ public class ScriptVariablesBlockTest
         // - method call
         assertEquals("byob", ((ScratchObjectSymbol) v1.get(0)).getValue());
         assertEquals("", ((ScratchObjectString) v1.get(1)).getValue());
-        assertEquals("readBlockVariable",
-                ((ScratchObjectSymbol) v1.get(2)).getValue());
+        assertEquals("readBlockVariable", ((ScratchObjectSymbol) v1.get(2)).getValue());
         // - name
         assertEquals("b", ((ScratchObjectUtf8) v1.get(3)).getValue());
         // - variable frame
@@ -82,10 +80,10 @@ public class ScriptVariablesBlockTest
 
         BlockExpression varA = new BlockExpression(null,
                 new BlockDescription.Builder().label("a").build(),
-                Arrays.asList());
+                Collections.emptyList());
         BlockExpression varB = new BlockExpression(null,
                 new BlockDescription.Builder().label("b").build(),
-                Arrays.asList());
+                Collections.emptyList());
 
         List<Expression> params = Arrays.asList(varA, varB);
         Map<String, VariableContext> vars = new HashMap<>();
@@ -93,8 +91,7 @@ public class ScriptVariablesBlockTest
 
         ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
 
-        Map<String, ScratchObjectVariableFrame> ret = ScriptVariablesBlock
-                .retrieveFrames(scratch);
+        Map<String, ScratchObjectVariableFrame> ret = ScriptVariablesBlock.retrieveFrames(scratch);
 
         assertEquals(2, ret.size());
 

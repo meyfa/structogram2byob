@@ -29,5 +29,5 @@ public enum TokenType
     /**
      * A numeric literal with an optional decimal point, e.g. 12 or 3.1415.
      */
-    NUMBER;
+    NUMBER
 }

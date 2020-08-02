@@ -8,7 +8,7 @@ import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +23,7 @@ public class StartClickedHatBlockTest
     {
         StartClickedHatBlock obj = StartClickedHatBlock.instance;
 
-        List<Expression> params = Arrays.asList();
+        List<Expression> params = Collections.emptyList();
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
@@ -31,9 +31,7 @@ public class StartClickedHatBlockTest
 
         assertEquals(2, scratch.size());
 
-        assertEquals("EventHatMorph",
-                ((ScratchObjectSymbol) scratch.get(0)).getValue());
-        assertEquals("Scratch-StartClicked",
-                ((ScratchObjectString) scratch.get(1)).getValue());
+        assertEquals("EventHatMorph", ((ScratchObjectSymbol) scratch.get(0)).getValue());
+        assertEquals("Scratch-StartClicked", ((ScratchObjectString) scratch.get(1)).getValue());
     }
 }

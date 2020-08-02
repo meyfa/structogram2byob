@@ -46,8 +46,7 @@ public class NumberExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(Map<String, VariableContext> vars,
-            BlockRegistry blocks)
+    public ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
     {
         if (value == Math.rint(value)) {
             return new ScratchObjectSmallInteger((int) Math.rint(value));

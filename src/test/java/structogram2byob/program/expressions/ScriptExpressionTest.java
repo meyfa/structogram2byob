@@ -2,6 +2,7 @@ package structogram2byob.program.expressions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,10 +27,8 @@ public class ScriptExpressionTest
     @Test
     public void returnsSize()
     {
-        BlockExpression block = new BlockExpression(null, DESC,
-                Arrays.asList());
-        ScriptExpression obj = new ScriptExpression(null,
-                Arrays.asList(block, block, block));
+        BlockExpression block = new BlockExpression(null, DESC, Collections.emptyList());
+        ScriptExpression obj = new ScriptExpression(null, Arrays.asList(block, block, block));
 
         assertEquals(3, obj.size());
     }
@@ -37,8 +36,7 @@ public class ScriptExpressionTest
     @Test
     public void returnsUnmodifiableBlocksList()
     {
-        BlockExpression block = new BlockExpression(null, DESC,
-                Arrays.asList());
+        BlockExpression block = new BlockExpression(null, DESC, Collections.emptyList());
         List<BlockExpression> blocks = new ArrayList<>();
         blocks.add(block);
 
@@ -52,7 +50,7 @@ public class ScriptExpressionTest
     @Test
     public void returnsCorrectType()
     {
-        ScriptExpression obj = new ScriptExpression(null, Arrays.asList());
+        ScriptExpression obj = new ScriptExpression(null, Collections.emptyList());
 
         assertSame(ScratchType.LOOP, obj.getType());
     }
@@ -66,14 +64,14 @@ public class ScriptExpressionTest
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        obj = new ScriptExpression(null, Arrays.asList());
+        obj = new ScriptExpression(null, Collections.emptyList());
         result = (ScratchObjectArray) obj.toScratch(vars, blocks);
         assertEquals(0, result.size());
 
         blocks.register(new FunctionBlock(DESC, ScratchType.NUMBER, "xpos"));
 
-        obj = new ScriptExpression(null, Arrays
-                .asList(new BlockExpression(null, DESC, Arrays.asList())));
+        obj = new ScriptExpression(null, Collections.singletonList(
+                new BlockExpression(null, DESC, Collections.emptyList())));
         result = (ScratchObjectArray) obj.toScratch(vars, blocks);
         assertEquals(1, result.size());
     }
@@ -83,16 +81,13 @@ public class ScriptExpressionTest
     {
         ScriptExpression obj;
 
-        obj = new ScriptExpression(null, Arrays.asList(//
-                new BlockExpression(null,
-                        new BlockDescription.Builder().label("foo").build(),
-                        Arrays.asList()),
-                new BlockExpression(null,
-                        new BlockDescription.Builder().label("bar").build(),
-                        Arrays.asList()),
-                new BlockExpression(null,
-                        new BlockDescription.Builder().label("baz").build(),
-                        Arrays.asList())//
+        obj = new ScriptExpression(null, Arrays.asList(
+                new BlockExpression(null, new BlockDescription.Builder().label("foo").build(),
+                        Collections.emptyList()),
+                new BlockExpression(null, new BlockDescription.Builder().label("bar").build(),
+                        Collections.emptyList()),
+                new BlockExpression(null, new BlockDescription.Builder().label("baz").build(),
+                        Collections.emptyList())
         ));
         assertEquals("(foo); (bar); (baz)", obj.toString());
     }

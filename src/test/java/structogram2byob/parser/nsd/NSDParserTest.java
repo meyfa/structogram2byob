@@ -1,6 +1,6 @@
 package structogram2byob.parser.nsd;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import nsdlib.elements.NSDInstruction;
@@ -68,35 +68,27 @@ public class NSDParserTest
         assertEquals(2, blocks.size());
 
         BlockExpression block0 = blocks.get(0);
-        assertEquals(
-                new BlockDescription.Builder().label("say")
-                        .param(ScratchType.TEXT).build(),
+        assertEquals(new BlockDescription.Builder().label("say").param(ScratchType.TEXT).build(),
                 block0.getDescription());
         assertEquals(1, block0.getParameters().size());
-        assertEquals("adding now!",
-                ((StringExpression) block0.getParameters().get(0)).getValue());
+        assertEquals("adding now!", ((StringExpression) block0.getParameters().get(0)).getValue());
 
         BlockExpression block1 = blocks.get(1);
-        assertEquals(
-                new BlockDescription.Builder().label("report")
-                        .param(ScratchType.ANY).build(),
+        assertEquals(new BlockDescription.Builder().label("report").param(ScratchType.ANY).build(),
                 block1.getDescription());
         assertEquals(1, block1.getParameters().size());
 
         BlockExpression p0 = (BlockExpression) block1.getParameters().get(0);
-        assertEquals(new BlockDescription.Builder().param(ScratchType.ANY)
-                .label("+").param(ScratchType.ANY).build(),
+        assertEquals(new BlockDescription.Builder().param(ScratchType.ANY).label("+").param(ScratchType.ANY).build(),
                 p0.getDescription());
         assertEquals(2, p0.getParameters().size());
 
         BlockExpression p0p0 = (BlockExpression) p0.getParameters().get(0);
-        assertEquals(new BlockDescription.Builder().label("a").build(),
-                p0p0.getDescription());
+        assertEquals(new BlockDescription.Builder().label("a").build(), p0p0.getDescription());
         assertEquals(0, p0p0.getParameters().size());
 
         BlockExpression p0p1 = (BlockExpression) p0.getParameters().get(1);
-        assertEquals(new BlockDescription.Builder().label("b").build(),
-                p0p1.getDescription());
+        assertEquals(new BlockDescription.Builder().label("b").build(), p0p1.getDescription());
         assertEquals(0, p0p1.getParameters().size());
     }
 
@@ -104,8 +96,7 @@ public class NSDParserTest
     public void parsesIfThen() throws NSDParserException
     {
         NSDRoot nsd = new NSDRoot("COMMAND test");
-        nsd.addChild(new NSDDecision("true",
-                Arrays.asList(new NSDInstruction("say \"then\""))));
+        nsd.addChild(new NSDDecision("true", Collections.singletonList(new NSDInstruction("say \"then\""))));
 
         ProgramUnit result = new NSDParser(nsd).parse();
 
@@ -114,13 +105,11 @@ public class NSDParserTest
         assertEquals(1, blocks.size());
 
         BlockExpression block0 = blocks.get(0);
-        assertEquals(IfBlock.instance.getDescription(),
-                block0.getDescription());
+        assertEquals(IfBlock.instance.getDescription(), block0.getDescription());
         assertEquals(2, block0.getParameters().size());
 
         BlockExpression p0 = (BlockExpression) block0.getParameters().get(0);
-        assertEquals(new BlockDescription.Builder().label("true").build(),
-                p0.getDescription());
+        assertEquals(new BlockDescription.Builder().label("true").build(), p0.getDescription());
         assertEquals(0, p0.getParameters().size());
 
         ScriptExpression p1 = (ScriptExpression) block0.getParameters().get(1);
@@ -132,8 +121,8 @@ public class NSDParserTest
     {
         NSDRoot nsd = new NSDRoot("COMMAND test");
         nsd.addChild(new NSDDecision("true",
-                Arrays.asList(new NSDInstruction("say \"then\"")),
-                Arrays.asList(new NSDInstruction("say \"else\""))));
+                Collections.singletonList(new NSDInstruction("say \"then\"")),
+                Collections.singletonList(new NSDInstruction("say \"else\""))));
 
         ProgramUnit result = new NSDParser(nsd).parse();
 
@@ -142,13 +131,11 @@ public class NSDParserTest
         assertEquals(1, blocks.size());
 
         BlockExpression block0 = blocks.get(0);
-        assertEquals(IfElseBlock.instance.getDescription(),
-                block0.getDescription());
+        assertEquals(IfElseBlock.instance.getDescription(), block0.getDescription());
         assertEquals(3, block0.getParameters().size());
 
         BlockExpression p0 = (BlockExpression) block0.getParameters().get(0);
-        assertEquals(new BlockDescription.Builder().label("true").build(),
-                p0.getDescription());
+        assertEquals(new BlockDescription.Builder().label("true").build(), p0.getDescription());
         assertEquals(0, p0.getParameters().size());
 
         ScriptExpression p1 = (ScriptExpression) block0.getParameters().get(1);
@@ -162,9 +149,7 @@ public class NSDParserTest
     public void parsesForever() throws NSDParserException
     {
         NSDRoot nsd = new NSDRoot("COMMAND test");
-        nsd.addChild(new NSDForever(Arrays.asList(//
-                new NSDInstruction("say \"on and on\"")//
-        )));
+        nsd.addChild(new NSDForever(Collections.singletonList(new NSDInstruction("say \"on and on\""))));
 
         ProgramUnit result = new NSDParser(nsd).parse();
 
@@ -173,8 +158,7 @@ public class NSDParserTest
         assertEquals(1, blocks.size());
 
         BlockExpression block0 = blocks.get(0);
-        assertEquals(ForeverBlock.instance.getDescription(),
-                block0.getDescription());
+        assertEquals(ForeverBlock.instance.getDescription(), block0.getDescription());
         assertEquals(1, block0.getParameters().size());
 
         ScriptExpression p0 = (ScriptExpression) block0.getParameters().get(0);
@@ -185,8 +169,8 @@ public class NSDParserTest
     public void parsesRepeat() throws NSDParserException
     {
         NSDRoot nsd = new NSDRoot("COMMAND test");
-        nsd.addChild(new NSDTestFirstLoop("repeat 10", Arrays.asList(//
-                new NSDInstruction("say \"looping\"")//
+        nsd.addChild(new NSDTestFirstLoop("repeat 10", Collections.singletonList(
+                new NSDInstruction("say \"looping\"")
         )));
 
         ProgramUnit result = new NSDParser(nsd).parse();
@@ -196,8 +180,7 @@ public class NSDParserTest
         assertEquals(1, blocks.size());
 
         BlockExpression block0 = blocks.get(0);
-        assertEquals(RepeatBlock.instance.getDescription(),
-                block0.getDescription());
+        assertEquals(RepeatBlock.instance.getDescription(), block0.getDescription());
         assertEquals(2, block0.getParameters().size());
 
         NumberExpression p0 = (NumberExpression) block0.getParameters().get(0);

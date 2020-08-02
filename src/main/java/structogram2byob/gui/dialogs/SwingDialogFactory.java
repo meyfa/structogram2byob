@@ -20,9 +20,12 @@ public class SwingDialogFactory implements IDialogFactory
         chooser.setFileFilter(type);
         chooser.setAcceptAllFileFilterUsed(true);
 
-        return () -> chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION
-                ? chooser.getSelectedFile()
-                : null;
+        return () -> {
+            if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+                return chooser.getSelectedFile();
+            }
+            return null;
+        };
     }
 
     @Override
@@ -33,17 +36,19 @@ public class SwingDialogFactory implements IDialogFactory
         chooser.setFileFilter(type);
         chooser.setAcceptAllFileFilterUsed(true);
 
-        return () -> chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION
-                ? chooser.getSelectedFile()
-                : null;
+        return () -> {
+            if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+                return chooser.getSelectedFile();
+            }
+            return null;
+        };
     }
 
     @Override
     public IDialog<Boolean> createConfirmationDialog(String message)
     {
-        return () -> JOptionPane.showConfirmDialog(null, message,
-                "Confirm action", JOptionPane.YES_NO_OPTION,
-                JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION;
+        return () -> JOptionPane.showConfirmDialog(null, message, "Confirm action",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class SwingFrameManager implements IFrameManager
     private final SwingUnitsManager units;
     private final SwingMenuBuilder menu;
 
-    private JFrame frame;
+    private final JFrame frame;
 
     /**
      * Constructor.

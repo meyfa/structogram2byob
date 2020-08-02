@@ -50,19 +50,15 @@ public class GuiController
      * @param dialogFactory The factory to be used for constructing dialogs.
      * @param frameManager The frame manager to be used.
      */
-    public GuiController(BlockRegistry blocks, IDialogFactory dialogFactory,
-            IFrameManager frameManager)
+    public GuiController(BlockRegistry blocks, IDialogFactory dialogFactory, IFrameManager frameManager)
     {
         this.blocks = blocks;
 
         this.dialogFactory = dialogFactory;
 
-        importChooser = dialogFactory.createOpenDialog(
-                new ExtensionFileFilter("Structorizer Files", "nsd"));
-        exportChooser = dialogFactory.createSaveDialog(
-                new ExtensionFileFilter("BYOB Project Files", "ypr"));
-        saveImageChooser = dialogFactory.createSaveDialog(
-                new ExtensionFileFilter("Portable Network Graphics", "png"));
+        importChooser = dialogFactory.createOpenDialog(new ExtensionFileFilter("Structorizer Files", "nsd"));
+        exportChooser = dialogFactory.createSaveDialog(new ExtensionFileFilter("BYOB Project Files", "ypr"));
+        saveImageChooser = dialogFactory.createSaveDialog(new ExtensionFileFilter("PNG Images", "png"));
 
         this.frameManager = frameManager;
 
@@ -176,14 +172,12 @@ public class GuiController
     public void remove(NSDRoot nsd)
     {
         if (confirm("Do you really want to remove that project unit?")) {
-
             int index = diagrams.indexOf(nsd);
 
             diagrams.remove(index);
             frameManager.getUnits().removeUnit(index);
 
             updateProject();
-
         }
     }
 
@@ -194,12 +188,10 @@ public class GuiController
     public void removeAll()
     {
         if (confirm("Do you really want to remove all project units?")) {
-
             diagrams.clear();
             frameManager.getUnits().removeAllUnits();
 
             updateProject();
-
         }
     }
 
@@ -282,8 +274,7 @@ public class GuiController
     {
         StringBuilder sb = new StringBuilder();
 
-        try (Scanner sc = new Scanner(
-                getClass().getResourceAsStream("/about.txt"))) {
+        try (Scanner sc = new Scanner(getClass().getResourceAsStream("/about.txt"))) {
             while (sc.hasNextLine()) {
                 sb.append(sc.nextLine());
                 sb.append('\n');

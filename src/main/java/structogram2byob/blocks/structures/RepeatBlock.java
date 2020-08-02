@@ -20,8 +20,7 @@ import structogram2byob.program.expressions.Expression;
 public class RepeatBlock extends Block
 {
     private static final BlockDescription description = new BlockDescription.Builder()
-            .label("repeat").param(ScratchType.NUMBER).param(ScratchType.LOOP)
-            .build();
+            .label("repeat").param(ScratchType.NUMBER).param(ScratchType.LOOP).build();
 
     /**
      * The singleton instance.
@@ -35,8 +34,7 @@ public class RepeatBlock extends Block
 
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException
+            Map<String, VariableContext> vars, BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

@@ -20,8 +20,7 @@ import structogram2byob.program.expressions.Expression;
 public class IfBlock extends Block
 {
     private static final BlockDescription description = new BlockDescription.Builder()
-            .label("if").param(ScratchType.BOOLEAN).param(ScratchType.LOOP)
-            .build();
+            .label("if").param(ScratchType.BOOLEAN).param(ScratchType.LOOP).build();
 
     /**
      * The singleton instance.
@@ -35,8 +34,7 @@ public class IfBlock extends Block
 
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException
+            Map<String, VariableContext> vars, BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

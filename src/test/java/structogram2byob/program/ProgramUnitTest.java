@@ -2,6 +2,7 @@ package structogram2byob.program;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,7 @@ public class ProgramUnitTest
     @Test
     public void returnsProperties()
     {
-        BlockDescription desc = new BlockDescription.Builder()//
-                .label("do").label("something").build();
+        BlockDescription desc = new BlockDescription.Builder().label("do").label("something").build();
         List<BlockExpression> blocks = new ArrayList<>();
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
@@ -48,17 +48,18 @@ public class ProgramUnitTest
     @Test
     public void constructsInvocationBlock() throws ScratchConversionException
     {
-        BlockDescription desc = new BlockDescription.Builder()//
-                .label("add").param(ScratchType.ANY, "a")
-                .param(ScratchType.ANY, "b").build();
+        BlockDescription desc = new BlockDescription.Builder()
+                .label("add").param(ScratchType.ANY, "a").param(ScratchType.ANY, "b").build();
         List<BlockExpression> blocks = new ArrayList<>();
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
         Block invoc = obj.getInvocationBlock();
 
-        List<Expression> params = Arrays.asList(new NumberExpression(null, 10),
-                new NumberExpression(null, 20));
+        List<Expression> params = Arrays.asList(
+                new NumberExpression(null, 10),
+                new NumberExpression(null, 20)
+        );
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
 
@@ -68,8 +69,7 @@ public class ProgramUnitTest
 
         assertEquals("byob", ((ScratchObjectSymbol) arr.get(0)).getValue());
         assertEquals("", ((ScratchObjectString) arr.get(1)).getValue());
-        assertEquals("doCustomBlock",
-                ((ScratchObjectSymbol) arr.get(2)).getValue());
+        assertEquals("doCustomBlock", ((ScratchObjectSymbol) arr.get(2)).getValue());
 
         assertEquals("add %a %b", ((ScratchObjectUtf8) arr.get(3)).getValue());
 
@@ -80,8 +80,7 @@ public class ProgramUnitTest
     @Test
     public void generatesEmptyCommand() throws ScratchConversionException
     {
-        BlockDescription desc = new BlockDescription.Builder()//
-                .label("do").label("something").build();
+        BlockDescription desc = new BlockDescription.Builder().label("do").label("something").build();
         List<BlockExpression> blocks = new ArrayList<>();
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
@@ -97,8 +96,7 @@ public class ProgramUnitTest
     @Test
     public void generatesScriptHat() throws ScratchConversionException
     {
-        BlockDescription desc = new BlockDescription.Builder()//
-                .label("when").label("start").label("clicked").build();
+        BlockDescription desc = new BlockDescription.Builder().label("when").label("start").label("clicked").build();
         List<BlockExpression> blocks = new ArrayList<>();
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.SCRIPT, desc, blocks);
@@ -115,12 +113,10 @@ public class ProgramUnitTest
     @Test
     public void generatesBlocks() throws ScratchConversionException
     {
-        BlockDescription desc = new BlockDescription.Builder()//
-                .label("when").label("start").label("clicked").build();
+        BlockDescription desc = new BlockDescription.Builder().label("when").label("start").label("clicked").build();
         List<BlockExpression> blocks = new ArrayList<>();
-        blocks.add(new BlockExpression(null,
-                ForeverBlock.instance.getDescription(),
-                Arrays.asList(new ScriptExpression(null, Arrays.asList()))));
+        blocks.add(new BlockExpression(null, ForeverBlock.instance.getDescription(),
+                Collections.singletonList(new ScriptExpression(null, Collections.emptyList()))));
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.SCRIPT, desc, blocks);
 
@@ -135,35 +131,23 @@ public class ProgramUnitTest
     }
 
     @Test
-    public void supportsCustomBlockParameters()
-            throws ScratchConversionException
+    public void supportsCustomBlockParameters() throws ScratchConversionException
     {
         FunctionBlock report = new FunctionBlock(new BlockDescription.Builder()
-                .label("report").param(ScratchType.ANY).build(), null,
-                "doAnswer");
+                .label("report").param(ScratchType.ANY).build(), null, "doAnswer");
         FunctionBlock add = new FunctionBlock(
-                new BlockDescription.Builder().param(ScratchType.NUMBER)
-                        .label("+").param(ScratchType.NUMBER).build(),
+                new BlockDescription.Builder().param(ScratchType.NUMBER).label("+").param(ScratchType.NUMBER).build(),
                 ScratchType.NUMBER, "+");
 
-        BlockDescription desc = new BlockDescription.Builder()//
-                .label("add").param(ScratchType.ANY, "a")
-                .param(ScratchType.ANY, "b").build();
+        BlockDescription desc = new BlockDescription.Builder()
+                .label("add").param(ScratchType.ANY, "a").param(ScratchType.ANY, "b").build();
         List<BlockExpression> blocks = new ArrayList<>();
-        blocks.add(new BlockExpression(null, report.getDescription(),
-                Arrays.asList(//
-                        new BlockExpression(null, add.getDescription(),
-                                Arrays.asList(//
-                                        new BlockExpression(null,
-                                                new BlockDescription.Builder()
-                                                        .label("a").build(),
-                                                Arrays.asList()), //
-                                        new BlockExpression(null,
-                                                new BlockDescription.Builder()
-                                                        .label("b").build(),
-                                                Arrays.asList())//
-                                ))//
-                )));
+        blocks.add(new BlockExpression(null, report.getDescription(), Collections.singletonList(
+                new BlockExpression(null, add.getDescription(), Arrays.asList(
+                        new BlockExpression(null, new BlockDescription.Builder().label("a").build(),
+                                Collections.emptyList()),
+                        new BlockExpression(null, new BlockDescription.Builder().label("b").build(),
+                                Collections.emptyList()))))));
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
@@ -184,19 +168,14 @@ public class ProgramUnitTest
         FunctionBlock say = new FunctionBlock(new BlockDescription.Builder()
                 .label("say").param(ScratchType.ANY).build(), null, "say");
 
-        BlockDescription desc = new BlockDescription.Builder()//
-                .label("do").label("something").build();
+        BlockDescription desc = new BlockDescription.Builder().label("do").label("something").build();
         List<BlockExpression> blocks = new ArrayList<>();
-        blocks.add(new BlockExpression(null, svars.getDescription(),
-                Arrays.asList(//
-                        new BlockExpression(null, new BlockDescription.Builder()
-                                .label("foo").build(), Arrays.asList()))//
-        ));
-        blocks.add(new BlockExpression(null, say.getDescription(),
-                Arrays.asList(//
-                        new BlockExpression(null, new BlockDescription.Builder()
-                                .label("foo").build(), Arrays.asList())//
-                )));
+        blocks.add(new BlockExpression(null, svars.getDescription(), Collections.singletonList(
+                new BlockExpression(null, new BlockDescription.Builder()
+                        .label("foo").build(), Collections.emptyList()))));
+        blocks.add(new BlockExpression(null, say.getDescription(), Collections.singletonList(
+                new BlockExpression(null, new BlockDescription.Builder().label("foo").build(),
+                        Collections.emptyList()))));
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 

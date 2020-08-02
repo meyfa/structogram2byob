@@ -41,17 +41,14 @@ public class ListBlockTest
         // starts with method call
         assertEquals("byob", ((ScratchObjectSymbol) scratch.get(0)).getValue());
         assertEquals("", ((ScratchObjectString) scratch.get(1)).getValue());
-        assertEquals("newList:",
-                ((ScratchObjectSymbol) scratch.get(2)).getValue());
+        assertEquals("newList:", ((ScratchObjectSymbol) scratch.get(2)).getValue());
 
         // continues with list morph containing params
         ScratchObjectListMorph list = (ScratchObjectListMorph) scratch.get(3);
         ScratchObjectAbstractCollection cellMorphs = (ScratchObjectAbstractCollection) list
                 .getField(ScratchObjectListMorph.FIELD_CELL_MORPHS);
         assertEquals(2, cellMorphs.size());
-        assertEquals("hello",
-                ((ScratchObjectAbstractString) cellMorphs.get(0)).getValue());
-        assertEquals("world",
-                ((ScratchObjectAbstractString) cellMorphs.get(1)).getValue());
+        assertEquals("hello", ((ScratchObjectAbstractString) cellMorphs.get(0)).getValue());
+        assertEquals("world", ((ScratchObjectAbstractString) cellMorphs.get(1)).getValue());
     }
 }
