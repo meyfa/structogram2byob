@@ -1,4 +1,14 @@
-/bin/
+# General
 /target/
-/.settings/
-*.log
+
+# Eclipse
+.project
+.classpath
+/bin/
+.settings/
+.metadata
+*.launch
+
+# IntelliJ IDEA
+.idea
+*.iml
