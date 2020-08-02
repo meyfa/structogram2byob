@@ -1,16 +1,12 @@
 package structogram2byob.parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Iterator;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import structogram2byob.lexer.Token;
 import structogram2byob.lexer.TokenType;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class AstNodeTest
@@ -52,12 +48,12 @@ public class AstNodeTest
         assertSame(n1, obj.getBranch(1));
     }
 
-    @Test(expected = Exception.class)
+    @Test
     public void throwsWhenAddingToLeaf()
     {
         AstNode obj = new AstNode(new Token(TokenType.LABEL, "foo", 0, 0));
 
-        obj.add(new AstNode());
+        assertThrows(Exception.class, () -> obj.add(new AstNode()));
     }
 
     @Test

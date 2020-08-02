@@ -1,21 +1,14 @@
 package structogram2byob.blocks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import structogram2byob.ScratchType;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BlockRegistryReaderTest
@@ -128,39 +121,33 @@ public class BlockRegistryReaderTest
         assertNotNull(result.lookup(DESC2));
     }
 
-    @Test(expected = BlockRegistryReaderException.class)
-    public void throwsForIncompleteDefinition()
-            throws IOException, BlockRegistryReaderException
+    @Test
+    public void throwsForIncompleteDefinition() throws IOException
     {
         String s = "x position\n" + "number\n" + "  \n\n";
 
-        try (BlockRegistryReader obj = new BlockRegistryReader(
-                new Scanner(s))) {
-            obj.read();
+        try (BlockRegistryReader obj = new BlockRegistryReader(new Scanner(s))) {
+            assertThrows(BlockRegistryReaderException.class, obj::read);
         }
     }
 
-    @Test(expected = BlockRegistryReaderException.class)
-    public void throwsForMalformedDescription()
-            throws IOException, BlockRegistryReaderException
+    @Test
+    public void throwsForMalformedDescription() throws IOException
     {
         String s = "x \"position\n" + "number\n" + "xpos\n";
 
-        try (BlockRegistryReader obj = new BlockRegistryReader(
-                new Scanner(s))) {
-            obj.read();
+        try (BlockRegistryReader obj = new BlockRegistryReader(new Scanner(s))) {
+            assertThrows(BlockRegistryReaderException.class, obj::read);
         }
     }
 
-    @Test(expected = BlockRegistryReaderException.class)
-    public void throwsForUnknownReturnType()
-            throws IOException, BlockRegistryReaderException
+    @Test
+    public void throwsForUnknownReturnType() throws IOException
     {
         String s = "x position\n" + "unknowntype\n" + "xpos\n";
 
-        try (BlockRegistryReader obj = new BlockRegistryReader(
-                new Scanner(s))) {
-            obj.read();
+        try (BlockRegistryReader obj = new BlockRegistryReader(new Scanner(s))) {
+            assertThrows(BlockRegistryReaderException.class, obj::read);
         }
     }
 }

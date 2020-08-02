@@ -1,13 +1,10 @@
 package structogram2byob.parser;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import structogram2byob.lexer.Token;
 import structogram2byob.lexer.TokenType;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class AstParserTest
@@ -60,22 +57,25 @@ public class AstParserTest
                 node.getBranch(0).getBranch(2).getValue());
     }
 
-    @Test(expected = AstParserException.class)
-    public void throwsForInfiniteBraces() throws AstParserException
+    @Test
+    public void throwsForInfiniteBraces()
     {
-        new AstParser("foo (bar ").parse();
+        AstParser obj = new AstParser("foo (bar ");
+        assertThrows(AstParserException.class, obj::parse);
     }
 
-    @Test(expected = AstParserException.class)
-    public void throwsForUnmatchedClosingBraces() throws AstParserException
+    @Test
+    public void throwsForUnmatchedClosingBraces()
     {
-        new AstParser("foo bar)").parse();
+        AstParser obj = new AstParser("foo bar)");
+        assertThrows(AstParserException.class, obj::parse);
     }
 
-    @Test(expected = AstParserException.class)
-    public void throwsForInfiniteStrings() throws AstParserException
+    @Test
+    public void throwsForInfiniteStrings()
     {
-        new AstParser("foo \"bar ").parse();
+        AstParser obj = new AstParser("foo \"bar ");
+        assertThrows(AstParserException.class, obj::parse);
     }
 
     @Test

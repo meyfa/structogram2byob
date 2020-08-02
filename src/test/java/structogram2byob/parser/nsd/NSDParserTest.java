@@ -1,18 +1,14 @@
 package structogram2byob.parser.nsd;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.Test;
 
 import nsdlib.elements.NSDInstruction;
 import nsdlib.elements.NSDRoot;
 import nsdlib.elements.alternatives.NSDDecision;
 import nsdlib.elements.loops.NSDForever;
 import nsdlib.elements.loops.NSDTestFirstLoop;
+import org.junit.jupiter.api.Test;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.structures.ForeverBlock;
@@ -25,6 +21,8 @@ import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.NumberExpression;
 import structogram2byob.program.expressions.ScriptExpression;
 import structogram2byob.program.expressions.StringExpression;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class NSDParserTest

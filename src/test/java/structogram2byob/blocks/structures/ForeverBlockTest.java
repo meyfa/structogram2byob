@@ -1,16 +1,11 @@
 package structogram2byob.blocks.structures;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import structogram2byob.blocks.BlockRegistry;
@@ -18,6 +13,8 @@ import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.ScriptExpression;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ForeverBlockTest
@@ -41,6 +38,6 @@ public class ForeverBlockTest
                 ((ScratchObjectSymbol) scratch.get(0)).getValue());
 
         // ends with script
-        assertThat(scratch.get(1), instanceOf(ScratchObjectArray.class));
+        assertTrue(scratch.get(1) instanceof ScratchObjectArray);
     }
 }

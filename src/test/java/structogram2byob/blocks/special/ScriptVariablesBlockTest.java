@@ -1,18 +1,11 @@
 package structogram2byob.blocks.special;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
@@ -23,6 +16,8 @@ import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ScriptVariablesBlockTest
@@ -64,7 +59,7 @@ public class ScriptVariablesBlockTest
         // - name
         assertEquals("a", ((ScratchObjectUtf8) v0.get(3)).getValue());
         // - variable frame
-        assertThat(v0.get(4), instanceOf(ScratchObjectVariableFrame.class));
+        assertTrue(v0.get(4) instanceof ScratchObjectVariableFrame);
 
         // ends with second variable
         ScratchObjectArray v1 = (ScratchObjectArray) scratch.get(4);
@@ -77,7 +72,7 @@ public class ScriptVariablesBlockTest
         // - name
         assertEquals("b", ((ScratchObjectUtf8) v1.get(3)).getValue());
         // - variable frame
-        assertThat(v1.get(4), instanceOf(ScratchObjectVariableFrame.class));
+        assertTrue(v1.get(4) instanceof ScratchObjectVariableFrame);
     }
 
     @Test
@@ -106,6 +101,6 @@ public class ScriptVariablesBlockTest
         assertNotNull(ret.get("a"));
         assertNotNull(ret.get("b"));
 
-        assertFalse(ret.get("a") == ret.get("b"));
+        assertNotSame(ret.get("a"), ret.get("b"));
     }
 }

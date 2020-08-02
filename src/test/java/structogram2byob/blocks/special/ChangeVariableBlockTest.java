@@ -1,15 +1,6 @@
 package structogram2byob.blocks.special;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
@@ -26,6 +17,13 @@ import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.NumberExpression;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ChangeVariableBlockTest

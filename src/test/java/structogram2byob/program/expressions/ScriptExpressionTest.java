@@ -1,16 +1,12 @@
 package structogram2byob.program.expressions;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockDescription;
@@ -18,6 +14,8 @@ import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.FunctionBlock;
 import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ScriptExpressionTest
@@ -36,7 +34,7 @@ public class ScriptExpressionTest
         assertEquals(3, obj.size());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void returnsUnmodifiableBlocksList()
     {
         BlockExpression block = new BlockExpression(null, DESC,
@@ -48,8 +46,7 @@ public class ScriptExpressionTest
 
         assertEquals(blocks, obj.getBlocks());
 
-        // throws
-        obj.getBlocks().add(block);
+        assertThrows(UnsupportedOperationException.class, () -> obj.getBlocks().add(block));
     }
 
     @Test

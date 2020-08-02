@@ -1,17 +1,15 @@
 package structogram2byob.program.expressions;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.inline.ScratchObjectAbstractNumber;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.VariableContext;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class NumberExpressionTest

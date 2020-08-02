@@ -1,17 +1,15 @@
 package structogram2byob.blocks;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BlockRegistryTest
@@ -49,7 +47,7 @@ public class BlockRegistryTest
         assertNull(unknown);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void throwsForDuplicates()
     {
         BlockRegistry obj = new BlockRegistry();
@@ -57,8 +55,10 @@ public class BlockRegistryTest
         obj.register(new MockBlock(new BlockDescription.Builder().label("foo")
                 .param(ScratchType.ANY).build(), ScratchType.BOOLEAN));
 
-        obj.register(new MockBlock(new BlockDescription.Builder().label("foo")
-                .param(ScratchType.ANY).build(), ScratchType.BOOLEAN));
+        assertThrows(IllegalArgumentException.class, () -> {
+            obj.register(new MockBlock(new BlockDescription.Builder().label("foo")
+                    .param(ScratchType.ANY).build(), ScratchType.BOOLEAN));
+        });
     }
 
     @Test

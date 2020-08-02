@@ -1,20 +1,19 @@
 package structogram2byob.blocks.hats;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.VariableContext;
 import structogram2byob.program.expressions.Expression;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class StartClickedHatBlockTest

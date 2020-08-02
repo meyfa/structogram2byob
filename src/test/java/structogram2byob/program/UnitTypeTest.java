@@ -1,11 +1,9 @@
 package structogram2byob.program;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import structogram2byob.ScratchType;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class UnitTypeTest

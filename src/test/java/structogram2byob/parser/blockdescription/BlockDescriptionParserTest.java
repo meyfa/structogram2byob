@@ -1,15 +1,10 @@
 package structogram2byob.parser.blockdescription;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockDescription;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BlockDescriptionParserTest
@@ -89,51 +84,42 @@ public class BlockDescriptionParserTest
         assertEquals("secs", desc.getLabel(4));
     }
 
-    @Test(expected = BlockDescriptionParserException.class)
+    @Test
     public void throwsForMissingClosingParenthesis()
-            throws BlockDescriptionParserException
     {
-        new BlockDescriptionParser("foo (bar", false).parse();
-    }
-
-    @Test(expected = BlockDescriptionParserException.class)
-    public void throwsForNestedParentheses()
-            throws BlockDescriptionParserException
-    {
-        new BlockDescriptionParser("foo (bar (baz))", false).parse();
-    }
-
-    @Test(expected = BlockDescriptionParserException.class)
-    public void throwsForUnknownTypes() throws BlockDescriptionParserException
-    {
-        new BlockDescriptionParser("foo (unknownType)", false).parse();
+        BlockDescriptionParser obj = new BlockDescriptionParser("foo (bar", false);
+        assertThrows(BlockDescriptionParserException.class, obj::parse);
     }
 
     @Test
-    public void throwsForLiterals() throws BlockDescriptionParserException
+    public void throwsForNestedParentheses()
     {
-        try {
-            new BlockDescriptionParser("foo \"bar\"", false).parse();
-            fail("not thrown for string literal");
-        } catch (BlockDescriptionParserException e) {
-        }
+        BlockDescriptionParser obj = new BlockDescriptionParser("foo (bar (baz))", false);
+        assertThrows(BlockDescriptionParserException.class, obj::parse);
+    }
 
-        try {
-            new BlockDescriptionParser("foo (\"bar\")", false).parse();
-            fail("not thrown for string literal in parentheses");
-        } catch (BlockDescriptionParserException e) {
-        }
+    @Test
+    public void throwsForUnknownTypes()
+    {
+        BlockDescriptionParser obj = new BlockDescriptionParser("foo (unknownType)", false);
+        assertThrows(BlockDescriptionParserException.class, obj::parse);
+    }
 
-        try {
-            new BlockDescriptionParser("foo 42", false).parse();
-            fail("not thrown for number literal");
-        } catch (BlockDescriptionParserException e) {
-        }
+    @Test
+    public void throwsForLiterals()
+    {
+        BlockDescriptionParser obj;
 
-        try {
-            new BlockDescriptionParser("foo (42)", false).parse();
-            fail("not thrown for number literal in parentheses");
-        } catch (BlockDescriptionParserException e) {
-        }
+        obj = new BlockDescriptionParser("foo \"bar\"", false);
+        assertThrows(BlockDescriptionParserException.class, obj::parse);
+
+        obj = new BlockDescriptionParser("foo (\"bar\")", false);
+        assertThrows(BlockDescriptionParserException.class, obj::parse);
+
+        obj = new BlockDescriptionParser("foo 42", false);
+        assertThrows(BlockDescriptionParserException.class, obj::parse);
+
+        obj = new BlockDescriptionParser("foo (42)", false);
+        assertThrows(BlockDescriptionParserException.class, obj::parse);
     }
 }

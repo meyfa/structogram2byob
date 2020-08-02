@@ -1,11 +1,8 @@
 package structogram2byob.lexer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class LexerTest
@@ -107,25 +104,26 @@ public class LexerTest
         assertFalse(obj.hasNext());
     }
 
-    @Test(expected = LexerException.class)
-    public void throwsForInfiniteString() throws LexerException
+    @Test
+    public void throwsForInfiniteString()
     {
-        new Lexer("\"hello ").next();
+        Lexer obj = new Lexer("\"hello ");
+        assertThrows(LexerException.class, obj::next);
     }
 
-    @Test(expected = LexerException.class)
+    @Test
     public void throwsForNoMoreTokens() throws LexerException
     {
         Lexer obj = new Lexer("foo ");
         obj.next();
-        obj.next();
+        assertThrows(LexerException.class, obj::next);
     }
 
-    @Test(expected = LexerException.class)
-    public void throwsForIllegalNumberFormats() throws LexerException
+    @Test
+    public void throwsForIllegalNumberFormats()
     {
         Lexer obj = new Lexer("10.3.42");
-        obj.next();
+        assertThrows(LexerException.class, obj::next);
     }
 
     @Test

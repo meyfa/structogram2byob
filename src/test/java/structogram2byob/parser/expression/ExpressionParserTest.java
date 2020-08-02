@@ -1,20 +1,17 @@
 package structogram2byob.parser.expression;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.NumberExpression;
 import structogram2byob.program.expressions.StringExpression;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ExpressionParserTest
@@ -25,11 +22,11 @@ public class ExpressionParserTest
         Expression result;
 
         result = new ExpressionParser(null, "\"hello world\"").parse();
-        assertThat(result, instanceOf(StringExpression.class));
+        assertTrue(result instanceof StringExpression);
         assertEquals("hello world", ((StringExpression) result).getValue());
 
         result = new ExpressionParser(null, "\"\"").parse();
-        assertThat(result, instanceOf(StringExpression.class));
+        assertTrue(result instanceof StringExpression);
         assertEquals("", ((StringExpression) result).getValue());
     }
 
@@ -39,15 +36,15 @@ public class ExpressionParserTest
         Expression result;
 
         result = new ExpressionParser(null, "5").parse();
-        assertThat(result, instanceOf(NumberExpression.class));
+        assertTrue(result instanceof NumberExpression);
         assertEquals(5, ((NumberExpression) result).getValue(), 0.0000001);
 
         result = new ExpressionParser(null, "+0.5").parse();
-        assertThat(result, instanceOf(NumberExpression.class));
+        assertTrue(result instanceof NumberExpression);
         assertEquals(0.5, ((NumberExpression) result).getValue(), 0.0000001);
 
         result = new ExpressionParser(null, "-42.37").parse();
-        assertThat(result, instanceOf(NumberExpression.class));
+        assertTrue(result instanceof NumberExpression);
         assertEquals(-42.37, ((NumberExpression) result).getValue(), 0.0000001);
     }
 
@@ -122,15 +119,17 @@ public class ExpressionParserTest
                 ((BlockExpression) params.get(0)).getDescription());
     }
 
-    @Test(expected = ExpressionParserException.class)
-    public void throwsForEmptyParentheses() throws ExpressionParserException
+    @Test
+    public void throwsForEmptyParentheses()
     {
-        new ExpressionParser(null, "foo ()").parse();
+        ExpressionParser obj = new ExpressionParser(null, "foo ()");
+        assertThrows(ExpressionParserException.class, obj::parse);
     }
 
-    @Test(expected = ExpressionParserException.class)
-    public void throwsForSyntaxErrors() throws ExpressionParserException
+    @Test
+    public void throwsForSyntaxErrors()
     {
-        new ExpressionParser(null, "foo \"test").parse();
+        ExpressionParser obj = new ExpressionParser(null, "foo \"test");
+        assertThrows(ExpressionParserException.class, obj::parse);
     }
 }

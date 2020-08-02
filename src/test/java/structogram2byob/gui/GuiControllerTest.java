@@ -1,30 +1,23 @@
 package structogram2byob.gui;
 
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileFilter;
 
-import org.junit.Test;
-
 import nsdlib.elements.NSDElement;
 import nsdlib.elements.NSDInstruction;
 import nsdlib.elements.NSDRoot;
+import org.junit.jupiter.api.Test;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.gui.dialogs.IDialog;
 import structogram2byob.gui.dialogs.IDialogFactory;
 import structogram2byob.gui.frame.IFrameManager;
 import structogram2byob.gui.menu.IMenuBuilder;
 import structogram2byob.gui.units.IUnitsManager;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class GuiControllerTest
@@ -304,8 +297,7 @@ public class GuiControllerTest
         obj.add(unit1);
 
         assertTrue(frame.units.markErrorCalled);
-        assertThat(frame.units.markErrorWithElement,
-                anyOf(is(unit0), is(unit1)));
+        assertTrue(frame.units.markErrorWithElement == unit0 || frame.units.markErrorWithElement == unit1);
     }
 
     @Test

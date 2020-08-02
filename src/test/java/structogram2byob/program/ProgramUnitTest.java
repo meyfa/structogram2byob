@@ -1,16 +1,12 @@
 package structogram2byob.program;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectAbstractCollection;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectString;
@@ -29,6 +25,8 @@ import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.NumberExpression;
 import structogram2byob.program.expressions.ScriptExpression;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class ProgramUnitTest

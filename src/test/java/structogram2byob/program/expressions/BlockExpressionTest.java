@@ -1,16 +1,12 @@
 package structogram2byob.program.expressions;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
@@ -25,6 +21,8 @@ import structogram2byob.program.ProgramUnit;
 import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.UnitType;
 import structogram2byob.program.VariableContext;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BlockExpressionTest
@@ -44,7 +42,7 @@ public class BlockExpressionTest
         assertSame(DESC, obj.getDescription());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void returnsUnmodifiableParametersList()
     {
         List<Expression> params = new ArrayList<>();
@@ -54,8 +52,9 @@ public class BlockExpressionTest
 
         assertEquals(params, obj.getParameters());
 
-        // throws
-        obj.getParameters().set(0, new NumberExpression(null, 37));
+        assertThrows(UnsupportedOperationException.class, () -> {
+            obj.getParameters().set(0, new NumberExpression(null, 37));
+        });
     }
 
     @Test
@@ -167,8 +166,8 @@ public class BlockExpressionTest
         assertSame(frame, result.get(4));
     }
 
-    @Test(expected = ScratchConversionException.class)
-    public void throwsForUnknownBlock() throws ScratchConversionException
+    @Test
+    public void throwsForUnknownBlock()
     {
         Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
@@ -176,7 +175,7 @@ public class BlockExpressionTest
         BlockExpression obj = new BlockExpression(null, DESC,
                 Arrays.asList(new NumberExpression(null, 42)));
 
-        obj.toScratch(vars, blocks);
+        assertThrows(ScratchConversionException.class, () -> obj.toScratch(vars, blocks));
     }
 
     @Test

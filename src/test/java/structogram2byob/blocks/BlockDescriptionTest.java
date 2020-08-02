@@ -1,15 +1,12 @@
 package structogram2byob.blocks;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import structogram2byob.ScratchType;
+
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class BlockDescriptionTest
@@ -78,7 +75,8 @@ public class BlockDescriptionTest
         assertTrue(obj.isList(2));
     }
 
-    @Test(timeout = 1000)
+    @Test
+    @Timeout(1)
     public void checksAssignability()
     {
         BlockDescription obj1, obj2;
