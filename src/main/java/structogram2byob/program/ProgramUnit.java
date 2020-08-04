@@ -36,6 +36,8 @@ public class ProgramUnit
     private final List<BlockExpression> blocks;
     private final Block unitBlock;
 
+    private final VariableContext thisContext = VariableContext.getForUnit(this);
+
     /**
      * Constructs a new unit from the given header description and the given blocks.
      *
@@ -106,13 +108,13 @@ public class ProgramUnit
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    public ScratchObjectAbstractCollection toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
+    public ScratchObjectAbstractCollection toScratch(VariableMap vars, BlockRegistry blocks)
             throws ScratchConversionException
     {
         ScratchObjectArray arr = new ScratchObjectArray();
 
         // add parameters to available variables
-        vars = combine(vars, getParameterVariables());
+        vars = vars.combine(getParameterVariables());
 
         if (type == UnitType.SCRIPT) {
             // create hat block
@@ -131,7 +133,7 @@ public class ProgramUnit
             // check whether the block is a "script variables" block
             if (ScriptVariablesBlock.instance.getDescription().isAssignableFrom(block.getDescription())) {
                 // extend available variables
-                vars = combine(vars, retrieveScriptVariables(block, obj));
+                vars = vars.combine(retrieveScriptVariables(block, obj));
             }
         }
 
@@ -144,18 +146,15 @@ public class ProgramUnit
      *
      * @return A variable map.
      */
-    private Map<String, VariableContext> getParameterVariables()
+    private VariableMap getParameterVariables()
     {
         Map<String, VariableContext> variables = new HashMap<>();
-
-        VariableContext thisContext = new VariableContext.UnitSpecific(this);
         for (int i = 0, n = description.countParts(); i < n; ++i) {
             if (description.isParameter(i)) {
                 variables.put(description.getLabel(i), thisContext);
             }
         }
-
-        return variables;
+        return new VariableMap(variables);
     }
 
     /**
@@ -166,7 +165,7 @@ public class ProgramUnit
      * @param obj The block's Scratch object conversion result.
      * @return A variable map.
      */
-    private Map<String, VariableContext> retrieveScriptVariables(BlockExpression block, ScratchObject obj)
+    private VariableMap retrieveScriptVariables(BlockExpression block, ScratchObject obj)
     {
         Map<String, VariableContext> variables = new HashMap<>();
 
@@ -179,29 +178,10 @@ public class ProgramUnit
             String varName = pblock.getDescription().getLabel(0);
             ScratchObjectVariableFrame frame = frames.get(varName);
 
-            variables.put(varName, new VariableContext.ScriptSpecific(frame));
+            variables.put(varName, VariableContext.getForScript(frame));
         }
 
-        return variables;
-    }
-
-    /**
-     * Combines the two variable maps into a new map, which is then returned.
-     * The resulting map is unmodifiable. There are no changes to the input
-     * maps.
-     *
-     * @param m1 The first source map.
-     * @param m2 The second source map.
-     * @return A new map containing all the mappings from both sources.
-     */
-    private Map<String, VariableContext> combine(Map<String, VariableContext> m1, Map<String, VariableContext> m2)
-    {
-        Map<String, VariableContext> newMap = new HashMap<>();
-
-        newMap.putAll(m1);
-        newMap.putAll(m2);
-
-        return Collections.unmodifiableMap(newMap);
+        return new VariableMap(variables);
     }
 
     /**
@@ -215,8 +195,7 @@ public class ProgramUnit
         }
 
         @Override
-        public ScratchObjectArray toScratch(List<Expression> params,
-                Map<String, VariableContext> vars, BlockRegistry blocks)
+        public ScratchObjectArray toScratch(List<Expression> params, VariableMap vars, BlockRegistry blocks)
                 throws ScratchConversionException
         {
             ScratchObjectArray a = new ScratchObjectArray();

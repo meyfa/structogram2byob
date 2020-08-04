@@ -1,13 +1,12 @@
 package structogram2byob.program.expressions;
 
-import java.util.Map;
-
 import nsdlib.elements.NSDElement;
 import scratchlib.objects.ScratchObject;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 
 
 /**
@@ -49,8 +48,7 @@ public abstract class Expression
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    public abstract ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException;
+    public abstract ScratchObject toScratch(VariableMap vars, BlockRegistry blocks) throws ScratchConversionException;
 
     @Override
     public abstract String toString();

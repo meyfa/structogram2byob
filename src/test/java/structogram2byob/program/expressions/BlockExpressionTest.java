@@ -2,9 +2,7 @@ package structogram2byob.program.expressions;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
@@ -21,6 +19,7 @@ import structogram2byob.program.ProgramUnit;
 import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.UnitType;
 import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -69,7 +68,6 @@ public class BlockExpressionTest
     @Test
     public void convertsFunctionBlockToScratch() throws ScratchConversionException
     {
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
         Block block = new FunctionBlock(DESC, null, "forward:");
         blocks.register(block);
@@ -78,8 +76,8 @@ public class BlockExpressionTest
                 Collections.singletonList(new NumberExpression(null, 42)));
 
         ScratchObjectArray blockResult = block.toScratch(
-                Collections.singletonList(new NumberExpression(null, 42)), vars, blocks);
-        ScratchObjectArray objResult = (ScratchObjectArray) obj.toScratch(vars, blocks);
+                Collections.singletonList(new NumberExpression(null, 42)), VariableMap.EMPTY, blocks);
+        ScratchObjectArray objResult = (ScratchObjectArray) obj.toScratch(VariableMap.EMPTY, blocks);
 
         assertEquals(blockResult.size(), objResult.size());
 
@@ -89,43 +87,35 @@ public class BlockExpressionTest
     }
 
     @Test
-    public void convertsGlobalVariableToScratch()
-            throws ScratchConversionException
+    public void convertsGlobalVariableToScratch() throws ScratchConversionException
     {
-        Map<String, VariableContext> vars = new HashMap<>();
-        vars.put("foobar", VariableContext.GLOBAL);
+        VariableMap vars = new VariableMap(Collections.singletonMap("foobar", VariableContext.getGlobal()));
         BlockRegistry blocks = new BlockRegistry();
 
-        BlockExpression obj = new BlockExpression(null, DESC_VAR,
-                Collections.emptyList());
+        BlockExpression obj = new BlockExpression(null, DESC_VAR, Collections.emptyList());
 
-        ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars,
-                blocks);
+        ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars, blocks);
 
         assertEquals(2, result.size());
-        assertEquals("readVariable",
-                ((ScratchObjectSymbol) result.get(0)).getValue());
+        assertEquals("readVariable", ((ScratchObjectSymbol) result.get(0)).getValue());
         assertEquals("foobar", ((ScratchObjectUtf8) result.get(1)).getValue());
     }
 
     @Test
-    public void convertsUnitVariableToScratch()
-            throws ScratchConversionException
+    public void convertsUnitVariableToScratch() throws ScratchConversionException
     {
-        ProgramUnit unit = new ProgramUnit(null, //
+        ProgramUnit unit = new ProgramUnit(null,
                 UnitType.COMMAND, // type
                 new BlockDescription.Builder().label("doSomething").param(ScratchType.ANY, "foobar").build(), // desc
                 Collections.emptyList() // blocks
         );
 
-        Map<String, VariableContext> vars = new HashMap<>();
-        vars.put("foobar", new VariableContext.UnitSpecific(unit));
+        VariableMap vars = new VariableMap(Collections.singletonMap("foobar", VariableContext.getForUnit(unit)));
         BlockRegistry blocks = new BlockRegistry();
 
         BlockExpression obj = new BlockExpression(null, DESC_VAR, Collections.emptyList());
 
-        ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars,
-                blocks);
+        ScratchObjectArray result = (ScratchObjectArray) obj.toScratch(vars, blocks);
 
         assertEquals(5, result.size());
         assertEquals("byob", ((ScratchObjectSymbol) result.get(0)).getValue());
@@ -136,12 +126,10 @@ public class BlockExpressionTest
     }
 
     @Test
-    public void convertsScriptVariableToScratch()
-            throws ScratchConversionException
+    public void convertsScriptVariableToScratch() throws ScratchConversionException
     {
-        Map<String, VariableContext> vars = new HashMap<>();
         ScratchObjectVariableFrame frame = new ScratchObjectVariableFrame();
-        vars.put("foobar", new VariableContext.ScriptSpecific(frame));
+        VariableMap vars = new VariableMap(Collections.singletonMap("foobar", VariableContext.getForScript(frame)));
         BlockRegistry blocks = new BlockRegistry();
 
         BlockExpression obj = new BlockExpression(null, DESC_VAR, Collections.emptyList());
@@ -159,13 +147,12 @@ public class BlockExpressionTest
     @Test
     public void throwsForUnknownBlock()
     {
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
         BlockExpression obj = new BlockExpression(null, DESC,
                 Collections.singletonList(new NumberExpression(null, 42)));
 
-        assertThrows(ScratchConversionException.class, () -> obj.toScratch(vars, blocks));
+        assertThrows(ScratchConversionException.class, () -> obj.toScratch(VariableMap.EMPTY, blocks));
     }
 
     @Test

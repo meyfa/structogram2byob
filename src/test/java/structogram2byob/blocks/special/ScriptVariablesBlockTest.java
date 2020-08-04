@@ -2,7 +2,6 @@ package structogram2byob.blocks.special;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import scratchlib.objects.user.ScratchObjectVariableFrame;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 
@@ -36,10 +35,9 @@ public class ScriptVariablesBlockTest
                 Collections.emptyList());
 
         List<Expression> params = Arrays.asList(varA, varB);
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
+        ScratchObjectArray scratch = obj.toScratch(params, VariableMap.EMPTY, blocks);
 
         assertEquals(5, scratch.size());
 
@@ -86,10 +84,9 @@ public class ScriptVariablesBlockTest
                 Collections.emptyList());
 
         List<Expression> params = Arrays.asList(varA, varB);
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
+        ScratchObjectArray scratch = obj.toScratch(params, VariableMap.EMPTY, blocks);
 
         Map<String, ScratchObjectVariableFrame> ret = ScriptVariablesBlock.retrieveFrames(scratch);
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import nsdlib.elements.NSDElement;
@@ -13,7 +12,7 @@ import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.ScratchConversionException;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 
 
 /**
@@ -59,8 +58,7 @@ public class ScriptExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException
+    public ScratchObject toScratch(VariableMap vars, BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

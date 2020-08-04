@@ -2,9 +2,7 @@ package structogram2byob.blocks.structures;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
@@ -14,7 +12,7 @@ import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.FunctionBlock;
 import structogram2byob.program.ScratchConversionException;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.ScriptExpression;
@@ -36,11 +34,10 @@ public class IfElseBlockTest
                 new ScriptExpression(null, Collections.emptyList()),
                 new ScriptExpression(null, Collections.emptyList())
         );
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
         blocks.register(new FunctionBlock(trueDesc, ScratchType.BOOLEAN, "getTrue"));
 
-        ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
+        ScratchObjectArray scratch = obj.toScratch(params, VariableMap.EMPTY, blocks);
 
         assertEquals(4, scratch.size());
 

@@ -1,9 +1,7 @@
 package structogram2byob.blocks.special;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectAbstractCollection;
@@ -14,7 +12,7 @@ import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.user.morphs.ScratchObjectListMorph;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.ScratchConversionException;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.StringExpression;
 
@@ -31,10 +29,9 @@ public class ListBlockTest
         List<Expression> params = Arrays.asList(
                 new StringExpression(null, "hello"),
                 new StringExpression(null, "world"));
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
+        ScratchObjectArray scratch = obj.toScratch(params, VariableMap.EMPTY, blocks);
 
         assertEquals(4, scratch.size());
 

@@ -1,14 +1,12 @@
 package structogram2byob.program.expressions;
 
-import java.util.Map;
-
 import nsdlib.elements.NSDElement;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.inline.ScratchObjectFloat;
 import scratchlib.objects.inline.ScratchObjectSmallInteger;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 
 
 /**
@@ -46,7 +44,7 @@ public class NumberExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
+    public ScratchObject toScratch(VariableMap vars, BlockRegistry blocks)
     {
         if (value == Math.rint(value)) {
             return new ScratchObjectSmallInteger((int) Math.rint(value));

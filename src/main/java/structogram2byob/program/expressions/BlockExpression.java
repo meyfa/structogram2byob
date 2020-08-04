@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.StringJoiner;
 
 import nsdlib.elements.NSDElement;
@@ -17,11 +16,9 @@ import structogram2byob.ScratchType;
 import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.program.ProgramUnit;
 import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
-import structogram2byob.program.VariableContext.ScriptSpecific;
-import structogram2byob.program.VariableContext.UnitSpecific;
+import structogram2byob.program.VariableMap;
 
 
 /**
@@ -71,8 +68,7 @@ public class BlockExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
-            throws ScratchConversionException
+    public ScratchObject toScratch(VariableMap vars, BlockRegistry blocks) throws ScratchConversionException
     {
         // check if this is a variable
         if (description.countParts() == 1 && !description.isParameter(0)) {
@@ -99,33 +95,15 @@ public class BlockExpression extends Expression
 
         ScratchObjectArray a = new ScratchObjectArray();
 
-        if (ctx == VariableContext.GLOBAL) {
-
+        if (ctx.requiresBYOB()) {
+            a.add(new ScratchObjectSymbol("byob"));
+            a.add(new ScratchObjectString(""));
+            a.add(new ScratchObjectSymbol("readBlockVariable"));
+            a.add(new ScratchObjectUtf8(name));
+            a.add(ctx.getReadMarker());
+        } else {
             a.add(new ScratchObjectSymbol("readVariable"));
             a.add(new ScratchObjectUtf8(name));
-
-        } else if (ctx instanceof VariableContext.ScriptSpecific) {
-
-            a.add(new ScratchObjectSymbol("byob"));
-            a.add(new ScratchObjectString(""));
-            a.add(new ScratchObjectSymbol("readBlockVariable"));
-
-            a.add(new ScratchObjectUtf8(name));
-
-            a.add(((ScriptSpecific) ctx).getFrame());
-
-        } else if (ctx instanceof VariableContext.UnitSpecific) {
-
-            ProgramUnit unit = ((UnitSpecific) ctx).getUnit();
-
-            a.add(new ScratchObjectSymbol("byob"));
-            a.add(new ScratchObjectString(""));
-            a.add(new ScratchObjectSymbol("readBlockVariable"));
-
-            a.add(new ScratchObjectUtf8(name));
-
-            a.add(new ScratchObjectUtf8(unit.getUserSpec()));
-
         }
 
         return a;

@@ -1,13 +1,12 @@
 package structogram2byob.blocks;
 
 import java.util.List;
-import java.util.Map;
 
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import structogram2byob.ScratchType;
 import structogram2byob.program.ScratchConversionException;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.Expression;
 
 
@@ -47,7 +46,7 @@ public class FunctionBlock extends Block
 
     @Override
     public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks) throws ScratchConversionException
+            VariableMap vars, BlockRegistry blocks) throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

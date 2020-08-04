@@ -1,13 +1,10 @@
 package structogram2byob.program.expressions;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -36,11 +33,10 @@ public class StringExpressionTest
         StringExpression obj;
         ScratchObjectUtf8 result;
 
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
         obj = new StringExpression(null, "hello world");
-        result = (ScratchObjectUtf8) obj.toScratch(vars, blocks);
+        result = (ScratchObjectUtf8) obj.toScratch(VariableMap.EMPTY, blocks);
         assertEquals("hello world", result.getValue());
     }
 

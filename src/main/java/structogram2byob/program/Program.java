@@ -2,10 +2,7 @@ package structogram2byob.program;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.collections.ScratchObjectOrderedCollection;
@@ -77,18 +74,13 @@ public class Program
      *
      * @param blocks The available blocks.
      * @param scripts The array of scripts to write to.
-     * @param customBlocks The array of custom blocks to write to.
+     * @param custom The array of custom blocks to write to.
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    private void serializeUnits(BlockRegistry blocks,
-            ScratchObjectArray scripts,
-            ScratchObjectOrderedCollection customBlocks)
+    private void serializeUnits(BlockRegistry blocks, ScratchObjectArray scripts, ScratchObjectOrderedCollection custom)
             throws ScratchConversionException
     {
-        Map<String, VariableContext> vars = new HashMap<>();
-        vars = Collections.unmodifiableMap(vars);
-
         // extend the block registry by all available custom blocks
         blocks = new BlockRegistry(blocks);
         registerUnits(blocks);
@@ -97,10 +89,10 @@ public class Program
         int y = 20;
         for (ProgramUnit u : units) {
             if (u.getType() == UnitType.SCRIPT) {
-                scripts.add(serializeUnitAsScript(u, vars, blocks, y));
+                scripts.add(serializeUnitAsScript(u, blocks, y));
                 y += 50 + estimateHeight(u.getBlocks());
             } else {
-                customBlocks.add(serializeUnitAsBlock(u, vars, blocks));
+                custom.add(serializeUnitAsBlock(u, blocks));
             }
         }
     }
@@ -129,8 +121,7 @@ public class Program
 
         for (Expression param : exp.getParameters()) {
             if (param instanceof ScriptExpression) {
-                height += ((ScriptExpression) param).getBlocks().stream()
-                        .mapToInt(this::estimateHeight).sum();
+                height += ((ScriptExpression) param).getBlocks().stream().mapToInt(this::estimateHeight).sum();
             }
         }
 
@@ -142,21 +133,19 @@ public class Program
      * script's location point and its body as another array.
      *
      * @param u The unit to serialize.
-     * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks.
      * @param y The y coordinate for script placement.
      * @return A Scratch object describing a script.
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    private ScratchObjectArray serializeUnitAsScript(ProgramUnit u,
-            Map<String, VariableContext> vars, BlockRegistry blocks, int y)
+    private ScratchObjectArray serializeUnitAsScript(ProgramUnit u, BlockRegistry blocks, int y)
             throws ScratchConversionException
     {
         ScratchObjectArray script = new ScratchObjectArray();
 
         script.add(new ScratchObjectPoint(20, y));
-        script.add(u.toScratch(vars, blocks));
+        script.add(u.toScratch(VariableMap.EMPTY, blocks));
 
         return script;
     }
@@ -165,19 +154,18 @@ public class Program
      * Converts the given unit into a Scratch custom block definition.
      *
      * @param u The unit to serialize.
-     * @param vars A map of variable names to {@link VariableContext}s.
      * @param blocks The available blocks.
      * @return A {@link ScratchObjectCustomBlockDefinition} instance.
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    private ScratchObjectCustomBlockDefinition serializeUnitAsBlock(ProgramUnit u, Map<String, VariableContext> vars,
-            BlockRegistry blocks) throws ScratchConversionException
+    private ScratchObjectCustomBlockDefinition serializeUnitAsBlock(ProgramUnit u, BlockRegistry blocks)
+            throws ScratchConversionException
     {
         ScratchObjectCustomBlockDefinition cbd = new ScratchObjectCustomBlockDefinition();
 
         cbd.setUserSpec(u.getUserSpec());
-        cbd.setBody(u.toScratch(vars, blocks));
+        cbd.setBody(u.toScratch(VariableMap.EMPTY, blocks));
 
         ScratchType type = u.getType().getReturnType();
         String typeName = type == null ? "none" : type.name().toLowerCase();

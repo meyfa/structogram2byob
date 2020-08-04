@@ -1,13 +1,13 @@
 package structogram2byob.blocks;
 
 import java.util.List;
-import java.util.Map;
 
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.structures.IfElseBlock;
 import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 
@@ -60,8 +60,7 @@ public abstract class Block
      *
      * @throws ScratchConversionException When the conversion fails.
      */
-    public abstract ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
+    public abstract ScratchObjectArray toScratch(List<Expression> params, VariableMap vars, BlockRegistry blocks)
             throws ScratchConversionException;
 
     /**

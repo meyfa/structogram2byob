@@ -1,12 +1,11 @@
 package structogram2byob.blocks;
 
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import structogram2byob.ScratchType;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.Expression;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,8 +21,7 @@ public class BlockRegistryTest
         }
 
         @Override
-        public ScratchObjectArray toScratch(List<Expression> params,
-                Map<String, VariableContext> vars, BlockRegistry blocks)
+        public ScratchObjectArray toScratch(List<Expression> params, VariableMap vars, BlockRegistry blocks)
         {
             return null;
         }

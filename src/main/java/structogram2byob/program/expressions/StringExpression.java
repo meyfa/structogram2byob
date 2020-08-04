@@ -1,13 +1,11 @@
 package structogram2byob.program.expressions;
 
-import java.util.Map;
-
 import nsdlib.elements.NSDElement;
 import scratchlib.objects.ScratchObject;
 import scratchlib.objects.fixed.data.ScratchObjectUtf8;
 import structogram2byob.ScratchType;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 
 
 /**
@@ -45,7 +43,7 @@ public class StringExpression extends Expression
     }
 
     @Override
-    public ScratchObject toScratch(Map<String, VariableContext> vars, BlockRegistry blocks)
+    public ScratchObject toScratch(VariableMap vars, BlockRegistry blocks)
     {
         return new ScratchObjectUtf8(value);
     }

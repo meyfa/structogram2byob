@@ -13,7 +13,7 @@ import structogram2byob.ScratchType;
 import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.Expression;
 
 
@@ -36,8 +36,7 @@ public class ScriptVariablesBlock extends Block
     }
 
     @Override
-    public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks)
+    public ScratchObjectArray toScratch(List<Expression> params, VariableMap vars, BlockRegistry blocks)
     {
         ScratchObjectArray a = new ScratchObjectArray();
 
@@ -46,7 +45,6 @@ public class ScriptVariablesBlock extends Block
         a.add(new ScratchObjectSymbol("doDeclareVariables"));
 
         for (Expression param : params) {
-
             String name = asVariableName(param);
 
             ScratchObjectArray pa = new ScratchObjectArray();
@@ -58,7 +56,6 @@ public class ScriptVariablesBlock extends Block
             pa.add(new ScratchObjectVariableFrame());
 
             a.add(pa);
-
         }
 
         return a;
@@ -66,7 +63,7 @@ public class ScriptVariablesBlock extends Block
 
     /**
      * Obtains every variable's {@link ScratchObjectVariableFrame} instance from
-     * an array serialized by {@link #toScratch(List, Map, BlockRegistry)}.
+     * an array serialized by {@link Block#toScratch(List, VariableMap, BlockRegistry)}.
      * Having these instances is required for variable context construction.
      *
      * @param serialized The serialized block array.

@@ -5,13 +5,11 @@ import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectString;
 import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import structogram2byob.blocks.BlockRegistry;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.Expression;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,10 +22,9 @@ public class StartClickedHatBlockTest
         StartClickedHatBlock obj = StartClickedHatBlock.instance;
 
         List<Expression> params = Collections.emptyList();
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
+        ScratchObjectArray scratch = obj.toScratch(params, VariableMap.EMPTY, blocks);
 
         assertEquals(2, scratch.size());
 

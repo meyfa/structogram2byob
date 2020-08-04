@@ -1,9 +1,7 @@
 package structogram2byob.blocks;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
@@ -12,7 +10,7 @@ import scratchlib.objects.fixed.data.ScratchObjectSymbol;
 import scratchlib.objects.inline.ScratchObjectAbstractNumber;
 import structogram2byob.ScratchType;
 import structogram2byob.program.ScratchConversionException;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.NumberExpression;
 import structogram2byob.program.expressions.StringExpression;
@@ -35,10 +33,9 @@ public class FunctionBlockTest
                 new NumberExpression(null, 42),
                 new StringExpression(null, "hello")
         );
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
-        ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
+        ScratchObjectArray scratch = obj.toScratch(params, VariableMap.EMPTY, blocks);
 
         assertEquals(3, scratch.size());
 

@@ -1,7 +1,6 @@
 package structogram2byob.blocks.special;
 
 import java.util.List;
-import java.util.Map;
 
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
 import scratchlib.objects.fixed.data.ScratchObjectString;
@@ -13,7 +12,7 @@ import structogram2byob.blocks.Block;
 import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.program.ScratchConversionException;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.Expression;
 
 
@@ -36,8 +35,8 @@ public class ListBlock extends Block
     }
 
     @Override
-    public ScratchObjectArray toScratch(List<Expression> params,
-            Map<String, VariableContext> vars, BlockRegistry blocks) throws ScratchConversionException
+    public ScratchObjectArray toScratch(List<Expression> params, VariableMap vars, BlockRegistry blocks)
+            throws ScratchConversionException
     {
         ScratchObjectArray a = new ScratchObjectArray();
 

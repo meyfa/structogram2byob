@@ -3,9 +3,7 @@ package structogram2byob.program;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectAbstractCollection;
@@ -60,10 +58,9 @@ public class ProgramUnitTest
                 new NumberExpression(null, 10),
                 new NumberExpression(null, 20)
         );
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
 
-        ScratchObjectArray arr = invoc.toScratch(params, vars, reg);
+        ScratchObjectArray arr = invoc.toScratch(params, VariableMap.EMPTY, reg);
 
         assertEquals(6, arr.size());
 
@@ -84,11 +81,9 @@ public class ProgramUnitTest
         List<BlockExpression> blocks = new ArrayList<>();
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
-
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
 
-        ScratchObjectAbstractCollection scratch = obj.toScratch(vars, reg);
+        ScratchObjectAbstractCollection scratch = obj.toScratch(VariableMap.EMPTY, reg);
 
         assertEquals(0, scratch.size());
     }
@@ -101,11 +96,10 @@ public class ProgramUnitTest
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.SCRIPT, desc, blocks);
 
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
         reg.register(StartClickedHatBlock.instance);
 
-        ScratchObjectAbstractCollection scratch = obj.toScratch(vars, reg);
+        ScratchObjectAbstractCollection scratch = obj.toScratch(VariableMap.EMPTY, reg);
 
         assertEquals(1, scratch.size());
     }
@@ -120,12 +114,11 @@ public class ProgramUnitTest
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.SCRIPT, desc, blocks);
 
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
         reg.register(StartClickedHatBlock.instance);
         reg.register(ForeverBlock.instance);
 
-        ScratchObjectAbstractCollection scratch = obj.toScratch(vars, reg);
+        ScratchObjectAbstractCollection scratch = obj.toScratch(VariableMap.EMPTY, reg);
 
         assertEquals(2, scratch.size());
     }
@@ -151,12 +144,11 @@ public class ProgramUnitTest
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
         reg.register(report);
         reg.register(add);
 
-        ScratchObjectAbstractCollection scratch = obj.toScratch(vars, reg);
+        ScratchObjectAbstractCollection scratch = obj.toScratch(VariableMap.EMPTY, reg);
 
         assertEquals(1, scratch.size());
     }
@@ -179,12 +171,11 @@ public class ProgramUnitTest
 
         ProgramUnit obj = new ProgramUnit(null, UnitType.COMMAND, desc, blocks);
 
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry reg = new BlockRegistry();
         reg.register(svars);
         reg.register(say);
 
-        ScratchObjectAbstractCollection scratch = obj.toScratch(vars, reg);
+        ScratchObjectAbstractCollection scratch = obj.toScratch(VariableMap.EMPTY, reg);
 
         assertEquals(2, scratch.size());
     }

@@ -3,9 +3,7 @@ package structogram2byob.program.expressions;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import scratchlib.objects.fixed.collections.ScratchObjectArray;
@@ -14,7 +12,7 @@ import structogram2byob.blocks.BlockDescription;
 import structogram2byob.blocks.BlockRegistry;
 import structogram2byob.blocks.FunctionBlock;
 import structogram2byob.program.ScratchConversionException;
-import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,18 +59,17 @@ public class ScriptExpressionTest
         ScriptExpression obj;
         ScratchObjectArray result;
 
-        Map<String, VariableContext> vars = new HashMap<>();
         BlockRegistry blocks = new BlockRegistry();
 
         obj = new ScriptExpression(null, Collections.emptyList());
-        result = (ScratchObjectArray) obj.toScratch(vars, blocks);
+        result = (ScratchObjectArray) obj.toScratch(VariableMap.EMPTY, blocks);
         assertEquals(0, result.size());
 
         blocks.register(new FunctionBlock(DESC, ScratchType.NUMBER, "xpos"));
 
         obj = new ScriptExpression(null, Collections.singletonList(
                 new BlockExpression(null, DESC, Collections.emptyList())));
-        result = (ScratchObjectArray) obj.toScratch(vars, blocks);
+        result = (ScratchObjectArray) obj.toScratch(VariableMap.EMPTY, blocks);
         assertEquals(1, result.size());
     }
 

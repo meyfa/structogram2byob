@@ -14,15 +14,14 @@ import structogram2byob.program.ProgramUnit;
 import structogram2byob.program.ScratchConversionException;
 import structogram2byob.program.UnitType;
 import structogram2byob.program.VariableContext;
+import structogram2byob.program.VariableMap;
 import structogram2byob.program.expressions.BlockExpression;
 import structogram2byob.program.expressions.Expression;
 import structogram2byob.program.expressions.NumberExpression;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -39,12 +38,12 @@ public class ChangeVariableBlockTest
                         Collections.emptyList()),
                 new NumberExpression(null, 42)
         );
-        Map<String, VariableContext> vars = new HashMap<>();
+        VariableMap vars;
         BlockRegistry blocks = new BlockRegistry();
 
         // global
 
-        vars.put("foobar", VariableContext.GLOBAL);
+        vars = new VariableMap(Collections.singletonMap("foobar", VariableContext.getGlobal()));
         ScratchObjectArray scratch = obj.toScratch(params, vars, blocks);
 
         assertEquals(4, scratch.size());
@@ -59,7 +58,7 @@ public class ChangeVariableBlockTest
         ProgramUnit unit = new ProgramUnit(null, UnitType.COMMAND,
                 new BlockDescription.Builder().label("doSomething").param(ScratchType.ANY, "foobar").build(),
                 Collections.emptyList());
-        vars.put("foobar", new VariableContext.UnitSpecific(unit));
+        vars = new VariableMap(Collections.singletonMap("foobar", VariableContext.getForUnit(unit)));
         scratch = obj.toScratch(params, vars, blocks);
 
         assertEquals(5, scratch.size());
@@ -73,7 +72,7 @@ public class ChangeVariableBlockTest
         // script specific (script variables)
 
         ScratchObjectVariableFrame frame = new ScratchObjectVariableFrame();
-        vars.put("foobar", new VariableContext.ScriptSpecific(frame));
+        vars = new VariableMap(Collections.singletonMap("foobar", VariableContext.getForScript(frame)));
         scratch = obj.toScratch(params, vars, blocks);
 
         assertEquals(5, scratch.size());
