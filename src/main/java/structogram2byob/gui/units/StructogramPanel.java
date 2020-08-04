@@ -3,7 +3,10 @@ package structogram2byob.gui.units;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
 import java.util.Set;
@@ -89,7 +92,14 @@ public class StructogramPanel extends JPanel
         super.paintComponent(g);
 
         Insets insets = getInsets();
-        g.drawImage(render(), insets.left, insets.top, this);
+        int width = getWidth() - insets.left - insets.right;
+        int height = getHeight() - insets.top - insets.bottom;
+
+        if (g instanceof Graphics2D) {
+            ((Graphics2D) g).setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        }
+
+        g.drawImage(render(), insets.left, insets.top, width, height, this);
     }
 
     /**
@@ -100,6 +110,9 @@ public class StructogramPanel extends JPanel
      */
     public BufferedImage render()
     {
-        return renderer.render(render);
+        double screenScale = Toolkit.getDefaultToolkit().getScreenResolution() / 96.0;
+        double renderScale = Math.max(1, screenScale);
+
+        return renderer.render(render, renderScale);
     }
 }
